@@ -69,8 +69,6 @@
     "Hello": "Bonjour {name},",
     "ProcessingInvite": "Invitation en cours, veuillez patienter...",
     "SignToProceed": "Veuillez vous connecter pour continuer",
-    "Proceed": "Continuer",
-    "SetPasswordLater": "Je définirai un mot de passe plus tard",
-    "SetPasswordNow": "Je définirai un mot de passe maintenant"
+    "Proceed": "Continuer"
   }
 }

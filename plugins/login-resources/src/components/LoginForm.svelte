@@ -25,13 +25,12 @@
 
   export let navigateUrl: string | undefined = undefined
   export let signUpDisabled = false
-  export let useOTP = true
   export let email: string | undefined = undefined
   export let caption: IntlString | undefined = undefined
   export let subtitle: string | undefined = undefined
   export let onLogin: ((loginInfo: LoginInfo | null, status: Status) => void | Promise<void>) | undefined = undefined
 
-  let method: LoginMethods = useOTP ? LoginMethods.Otp : LoginMethods.Password
+  let method: LoginMethods = LoginMethods.Otp
 
   function changeMethod (event: CustomEvent<LoginMethods>): void {
     method = event.detail

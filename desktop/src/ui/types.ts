@@ -43,7 +43,6 @@ export interface Config {
   PUBLIC_SCHEDULE_URL?: string
   CALDAV_SERVER_URL?: string
   EXPORT_URL?: string
-  MAIL_URL?: string
 }
 
 export interface Branding {
