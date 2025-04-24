@@ -21,7 +21,9 @@
     "dev-bold": "cross-env CLIENT_TYPE=dev-bold webpack serve",
     "start": "cross-env NODE_ENV=production webpack serve",
     "deploy": "cp -p public/* dist && aws s3 sync dist s3://anticrm-platform --delete --acl public-read",
-    "format": "format src"
+    "format": "format src",
+
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@hcengineering/platform-rig": "^0.6.0",
@@ -54,7 +56,9 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.11.1",
     "vite": "~6.3.3",
-    "@sveltejs/vite-plugin-svelte": "~5.0.3"    
+    "@sveltejs/vite-plugin-svelte": "~5.0.3",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0"    
   },
   "dependencies": {
     "@hcengineering/achievement": "^0.6.0",
