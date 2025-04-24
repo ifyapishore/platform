@@ -51,7 +51,9 @@
     "webpack": "^5.97.1",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "vite": "~6.3.3",
+    "@sveltejs/vite-plugin-svelte": "~5.0.3"    
   },
   "dependencies": {
     "@hcengineering/achievement": "^0.6.0",
