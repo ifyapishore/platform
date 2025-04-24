@@ -5185,7 +5185,7 @@ packages:
     version: 0.0.0
 
   '@rush-temp/prod@file:projects/prod.tgz':
-    resolution: {integrity: sha512-ShtZdAjqQwqsQ9gRcYD2QiNV9NxiR+ss9oeYFBJKB85ajkoBEPWtnaODSEdLw1H65QHYWQq4ep4Ke0FmVFv0/A==, tarball: file:projects/prod.tgz}
+    resolution: {integrity: sha512-J8AHIj3QAsRq7y1mVtLnkG0Tjy7Sxq4nQBRrfVWMwIbI54h1FQf6JK8vOoGwHPFKWIQWroPENu/rDt/vqr24Lw==, tarball: file:projects/prod.tgz}
     version: 0.0.0
 
   '@rush-temp/products-assets@file:projects/products-assets.tgz':
@@ -23518,6 +23518,7 @@ snapshots:
       sass-loader: 13.3.3(sass@1.71.1)(webpack@5.97.1)
       style-loader: 3.3.4(webpack@5.97.1)
       svelte: 4.2.19
+      svelte-loader: 3.2.0(svelte@4.2.19)
       svelte-preprocess: 5.1.3(@babel/core@7.23.9)(postcss-load-config@4.0.2(postcss@8.5.3)(ts-node@10.9.2(@types/node@20.11.19)(typescript@5.3.3)))(postcss@8.5.3)(sass@1.71.1)(svelte@4.2.19)(typescript@5.3.3)
       svgo-loader: 3.0.3
       ts-loader: 9.5.1(typescript@5.3.3)(webpack@5.97.1)
