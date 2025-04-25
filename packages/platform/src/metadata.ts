@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 
-import type { Id } from './platform'
+import type { Id } from './core-types'
 
 /**
  * Platform Metadata Identifier (PMI).

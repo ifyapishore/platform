@@ -16,14 +16,20 @@
 
 import type { Metadata } from './metadata'
 
+export * from './core-types'
+
 export * from './event'
 export * from './i18n'
 export * from './metadata'
 export * from './platform'
-export { default } from './platform'
 export * from './resource'
 export * from './status'
+export * from './ident'
 export * from './testUtils'
+
+// module export
+export * from './module-def'
+export { default } from './module-def'
 
 /**
  * @public

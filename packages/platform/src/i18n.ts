@@ -17,11 +17,12 @@
 import { IntlMessageFormat } from 'intl-messageformat'
 import { setPlatformStatus } from './event'
 import { _IdInfo, _parseId } from './ident'
-import type { IntlString, Plugin } from './platform'
+import type { IntlString, Plugin } from './core-types'
 import { Severity, Status, unknownError } from './status'
 
 import { getMetadata } from './metadata'
-import platform, { _EmbeddedId } from './platform'
+import { _EmbeddedId } from './core-types'
+import platform from '././module-def'
 
 /**
  * @public

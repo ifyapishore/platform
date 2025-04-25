@@ -16,11 +16,11 @@
 
 import { monitor } from './event'
 import { _parseId } from './ident'
-import type { Plugin, Resource } from './platform'
+import type { Plugin, Resource } from './core-types'
 import { PlatformError, Severity, Status } from './status'
 
 import { getMetadata } from './metadata'
-import platform from './platform'
+import platform from './module-def'
 
 /**
  * @public

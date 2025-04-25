@@ -14,9 +14,10 @@
 // limitations under the License.
 //
 
-import type { Id, Plugin } from './platform'
+import type { Id, Plugin } from './core-types'
+import { _ID_SEPARATOR } from './core-types'
 import { PlatformError, Status, Severity } from './status'
-import platform, { _ID_SEPARATOR } from './platform'
+import platform from './module-def'
 
 /**
  * @internal

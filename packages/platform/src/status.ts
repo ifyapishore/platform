@@ -18,8 +18,8 @@
  * @packageDocumentation
  */
 
-import type { StatusCode } from './platform'
-import platform from './platform'
+import type { StatusCode } from './core-types'
+import platform from './module-def'
 
 /**
  * Status severity

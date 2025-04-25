@@ -14,8 +14,8 @@
 // limitations under the License.
 //
 
-import type { Plugin, IntlString } from '../platform'
-import platform, { plugin } from '../platform'
+import type { Plugin, IntlString } from '../index'
+import platform, { plugin } from '../index'
 import { Severity, Status } from '../status'
 
 import { addStringsLoader, translate } from '../i18n'

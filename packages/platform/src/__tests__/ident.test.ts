@@ -13,9 +13,8 @@
 // limitations under the License.
 //
 
-import type { StatusCode, Plugin, Id } from '../platform'
-import { plugin, mergeIds } from '../platform'
-import { _parseId } from '../ident'
+import type { StatusCode, Plugin, Id } from '../index'
+import { plugin, mergeIds, _parseId } from '../index'
 
 describe('ident', () => {
   const test = 'test' as Plugin

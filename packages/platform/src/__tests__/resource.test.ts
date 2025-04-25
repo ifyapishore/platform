@@ -14,9 +14,8 @@
 // limitations under the License.
 //
 
-import type { Plugin, IntlString, Resource } from '../platform'
-import { plugin } from '../platform'
-import { addLocation, getResource } from '../resource'
+import type { Plugin, IntlString, Resource } from '../index'
+import { plugin, addLocation, getResource } from '../index'
 
 describe('resource', () => {
   const test = 'test' as Plugin
