@@ -4,6 +4,7 @@ import sveltePreprocess from 'svelte-preprocess';
 import path from 'path';
 import { createRequire } from 'module';
 import { homedir } from 'os';
+import glob from 'fast-glob';
 
 const require = createRequire(import.meta.url);
 
@@ -26,6 +27,11 @@ try {
   // ok if not installed
   console.log('MOCK: svelte-loader not found');
 }
+
+const hcPackages = glob.sync('packages/*/package.json')
+  .map((pkg: string) => '@hcengineering/' + pkg.split('/')[1]);
+
+hcPackages.push('@hcengineering/contact');
 
 export default defineConfig(({ mode }) => {
   const alias: Record<string, string> = {
@@ -71,7 +77,14 @@ export default defineConfig(({ mode }) => {
   if (mode === 'development') {
     alias['svelte-loader'] = path.resolve(__dirname, './.vite-shim/empty.js');
   }
+
   return {
+    optimizeDeps: {
+      exclude: hcPackages
+    },
+    ssr: {
+      noExternal: hcPackages
+    },
     plugins: [
       svelte({
         preprocess: sveltePreprocess({ typescript: true }),

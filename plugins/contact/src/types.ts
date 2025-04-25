@@ -13,11 +13,186 @@
 // limitations under the License.
 //
 
-import { Permission, Ref, Space } from '@hcengineering/core'
-import { ColorDefinition } from '@hcengineering/ui'
-import { type Card } from '@hcengineering/card'
+import {
+  AttachedDoc,
+  Class,
+  Collection,
+  Doc,
+  PersonId,
+  Ref,
+  SocialId,
+  Space,
+  Timestamp,
+  UXObject,
+  Permission,
+  type BasePerson,
+  type Blob,
+  type MarkupBlobRef,
+  type Data,
+  type WithLookup,
+  AccountUuid
+} from '@hcengineering/core'
 
-import { Person } from './index'
+import { IntlString, Resource } from '@hcengineering/platform'
+import type { AnyComponent, ColorDefinition } from '@hcengineering/ui'
+import { Action } from '@hcengineering/view'
+import { Card, Role } from '@hcengineering/card'
+
+/**
+ * @public
+ */
+export interface ChannelProvider extends Doc, UXObject {
+  // Placeholder
+  placeholder: IntlString
+
+  // Presenter will be shown on click for channel
+  presenter?: AnyComponent
+
+  // Action to be performed if there is no presenter defined.
+  action?: Ref<Action>
+
+  // Integration type
+  integrationType?: Ref<Doc>
+}
+
+export interface SocialIdentity extends SocialId, AttachedDoc {
+  _id: Ref<this> & PersonId
+  attachedTo: Ref<Person>
+  attachedToClass: Ref<Class<Person>>
+}
+
+export type SocialIdentityRef = SocialIdentity['_id']
+
+/**
+ * @public
+ */
+export interface Channel extends AttachedDoc {
+  provider: Ref<ChannelProvider>
+  value: string
+  items?: number
+  lastMessage?: Timestamp
+}
+
+/**
+ * @public
+ */
+export interface ChannelItem extends AttachedDoc {
+  attachedTo: Ref<Channel>
+  attachedToClass: Ref<Class<Channel>>
+  incoming: boolean
+  sendOn: Timestamp
+  attachments?: number
+}
+
+/**
+ * @public
+ */
+export enum AvatarType {
+  COLOR = 'color',
+  IMAGE = 'image',
+  GRAVATAR = 'gravatar',
+
+  EXTERNAL = 'external'
+}
+
+/**
+ * @public
+ */
+export type GetAvatarUrl = (
+  uri: Data<WithLookup<AvatarInfo>>,
+  name: string,
+  width?: number
+) => Promise<{ url?: string, srcSet?: string, color: ColorDefinition }>
+
+/**
+ * @public
+ */
+export interface AvatarProvider extends Doc {
+  type: AvatarType
+  getUrl: Resource<GetAvatarUrl>
+}
+
+export interface AvatarInfo extends Doc {
+  avatarType: AvatarType
+  avatar?: Ref<Blob> | null
+  avatarProps?: {
+    color?: string
+    url?: string
+  }
+}
+
+/**
+ * @public
+ */
+export interface Contact extends Doc, AvatarInfo {
+  name: string
+  attachments?: number
+  comments?: number
+  channels?: number
+  city?: string
+}
+
+/**
+ * @public
+ */
+export interface Person extends Contact, BasePerson {
+  birthday?: Timestamp | null
+  socialIds?: Collection<SocialIdentity>
+  profile?: Ref<Card>
+}
+
+export interface UserRole extends Doc {
+  user: Ref<Employee>
+  role: Ref<Role>
+}
+
+/**
+ * @public
+ */
+export interface Member extends AttachedDoc {
+  contact: Ref<Contact>
+}
+/**
+ * @public
+ */
+export interface Organization extends Contact {
+  members: number
+  description: MarkupBlobRef | null
+}
+
+/**
+ * @public
+ */
+export interface Status extends AttachedDoc {
+  attachedTo: Ref<Employee>
+  attachedToClass: Ref<Class<Employee>>
+  name: string
+  dueDate: Timestamp
+}
+
+/**
+ * @public
+ */
+export interface Employee extends Person {
+  active: boolean
+  role?: 'USER' | 'GUEST' // Informational only
+  statuses?: number
+  position?: string | null
+  personUuid?: AccountUuid
+}
+
+/**
+ * @public
+ */
+export interface ContactsTab extends Doc {
+  label: IntlString
+  component: AnyComponent
+  index: number
+}
+
+export interface PersonSpace extends Space {
+  person: Ref<Person>
+}
 
 /**
  * @public

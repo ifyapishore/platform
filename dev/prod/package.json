@@ -58,9 +58,11 @@
     "vite": "~6.3.3",
     "@sveltejs/vite-plugin-svelte": "~5.0.3",
     "patch-package": "^8.0.0",
-    "postinstall-postinstall": "^2.1.0"    
+    "postinstall-postinstall": "^2.1.0",
+    "fast-glob": "^3.2.18"
   },
   "dependencies": {
+    "fast-glob": "^3.2.18",
     "@hcengineering/achievement": "^0.6.0",
     "@hcengineering/achievement-assets": "^0.6.0",
     "@hcengineering/achievement-resources": "^0.6.0",

@@ -1813,6 +1813,9 @@ importers:
       fast-equals:
         specifier: ^5.2.2
         version: 5.2.2
+      fast-glob:
+        specifier: ^3.2.18
+        version: 3.3.2
       file-api:
         specifier: ^0.10.4
         version: 0.10.4
@@ -5191,7 +5194,7 @@ packages:
     version: 0.0.0
 
   '@rush-temp/prod@file:projects/prod.tgz':
-    resolution: {integrity: sha512-nmCZ7vXoMC6TqKs/jFSRNzkwkNqsrZxVzKYUA/cMbOfyzPQLfWMsNBM5l/s/zaD1rjgekv2f67idQ9kuzcbQSg==, tarball: file:projects/prod.tgz}
+    resolution: {integrity: sha512-EitjFt9Su3x/nCPx5b2cjLkLGWZ/h0v77Oqm1Li3XLvvpnHxAWL9gQYT6aZ3+pIwGN5JUpsJjiAxvnw2ZOqAqQ==, tarball: file:projects/prod.tgz}
     version: 0.0.0
 
   '@rush-temp/products-assets@file:projects/products-assets.tgz':
@@ -15787,7 +15790,7 @@ snapshots:
       jest-haste-map: 29.7.0
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.8
       pirates: 4.0.6
       slash: 3.0.0
       write-file-atomic: 4.0.2
@@ -23603,6 +23606,7 @@ snapshots:
       dotenv-webpack: 8.0.1(webpack@5.97.1)
       esbuild: 0.24.2
       esbuild-loader: 4.0.3(webpack@5.97.1)
+      fast-glob: 3.3.2
       file-loader: 6.2.0(webpack@5.97.1)
       fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.3.3)(webpack@5.97.1)
       html-webpack-plugin: 5.6.0(webpack@5.97.1)
@@ -32680,7 +32684,7 @@ snapshots:
       '@nodelib/fs.walk': 1.2.8
       glob-parent: 5.1.2
       merge2: 1.4.1
-      micromatch: 4.0.5
+      micromatch: 4.0.8
 
   fast-json-stable-stringify@2.1.0: {}
 
@@ -33905,7 +33909,7 @@ snapshots:
       jest-runner: 29.7.0
       jest-util: 29.7.0
       jest-validate: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.8
       parse-json: 5.2.0
       pretty-format: 29.7.0
       slash: 3.0.0
@@ -33973,7 +33977,7 @@ snapshots:
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
       jest-worker: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.8
       walker: 1.0.8
     optionalDependencies:
       fsevents: 2.3.3

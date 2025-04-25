@@ -36,11 +36,14 @@ import {
   TxFactory
 } from '@hcengineering/core'
 import { getMetadata } from '@hcengineering/platform'
-import { ColorDefinition } from '@hcengineering/ui'
-import contact, { AvatarProvider, AvatarType, Channel, Contact, Employee, Person, SocialIdentityRef } from '.'
+import { type ColorDefinition } from '@hcengineering/ui'
+import { contactPlugin } from './plugin'
 
-import { AVATAR_COLORS, GravatarPlaceholderType } from './types'
+import type { AvatarProvider, Channel, Contact, Employee, Person, SocialIdentityRef } from './types'
 
+import { AvatarType, AVATAR_COLORS, GravatarPlaceholderType } from './types'
+
+const contact = contactPlugin // shortcut
 let currentEmployee: Ref<Employee>
 
 const employeeListeners: ((ref: Ref<Employee>) => void)[] = []

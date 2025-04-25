@@ -16,7 +16,9 @@
 import { type Data, type Ref, TxOperations } from '@hcengineering/core'
 import type { ColorDefinition } from '@hcengineering/ui'
 import { getMetadata, getResource } from '@hcengineering/platform'
-import contact, { AvatarInfo, AvatarProvider, getAvatarProviderId, getFirstName, getLastName } from '.'
+import type { AvatarInfo, AvatarProvider } from './types'
+import { getAvatarProviderId, getFirstName, getLastName } from './utils'
+import { contactPlugin } from './plugin'
 
 export interface AvatarUrlInfo {
   url: string | undefined
@@ -36,7 +38,7 @@ export async function getAvatarProvider (
     return provider ?? undefined
   }
 
-  const res = await client.findOne(contact.class.AvatarProvider, { _id: providerId })
+  const res = await client.findOne(contactPlugin.class.AvatarProvider, { _id: providerId })
 
   providers.set(providerId, res ?? null)
 
@@ -78,7 +80,7 @@ export function getAvatarDisplayName (name: string | null | undefined): string {
     return ''
   }
 
-  const lastFirst = getMetadata(contact.metadata.LastNameFirst) === true
+  const lastFirst = getMetadata(contactPlugin.metadata.LastNameFirst) === true
   const fname = getFirstName(name ?? '').trim()[0] ?? ''
   const lname = getLastName(name ?? '').trim()[0] ?? ''
 
