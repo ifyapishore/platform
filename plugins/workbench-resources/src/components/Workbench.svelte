@@ -128,6 +128,7 @@
   } from '../workbench'
   import { get } from 'svelte/store'
   import inbox, { inboxId } from '@hcengineering/inbox'
+  import WorkbenchNavigator from './WorkbenchNavigator.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg
@@ -786,10 +787,7 @@
     </clipPath>
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
-    <div
-      class="antiPanel-application {$deviceInfo.navigator.direction} no-print"
-      class:lastDivider={!$deviceInfo.navigator.visible}
-    >
+    <WorkbenchNavigator>
       <div
         class="hamburger-container clear-mins"
         class:portrait={$deviceInfo.navigator.direction === 'horizontal'}
@@ -905,7 +903,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </WorkbenchNavigator>
     <ActionContext
       context={{
         mode: 'workbench',
@@ -1101,16 +1099,6 @@
     position: relative;
     display: flex;
     align-items: center;
-
-    &:hover {
-      min-width: calc(4.5rem * 6);
-      z-index: 1;
-      backdrop-filter: blur(20px);
-      background-color: rgba(255,255,255,0.1);
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-top-right-radius: var(--medium-BorderRadius);
-      border-bottom-right-radius: var(--medium-BorderRadius);
-    }
 
     &.portrait {
       margin-left: 1rem;
