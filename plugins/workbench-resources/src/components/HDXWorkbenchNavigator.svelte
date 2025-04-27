@@ -61,7 +61,7 @@ TODO:
 </script>
 
 <div
-  class="antiPanel-application2 {$deviceInfo.navigator.direction} no-print"
+  class="HDXWorkbenchNavigator {$deviceInfo.navigator.direction} no-print"
   class:lastDivider={!$deviceInfo.navigator.visible}
   class:expanded={$expanded}
   role="presentation"
@@ -69,14 +69,16 @@ TODO:
   on:mouseleave={handleBlur}
   on:click={handleClick}>
   <div
-    class="antiPanel-application2__inner"
+    class="HDXWorkbenchNavigator-Inner"
     class:expanded={$expanded}>
-    <slot />
+    <slot name="header" />
+    <slot name="content" />
+    <slot name="footer" />
   </div>
 </div>
 
 <style>
-  .antiPanel-application2 {
+  .HDXWorkbenchNavigator {
     position: relative;
     flex-shrink: 0;
 
@@ -90,13 +92,14 @@ TODO:
     border-right: 1px solid var(--theme-navpanel-divider);
   }
 
-  .antiPanel-application2__inner {
+  .HDXWorkbenchNavigator-Inner {
       position: relative;
       display: flex;
       justify-content: space-between;
       /* align-items: center; */
       flex-direction: column;
       min-width: var(--app-panel-width);
+      height: 100%;
 
       &.expanded {
         min-width: calc(4.5rem * 3);

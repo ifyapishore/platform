@@ -128,7 +128,7 @@
   } from '../workbench'
   import { get } from 'svelte/store'
   import inbox, { inboxId } from '@hcengineering/inbox'
-  import WorkbenchNavigator from './WorkbenchNavigator.svelte'
+  import HDXWorkbenchNavigator from './HDXWorkbenchNavigator.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg
@@ -787,23 +787,23 @@
     </clipPath>
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
-    <WorkbenchNavigator>
-      <div
+    <HDXWorkbenchNavigator>
+      <div slot="header"
+        class="logo-container clear-mins"
+        class:mini={appsMini}
+        on:click={() => {
+          showPopup(SelectWorkspaceMenu, {}, popupSpacePosition)
+        }}
+      >
+        <Logo mini={appsMini} workspace={windowWorkspaceName ?? $resolvedLocationStore.path[1]} />
+      </div>
+      <div slot="content"
         class="hamburger-container clear-mins"
         class:portrait={$deviceInfo.navigator.direction === 'horizontal'}
         class:landscape={$deviceInfo.navigator.direction === 'vertical'}
       >
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div
-          class="logo-container clear-mins"
-          class:mini={appsMini}
-          on:click={() => {
-            showPopup(SelectWorkspaceMenu, {}, popupSpacePosition)
-          }}
-        >
-          <Logo mini={appsMini} workspace={windowWorkspaceName ?? $resolvedLocationStore.path[1]} />
-        </div>
         <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
           <AppItem
             icon={TopMenu}
@@ -848,7 +848,7 @@
           on:toggleNav={toggleNav}
         />
       </div>
-      <div
+      <div slot="footer"
         class="info-box {$deviceInfo.navigator.direction}"
         class:vertical-mobile={$deviceInfo.navigator.direction === 'vertical'}
         class:mini={appsMini}
@@ -903,7 +903,7 @@
           </div>
         </div>
       </div>
-    </WorkbenchNavigator>
+    </HDXWorkbenchNavigator>
     <ActionContext
       context={{
         mode: 'workbench',
