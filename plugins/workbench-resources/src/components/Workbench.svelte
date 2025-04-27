@@ -129,6 +129,7 @@
   import { get } from 'svelte/store'
   import inbox, { inboxId } from '@hcengineering/inbox'
   import HDXWorkbenchNavigator from './HDXWorkbenchNavigator.svelte'
+  import HDXWorkbenchNavigatorHeader from './HDXWorkbenchNavigatorHeader.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg
@@ -788,15 +789,20 @@
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
     <HDXWorkbenchNavigator>
-      <div slot="header"
-        class="logo-container clear-mins"
+      <svelte:fragment slot="header" let:expanded>
+        <HDXWorkbenchNavigatorHeader
+          windowWorkspaceName={windowWorkspaceName}
+          expanded={expanded}
+          />
+      </svelte:fragment>
+        <!-- class="logo-container clear-mins"
         class:mini={appsMini}
         on:click={() => {
           showPopup(SelectWorkspaceMenu, {}, popupSpacePosition)
         }}
       >
         <Logo mini={appsMini} workspace={windowWorkspaceName ?? $resolvedLocationStore.path[1]} />
-      </div>
+      </div> -->
       <div slot="content"
         class="hamburger-container clear-mins"
         class:portrait={$deviceInfo.navigator.direction === 'horizontal'}

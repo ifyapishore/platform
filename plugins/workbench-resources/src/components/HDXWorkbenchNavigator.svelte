@@ -33,31 +33,31 @@ TODO:
   import { writable } from 'svelte/store'
 
   // Local expanded state
-  const expanded = writable(false)
+  export const expanded = writable(false)
 
-  function handleHover() {
+  function handleHover (): void {
     console.log('Hover started')
     expanded.set(true)
     // TODO: visual feedback for hover inactivity though global model
   }
 
-  function handleBlur() {
+  function handleBlur (): void {
     console.log('Hover ended')
     expanded.set(false)
     // TODO: visual feedback for hover inactivity though global model
   }
 
-  function handleClick(event: MouseEvent) {
-    console.log('Clicked inside WorkbenchNavigator');
+  function handleClick (): void {
+    console.log('Clicked inside WorkbenchNavigator')
     // You can collapse or do something here
     // event.stopPropagation(); // Prevent bubbling if needed
   }
 
-  function handleOutsideClick(event: MouseEvent) {
-    console.log('Clicked outside WorkbenchNavigator');
-    // You can collapse or do something here
-    // event.stopPropagation(); // Prevent bubbling if needed
-  }
+  // function handleOutsideClick (event: MouseEvent): void {
+  //   console.log('Clicked outside WorkbenchNavigator');
+  //   // You can collapse or do something here
+  //   // event.stopPropagation(); // Prevent bubbling if needed
+  // }
 </script>
 
 <div
@@ -71,7 +71,7 @@ TODO:
   <div
     class="HDXWorkbenchNavigator-Inner"
     class:expanded={$expanded}>
-    <slot name="header" />
+    <slot name="header" expanded={$expanded}/>
     <slot name="content" />
     <slot name="footer" />
   </div>
