@@ -1098,8 +1098,19 @@
   }
 
   .hamburger-container {
+    position: relative;
     display: flex;
     align-items: center;
+
+    &:hover {
+      min-width: calc(4.5rem * 6);
+      z-index: 1;
+      backdrop-filter: blur(20px);
+      background-color: rgba(255,255,255,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-top-right-radius: var(--medium-BorderRadius);
+      border-bottom-right-radius: var(--medium-BorderRadius);
+    }
 
     &.portrait {
       margin-left: 1rem;
