@@ -71,7 +71,7 @@ TODO:
   <div
     class="HDXWorkbenchNavigator-Inner"
     class:expanded={$expanded}>
-    <slot name="header" expanded={$expanded}/>
+    <slot name="header" expanded={$expanded || true}/>
     <slot name="content" />
     <slot name="footer" />
   </div>

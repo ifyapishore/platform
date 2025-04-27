@@ -67,6 +67,8 @@
     flex-grow: 1;
     overflow: hidden;
     flex-direction: row;
+    align-items: center;
+    
     &.expanded {
       display: flex;
     }
