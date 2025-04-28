@@ -70,7 +70,7 @@ TODO:
   on:click={handleClick}>
   <div
     class="HDXWorkbenchNavigator-Inner"
-    class:expanded={$expanded}>
+    class:expanded={$expanded || true}>
     <slot name="header" expanded={$expanded || true}/>
     <slot name="content" />
     <slot name="footer" />
