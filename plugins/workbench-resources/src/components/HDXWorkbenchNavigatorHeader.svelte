@@ -29,6 +29,7 @@
   <div
   class="HDXWorkbenchNavigatorHeaderTop"
   class:expanded={expanded}
+  class:expandedWorkspace={$expandedWorkspaces}
   role="presentation"
   on:click={toggleWorkspace}
   >
@@ -79,6 +80,11 @@
     &.expanded {
       background-color:rgb(131 176 184 / 10%); /* rgba(255,255,255,0.1); */
       box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.05);
+      &.expandedWorkspace {
+        background-color: rgb(131 176 184 / 30%);
+        box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.05);
+        margin-bottom: 1rem;
+      }
     }
   }
 

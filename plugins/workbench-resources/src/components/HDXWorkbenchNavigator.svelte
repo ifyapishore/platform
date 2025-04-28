@@ -32,8 +32,11 @@ TODO:
 
   import { writable } from 'svelte/store'
 
-  // Local expanded state
-  export const expanded = writable(false)
+  // debug/beahvior constants;
+  const hdxAlwaysExpand = true
+
+  // Local state
+  export const expanded = writable(hdxAlwaysExpand)
   export const expandedWorkspaces = writable(false)
 
   function handleHover (): void {
@@ -44,7 +47,7 @@ TODO:
 
   function handleBlur (): void {
     console.log('Hover ended')
-    expanded.set(false)
+    expanded.set(hdxAlwaysExpand)
     expandedWorkspaces.set(false)
     // TODO: visual feedback for hover inactivity though global model
   }
@@ -59,24 +62,22 @@ TODO:
     expandedWorkspaces.set(!$expandedWorkspaces)
   }
 
-  // function handleOutsideClick (event: MouseEvent): void {
-  //   console.log('Clicked outside WorkbenchNavigator');
-  //   // You can collapse or do something here
-  //   // event.stopPropagation(); // Prevent bubbling if needed
-  // }
+  // Rendering shortcuts
+  $: expandedWide = $expanded && $expandedWorkspaces
 </script>
 
 <div
   class="HDXWorkbenchNavigator {$deviceInfo.navigator.direction} no-print"
   class:lastDivider={!$deviceInfo.navigator.visible}
-  class:expanded={$expanded}
   role="presentation"
   on:mouseenter={handleHover}
   on:mouseleave={handleBlur}
   on:click={handleClick}>
   <div
     class="HDXWorkbenchNavigator-Inner"
-    class:expanded={$expanded}>
+    class:expanded={$expanded}
+    class:expandedWide={expandedWide}
+    >
     <slot name="header"
       expanded={$expanded}
       expandedWorkspaces={expandedWorkspaces}
@@ -118,6 +119,13 @@ TODO:
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: var(--medium-BorderRadius);
         border-bottom-right-radius: var(--medium-BorderRadius);
+
+        &.expandedWide {
+          min-width: calc(4.5rem * 5);
+          backdrop-filter: blur(30px);
+          background-color:rgb(131 176 184 / 15%); /* rgba(255,255,255,0.1); */
+          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
       }
     }
 </style>
