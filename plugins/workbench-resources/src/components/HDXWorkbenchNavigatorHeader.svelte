@@ -25,6 +25,7 @@
 <div
   class="HDXWorkbenchNavigatorHeader"
   class:expanded={expanded}
+  class:expandedWorkspace={$expandedWorkspaces}
 >
   <div
   class="HDXWorkbenchNavigatorHeaderTop"
@@ -64,8 +65,8 @@
     </div>
   </div>
   {#if $expandedWorkspaces}
-    <div>Workspaces</div>
-    <HDXWorkspaceSelector/>
+    <div class="HDXWorkspaceSelectorHeader">Workspaces</div>
+    <HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
   {/if}
 </div>
 
@@ -80,10 +81,12 @@
     &.expanded {
       background-color:rgb(131 176 184 / 10%); /* rgba(255,255,255,0.1); */
       box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.05);
+
       &.expandedWorkspace {
         background-color: rgb(131 176 184 / 30%);
         box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.05);
         margin-bottom: 1rem;
+        padding-bottom: 1rem;
       }
     }
   }
@@ -160,5 +163,21 @@
     &.expanded {
       display: flex;
     }
+  }
+  .HDXWorkspaceSelectorHeader {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 2rem;
+    padding-left: 0.7rem;
+    width: 100%;
+    height: 2rem;
+    font-size: 0.8rem;
+    font-weight: 100;
+    border-left: solid 0.6px #888;
+    color: var(--theme-navpanel-text);
+    opacity: 0.8;
   }
 </style>

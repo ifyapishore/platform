@@ -34,10 +34,11 @@ TODO:
 
   // debug/beahvior constants;
   const hdxAlwaysExpand = true
+  const hdxAlwaysExpandWorkspaces = true
 
   // Local state
   export const expanded = writable(hdxAlwaysExpand)
-  export const expandedWorkspaces = writable(false)
+  export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
 
   function handleHover (): void {
     console.log('Hover started')
@@ -48,7 +49,9 @@ TODO:
   function handleBlur (): void {
     console.log('Hover ended')
     expanded.set(hdxAlwaysExpand)
-    expandedWorkspaces.set(false)
+    if (!hdxAlwaysExpandWorkspaces) {
+      expandedWorkspaces.set(false)
+    }
     // TODO: visual feedback for hover inactivity though global model
   }
 
@@ -59,7 +62,9 @@ TODO:
   }
 
   function handleToggleWorkspaceSelector (): void {
-    expandedWorkspaces.set(!$expandedWorkspaces)
+    if (!hdxAlwaysExpandWorkspaces) {
+      expandedWorkspaces.set(!$expandedWorkspaces)
+    }
   }
 
   // Rendering shortcuts

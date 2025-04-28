@@ -41,6 +41,8 @@
   import { workspacesStore } from '../utils'
   // import Drag from './icons/Drag.svelte'
 
+  export let onWorkspaceSelected: () => void
+
   onMount(() => {
     void getResource(login.function.GetWorkspaces).then(async (f) => {
       $workspacesStore = await f()
@@ -72,6 +74,7 @@
         } else {
           navigate({ path: [workbenchId, wsUrl] })
         }
+        onWorkspaceSelected()
       }
     }
   }
@@ -142,111 +145,134 @@
 
 {#if $workspacesStore.length}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="antiPopup" on:keydown={keyDown}>
-    <div class="ap-space x2" />
-    {#if isAdmin}
-      <div class="p-2 ml-2 mr-2 mb-2 flex-grow flex-row-center">
-        <SearchEdit bind:value={search} width={'100%'} />
-        {#if isAdminUser()}
-          <div class="p-1">
-            {#if $workspacesStore.length > 500}
-              500 /
-            {/if}
-            {$workspacesStore.length}
-          </div>
-        {/if}
-      </div>
-      <div class="p-2 ml-2 mb-4 select-text flex-col bordered">
-        {decodeTokenPayload(getMetadata(presentation.metadata.Token) ?? '').workspace ?? ''}
-      </div>
-    {/if}
-    <div class="ap-scroll">
-      <div class="ap-box">
-        {#each $workspacesStore
-          .filter((it) => search === '' || (it.name?.includes(search) ?? false) || it.url.includes(search))
-          .slice(0, 500) as ws, i}
-          {@const wsName = ws.name ?? ws.url}
-          {@const _activeSession = activeSessions[ws.uuid]}
-          {@const lastUsageDays = Math.round((Date.now() - (ws.lastVisit ?? 0)) / (1000 * 3600 * 24))}
-          <a
-            class="stealth"
-            href={getWorkspaceLink(ws)}
-            on:click={async (e) => {
-              await clickHandler(e, ws.url)
+  {#if isAdmin}
+    <div class="p-2 ml-2 mr-2 mb-2 flex-grow flex-row-center">
+      <SearchEdit bind:value={search} width={'100%'} />
+      {#if isAdminUser()}
+        <div class="p-1">
+          {#if $workspacesStore.length > 500}
+            500 /
+          {/if}
+          {$workspacesStore.length}
+        </div>
+      {/if}
+    </div>
+    <div class="p-2 ml-2 mb-4 select-text flex-col bordered">
+      {decodeTokenPayload(getMetadata(presentation.metadata.Token) ?? '').workspace ?? ''}
+    </div>
+  {/if}
+  <div class="ap-scroll">
+    <div class="ap-box">
+      {#each $workspacesStore
+        .filter((it) => search === '' || (it.name?.includes(search) ?? false) || it.url.includes(search))
+        .slice(0, 500) as ws, i}
+        {@const wsName = ws.name ?? ws.url}
+        {@const _activeSession = activeSessions[ws.uuid]}
+        {@const lastUsageDays = Math.round((Date.now() - (ws.lastVisit ?? 0)) / (1000 * 3600 * 24))}
+        <a
+          class="stealth"
+          href={getWorkspaceLink(ws)}
+          on:click={async (e) => {
+            await clickHandler(e, ws.url)
+          }}
+        >
+          <button
+            bind:this={btns[i]}
+            class="HDRWorkspaceSelectorButton"
+            class:active={isAdmin && (_activeSession?.length ?? 0) > 0}
+            class:hover={btns[i] === activeElement}
+            on:mousemove={() => {
+              focusTarget(btns[i])
             }}
           >
-            <button
-              bind:this={btns[i]}
-              class="ap-menuItem flex-row-center flex-grow"
-              class:active={isAdmin && (_activeSession?.length ?? 0) > 0}
-              class:hover={btns[i] === activeElement}
-              on:mousemove={() => {
-                focusTarget(btns[i])
-              }}
-            >
-              <!-- <div class="drag"><Drag size={'small'} /></div> -->
-              <!-- <div class="logo empty" /> -->
-              <!-- <div class="flex-col flex-grow"> -->
-              <div class="flex-col flex-grow">
-                <span class="label overflow-label flex flex-grow flex-between">
-                  {wsName}
-                  {#if isArchivingMode(ws.mode)}
-                    - <Label label={presentation.string.Archived} />
-                  {/if}
-                  {#if ws.region != null && ws.region !== ''}
-                    - ({ws.region})
-                  {/if}
-                  {#if isAdmin && ws.lastVisit != null && ws.lastVisit !== 0}
-                    <div class="text-sm">
-                      {#if ws.backupInfo != null}
-                        {@const sz = Math.max(
-                          ws.backupInfo.backupSize,
-                          ws.backupInfo.dataSize + ws.backupInfo.blobsSize
-                        )}
-                        {@const szGb = Math.round((sz * 100) / 1024) / 100}
-                        {#if szGb > 0}
-                          {Math.round((sz * 100) / 1024) / 100}Gb -
-                        {:else}
-                          {Math.round(sz)}Mb -
-                        {/if}
+            <!-- <div class="drag"><Drag size={'small'} /></div> -->
+            <!-- <div class="logo empty" /> -->
+            <!-- <div class="flex-col flex-grow"> -->
+            <div class="flex-col flex-grow">
+              <span class="label overflow-label flex flex-grow flex-between">
+                {wsName}
+                {#if isArchivingMode(ws.mode)}
+                  - <Label label={presentation.string.Archived} />
+                {/if}
+                {#if ws.region != null && ws.region !== ''}
+                  - ({ws.region})
+                {/if}
+                {#if isAdmin && ws.lastVisit != null && ws.lastVisit !== 0}
+                  <div class="text-sm">
+                    {#if ws.backupInfo != null}
+                      {@const sz = Math.max(
+                        ws.backupInfo.backupSize,
+                        ws.backupInfo.dataSize + ws.backupInfo.blobsSize
+                      )}
+                      {@const szGb = Math.round((sz * 100) / 1024) / 100}
+                      {#if szGb > 0}
+                        {Math.round((sz * 100) / 1024) / 100}Gb -
+                      {:else}
+                        {Math.round(sz)}Mb -
                       {/if}
-                      ({lastUsageDays} days)
-                    </div>
-                  {/if}
+                    {/if}
+                    ({lastUsageDays} days)
+                  </div>
+                {/if}
+              </span>
+              {#if isAdmin && wsName !== ws.url}
+                <span class="text-xs">
+                  ({ws.url})
                 </span>
-                {#if isAdmin && wsName !== ws.url}
-                  <span class="text-xs">
-                    ({ws.url})
-                  </span>
-                {/if}
-                {#if isAdmin && (_activeSession?.length ?? 0) > 0}
-                  <span class="text-xs flex-row-center">
-                    <div class="mr-1">
-                      <Icon icon={contact.icon.Person} size={'x-small'} />
-                    </div>
-                    {_activeSession?.length ?? 0}
-                  </span>
-                {/if}
-              </div>
-              <!-- <span class="description overflow-label">Description</span> -->
-              <!-- </div> -->
-              <div class="ap-check">
-                {#if $resolvedLocationStore.path[1] === ws.url}
-                  <IconCheck size={'small'} />
-                {/if}
-              </div>
-            </button>
-          </a>
-        {/each}
-      </div>
+              {/if}
+              {#if isAdmin && (_activeSession?.length ?? 0) > 0}
+                <span class="text-xs flex-row-center">
+                  <div class="mr-1">
+                    <Icon icon={contact.icon.Person} size={'x-small'} />
+                  </div>
+                  {_activeSession?.length ?? 0}
+                </span>
+              {/if}
+            </div>
+            <!-- <span class="description overflow-label">Description</span> -->
+            <!-- </div> -->
+            <div class="ap-check">
+              {#if $resolvedLocationStore.path[1] === ws.url}
+                <IconCheck size={'small'} />
+              {/if}
+            </div>
+          </button>
+        </a>
+      {/each}
     </div>
-    <div class="ap-space x2" />
   </div>
+  <div class="ap-space x2" />
 {:else}
   <div class="antiPopup"><Loading /></div>
 {/if}
 
 <style lang="scss">
+  .HDRWorkspaceSelectorButton {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.5rem 1rem;
+/*    margin: 0.25rem 0; */
+    border-radius: none;
+    background-color: transparent;
+    color: var(--theme-navpanel-text);
+    text-decoration: none;
+
+    &:hover {
+      background-color: rgba(180, 191, 193, 0.5);
+      color: var(--theme-inbox-people-counter-text);
+      font-weight: bold;
+    }
+
+    &.active {
+      background-color: rgba(131, 176, 184, 0.5);
+      color: var(--theme-inbox-people-counter-text);
+      font-weight: bold;
+    }
+  }
   .active {
     background-color: var(--theme-inbox-people-counter-bgcolor);
   }
