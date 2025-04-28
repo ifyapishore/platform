@@ -2,6 +2,7 @@
   import { Writable } from 'svelte/store'
   import Logo from './Logo.svelte'
   import HDXWorkspaceSwitch from './icons/HDXWorkspaceSwitch.svelte'
+  import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
 
   export let windowWorkspaceName: string
   export let expanded: boolean
@@ -63,6 +64,7 @@
   </div>
   {#if $expandedWorkspaces}
     <div>Workspaces</div>
+    <HDXWorkspaceSelector/>
   {/if}
 </div>
 
