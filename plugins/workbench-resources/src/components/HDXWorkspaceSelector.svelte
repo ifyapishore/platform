@@ -74,9 +74,10 @@
         } else {
           navigate({ path: [workbenchId, wsUrl] })
         }
-        onWorkspaceSelected()
       }
     }
+    // notify ui about select action in all cases
+    onWorkspaceSelected()
   }
 
   let activeElement: HTMLElement
@@ -84,28 +85,6 @@
 
   function focusTarget (target: HTMLElement): void {
     activeElement = target
-  }
-
-  const keyDown = (ev: KeyboardEvent): void => {
-    if (ev.key === 'Tab') {
-      ev.preventDefault()
-      ev.stopPropagation()
-    }
-    const n = btns.indexOf(activeElement) ?? 0
-    if (ev.key === 'ArrowDown') {
-      if (n < btns.length - 1) {
-        activeElement = btns[n + 1]
-      }
-      ev.preventDefault()
-      ev.stopPropagation()
-    }
-    if (ev.key === 'ArrowUp') {
-      if (n > 0) {
-        activeElement = btns[n - 1]
-      }
-      ev.preventDefault()
-      ev.stopPropagation()
-    }
   }
 
   $: isAdmin = isAdminUser()

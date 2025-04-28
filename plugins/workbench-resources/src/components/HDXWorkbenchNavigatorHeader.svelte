@@ -102,6 +102,7 @@
     align-items: stretch;
     height: 4.5rem;
     width: 100%;
+    cursor: pointer;
   }
 
   .HDXWorkbenchNavigatorHeaderTop-Logo {
@@ -136,10 +137,10 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: start;
-    color: #797878;
-    font-size: 0.7rem;
+    opacity: 0.5;
+    font-size: 0.6rem;
     text-transform: uppercase;
-    height: 1.95rem;
+    height: 2.2rem;
   }
 
   .HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle {
