@@ -789,10 +789,12 @@
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
     <HDXWorkbenchNavigator>
-      <svelte:fragment slot="header" let:expanded>
+      <svelte:fragment slot="header" let:expanded let:expandedWorkspaces let:onToggleExpandedWorkspaces>
         <HDXWorkbenchNavigatorHeader
           windowWorkspaceName={windowWorkspaceName}
           expanded={expanded}
+          {expandedWorkspaces}
+          onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
           />
       </svelte:fragment>
         <!-- class="logo-container clear-mins"

@@ -1,16 +1,21 @@
 <script lang="ts">
+  import { Writable } from 'svelte/store'
   import Logo from './Logo.svelte'
   import HDXWorkspaceSwitch from './icons/HDXWorkspaceSwitch.svelte'
 
   export let windowWorkspaceName: string
   export let expanded: boolean
 
+  // Local expanded state
+  export let expandedWorkspaces: Writable<boolean>
+  export let onToggleExpandedWorkspaces: () => void
+
   const appsMini = false
 
   // $: debugTitle = expanded ? 'yes' : 'no'
 
-  //
   function toggleWorkspace (event: MouseEvent): void {
+    onToggleExpandedWorkspaces()
     event.stopPropagation()
     event.preventDefault()
   }
@@ -19,52 +24,54 @@
 <div
   class="HDXWorkbenchNavigatorHeader"
   class:expanded={expanded}
-  role="presentation"
-  on:click={toggleWorkspace}
 >
   <div
-    class="HDXWorkbenchNavigatorHeader-Logo"
-    class:expanded={expanded}
-    role="presentation"
+  class="HDXWorkbenchNavigatorHeaderTop"
+  class:expanded={expanded}
+  role="presentation"
+  on:click={toggleWorkspace}
   >
-    <Logo mini={appsMini} workspace={windowWorkspaceName} />
-  </div>
-  <div
-    class="HDXWorkbenchNavigatorHeader-Workspace"
-    class:expanded={expanded}
-    role="presentation"
-    on:click={toggleWorkspace}>
-      <div
-      class="HDXWorkbenchNavigatorHeader-Workspace-Title"
+    <div
+      class="HDXWorkbenchNavigatorHeaderTop-Logo"
       class:expanded={expanded}
-      role="presentation"
-      on:click={toggleWorkspace}>
-      Workspace
+    >
+      <Logo mini={appsMini} workspace={windowWorkspaceName} />
     </div>
     <div
-      class="HDXWorkbenchNavigatorHeader-Workspace-Subtitle"
+      class="HDXWorkbenchNavigatorHeaderTop-Workspace"
       class:expanded={expanded}
       role="presentation"
       on:click={toggleWorkspace}>
-      {windowWorkspaceName}
+        <div
+        class="HDXWorkbenchNavigatorHeaderTop-Workspace-Title"
+        class:expanded={expanded}>
+        Workspace
+      </div>
+      <div
+        class="HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle"
+        class:expanded={expanded}>
+        {windowWorkspaceName}
+      </div>
+    </div>
+    <div
+      class="HDXWorkbenchNavigatorHeaderTop-WorkspaceSwitch"
+      class:expanded={expanded}
+      role="presentation"
+      on:click={toggleWorkspace}>
+      <HDXWorkspaceSwitch expanded={expanded} size="medium" />
     </div>
   </div>
-  <div
-    class="HDXWorkbenchNavigatorHeader-WorkspaceSwitch"
-    class:expanded={expanded}
-    role="presentation"
-    on:click={toggleWorkspace}>
-    <HDXWorkspaceSwitch expanded={expanded} size="medium" />
-  </div>
+  {#if $expandedWorkspaces}
+    <div>Workspaces</div>
+  {/if}
 </div>
 
 <style>
   .HDXWorkbenchNavigatorHeader {
     position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: stretch;
-    height: 4.5rem;
     width: 100%;
 
     &.expanded {
@@ -73,7 +80,16 @@
     }
   }
 
-  .HDXWorkbenchNavigatorHeader-Logo {
+  .HDXWorkbenchNavigatorHeaderTop {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 4.5rem;
+    width: 100%;
+  }
+
+  .HDXWorkbenchNavigatorHeaderTop-Logo {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -85,7 +101,7 @@
     max-width: var(--app-panel-width);
   }
 
-  .HDXWorkbenchNavigatorHeader-Workspace {
+  .HDXWorkbenchNavigatorHeaderTop-Workspace {
     position: relative;
     display: none;
     flex: 1 1 0;
@@ -98,7 +114,7 @@
     }
   }
 
-  .HDXWorkbenchNavigatorHeader-Workspace-Title {
+  .HDXWorkbenchNavigatorHeaderTop-Workspace-Title {
     position: relative;
     display: flex;
     overflow: hidden;
@@ -111,7 +127,7 @@
     height: 1.9rem;
   }
 
-  .HDXWorkbenchNavigatorHeader-Workspace-Subtitle {
+  .HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle {
     display: flex;
     position: relative;
     overflow: hidden;
@@ -124,7 +140,7 @@
     height: 2.25rem;
   }
 
-  .HDXWorkbenchNavigatorHeader-WorkspaceSwitch {
+  .HDXWorkbenchNavigatorHeaderTop-WorkspaceSwitch {
     position: relative;
     width: 2.5rem;
     display: none;

@@ -34,6 +34,7 @@ TODO:
 
   // Local expanded state
   export const expanded = writable(false)
+  export const expandedWorkspaces = writable(false)
 
   function handleHover (): void {
     console.log('Hover started')
@@ -44,6 +45,7 @@ TODO:
   function handleBlur (): void {
     console.log('Hover ended')
     expanded.set(false)
+    expandedWorkspaces.set(false)
     // TODO: visual feedback for hover inactivity though global model
   }
 
@@ -51,6 +53,10 @@ TODO:
     console.log('Clicked inside WorkbenchNavigator')
     // You can collapse or do something here
     // event.stopPropagation(); // Prevent bubbling if needed
+  }
+
+  function handleToggleWorkspaceSelector (): void {
+    expandedWorkspaces.set(!$expandedWorkspaces)
   }
 
   // function handleOutsideClick (event: MouseEvent): void {
@@ -70,8 +76,11 @@ TODO:
   on:click={handleClick}>
   <div
     class="HDXWorkbenchNavigator-Inner"
-    class:expanded={$expanded || true}>
-    <slot name="header" expanded={$expanded || true}/>
+    class:expanded={$expanded}>
+    <slot name="header"
+      expanded={$expanded}
+      expandedWorkspaces={expandedWorkspaces}
+      onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
     <slot name="content" />
     <slot name="footer" />
   </div>
