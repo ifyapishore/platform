@@ -34,7 +34,7 @@ TODO:
 
   // debug/beahvior constants;
   const hdxAlwaysExpand = true
-  const hdxAlwaysExpandWorkspaces = true
+  const hdxAlwaysExpandWorkspaces = false
 
   // Local state
   export const expanded = writable(hdxAlwaysExpand)

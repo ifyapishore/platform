@@ -7,16 +7,29 @@
   </script>
 
   <div class="HDXWorkspaceSwitch" class:expanded={expanded}>
+    {#if expanded}
     <svg width="24" height="24" viewBox="0 0 24 24" class="svg-{size}" fill="none"
         stroke="currentColor" stroke-width="1" stroke-linecap="round"
         stroke-linejoin="round">
-    <!--    <path d="M12 5v8" />-->
-    <path d="M12 5l-3 3" />
-    <path d="M12 5l3 3" />
-    <path d="M12 14v-4" />
-    <path d="M12 19l-3-3" />
-    <path d="M12 19l3-3" />
+        <!--    <path d="M12 5v8" />-->
+        <path d="M12 8l-3 -3" />
+        <path d="M12 8l3 -3" />
+        <path d="M12 13v-2" />
+        <path d="M12 16l-3 3" />
+        <path d="M12 16l3 3" />
     </svg>
+    {:else}
+      <svg width="24" height="24" viewBox="0 0 24 24" class="svg-{size}" fill="none"
+          stroke="currentColor" stroke-width="1" stroke-linecap="round"
+          stroke-linejoin="round">
+      <!--    <path d="M12 5v8" />-->
+      <path d="M12 5l-3 3" />
+      <path d="M12 5l3 3" />
+      <path d="M12 14v-4" />
+      <path d="M12 19l-3-3" />
+      <path d="M12 19l3-3" />
+      </svg>
+    {/if}
   </div>
 
   <style>
@@ -27,7 +40,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    /* cursor: pointer; */
+    pointer-events: none;
 
     &.expanded {
       transform: rotate(180deg);

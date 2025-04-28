@@ -248,29 +248,35 @@
 
 <style lang="scss">
   .HDRWorkspaceSelectorButton {
+    outline: none;
     position: relative;
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0.5rem 1rem;
-/*    margin: 0.25rem 0; */
-    border-radius: none;
+    padding: 0.5rem 0.7rem;
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+    border-left: solid 0.5px rgba(0, 0, 0, 0.2);
+    height: 3rem;
+    border-radius: 0px;
     background-color: transparent;
     color: var(--theme-navpanel-text);
     text-decoration: none;
+    font-size: 1.1rem;
 
     &:hover {
       background-color: rgba(180, 191, 193, 0.5);
       color: var(--theme-inbox-people-counter-text);
-      font-weight: bold;
+      border-left: solid 0.5px transparent;
+      font-weight: 400;
     }
 
     &.active {
       background-color: rgba(131, 176, 184, 0.5);
       color: var(--theme-inbox-people-counter-text);
-      font-weight: bold;
+      font-weight: 400;
     }
   }
   .active {

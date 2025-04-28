@@ -61,7 +61,7 @@
       class:expanded={expanded}
       role="presentation"
       on:click={toggleWorkspace}>
-      <HDXWorkspaceSwitch expanded={expanded} size="medium" />
+      <HDXWorkspaceSwitch expanded={$expandedWorkspaces} size="medium"/>
     </div>
   </div>
   {#if $expandedWorkspaces}
@@ -88,6 +88,10 @@
         margin-bottom: 1rem;
         padding-bottom: 1rem;
       }
+    }
+
+    &:hover {
+      background-color: rgb(131 176 184 / 30%);
     }
   }
 
@@ -135,7 +139,7 @@
     color: #797878;
     font-size: 0.7rem;
     text-transform: uppercase;
-    height: 1.9rem;
+    height: 1.95rem;
   }
 
   .HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle {
