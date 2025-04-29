@@ -389,7 +389,7 @@
 
 /* Light Theme */
 .theme-light {
-  --theme-text-primary-color: rgba(0, 0, 0, .8);
+  --theme-text-primary-color: rgba(11, 11, 11, 0.8);
   --theme-text-placeholder-color: rgba(0, 0, 0, .4);
 
   --primary-button-disabled: rgba(0, 0, 0, .12);
@@ -694,4 +694,16 @@
   --theme-button-contrast-disabled: rgba(0, 0, 0, .6);
   --theme-button-contrast-disabled-color: rgba(255, 255, 255, .5);
   --theme-button-contrast-border: rgba(0, 0, 0, .2);
+}
+
+.theme-light {
+  --theme-hdx-workbench-navigator-bg-color-expanded: rgb(240 251 255 / 49%);
+  --theme-hdx-workbench-navigator-bg-color-expanded2: rgb(240 251 255 / 55%);
+  --theme-hdx-workbench-navigator-text-shadow-color: rgb(255 255 255 / 39%);
+  --theme-hdx-workbench-navigator-text-color: #333;
+}
+.theme-dark {
+  --theme-hdx-workbench-navigator-bg-color-expanded: rgb(36 61 49 / 49%);
+  --theme-hdx-workbench-navigator-bg-color-expanded2: rgb(36 61 49 / 55%);
+  --theme-hdx-workbench-navigator-text-color: #eee;
 }

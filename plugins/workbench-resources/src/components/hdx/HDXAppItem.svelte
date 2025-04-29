@@ -81,6 +81,9 @@
     }
     &.selected {
       background-color: rgba(0, 0, 0, 0.05);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
     }
   }
 
@@ -103,9 +106,10 @@
     align-items: center;
 //    padding-left: 0.5rem;
     font-size: var(--font-size-small);
-    color: var(--theme-navpanel-icons-color);
+    color: var(--theme-hdx-workbench-navigator-text-color);
     text-align: left;
     overflow: hidden;
+    text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
     &.expanded {
       display: flex;
     }

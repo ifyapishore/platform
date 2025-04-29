@@ -34,7 +34,7 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = false
+  const hdxAlwaysExpand = true
   const useFirstTimeShow = false
   const hdxAlwaysExpandWorkspaces = false
 
@@ -146,8 +146,9 @@ TODO:
         max-width: calc(var(--app-panel-width) * 3);
         width: calc(var(--app-panel-width) * 3);
         z-index: 1;
-        backdrop-filter: blur(20px);
-        background-color:rgb(131 176 184 / 10%); /* rgba(255,255,255,0.1); */
+        backdrop-filter: blur(30px);
+        background-color: var(--theme-hdx-workbench-navigator-bg-color-expanded);
+
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: var(--medium-BorderRadius);
         border-bottom-right-radius: var(--medium-BorderRadius);
@@ -157,7 +158,7 @@ TODO:
           max-width: calc(var(--app-panel-width) * 5);
           width: calc(var(--app-panel-width) * 5);
           backdrop-filter: blur(30px);
-          background-color:rgb(131 176 184 / 15%); /* rgba(255,255,255,0.1); */
+          background-color: var(--theme-hdx-workbench-navigator-bg-color-expanded2);
           box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
       }
