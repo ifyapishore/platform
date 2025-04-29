@@ -22,7 +22,8 @@
   export let noLabel: boolean = false
   export let icon: Asset | AnySvelteComponent
   export let selected: boolean = false
-  export let kind: 'default' | 'positive' | 'negative' | 'warning' | 'accented' = 'default'
+  export let kind: 'default' | 'positive' | 'negative' | 'warning' | 'hero' | 'accented' = 'default'
+  export let stage: 'prod' | 'beta' = 'prod'
   export let loading: boolean = false
   export let notify: boolean = false
   export let navigator: boolean = false
