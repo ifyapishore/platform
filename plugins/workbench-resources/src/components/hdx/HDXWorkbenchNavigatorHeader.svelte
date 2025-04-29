@@ -46,7 +46,7 @@
         <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Title"
         class:expanded={$expanded}>
-        Workspace
+        My Workspace
       </div>
       <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle"
@@ -63,7 +63,7 @@
     </div>
   </div>
   {#if $expandedWorkspaces}
-    <div class="HDXWorkspaceSelectorHeader">Workspaces</div>
+    <div class="HDXWorkspaceSelectorHeader">Switch to...</div>
     <HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
   {/if}
 </div>

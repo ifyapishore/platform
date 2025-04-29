@@ -796,15 +796,6 @@
           {expandedWorkspaces}
           onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
           />
-        <HDXAppItem
-          icon={TopMenu}
-          expanded={expanded}
-          label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
-          selected={!$deviceInfo.navigator.visible}
-          appsMini={appsMini}
-          on:click={toggleNav}
-        />
-
       </svelte:fragment>
 
       <svelte:fragment slot="content" let:expanded>
@@ -846,6 +837,15 @@
           direction={$deviceInfo.navigator.direction}
           appsMini={appsMini}
           on:toggleNav={toggleNav}
+        />
+        <div>TMP</div>
+        <HDXAppItem
+          icon={TopMenu}
+          expanded={expanded}
+          label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
+          selected={!$deviceInfo.navigator.visible}
+          appsMini={appsMini}
+          on:click={toggleNav}
         />
       </svelte:fragment>
 
