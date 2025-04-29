@@ -102,7 +102,7 @@ TODO:
       expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
       onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
-    <slot name="content" 
+    <slot name="content"
       expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
     />
