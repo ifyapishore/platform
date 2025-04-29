@@ -128,9 +128,9 @@
   } from '../workbench'
   import { get } from 'svelte/store'
   import inbox, { inboxId } from '@hcengineering/inbox'
-  import HDXWorkbenchNavigator from './HDXWorkbenchNavigator.svelte'
-  import HDXWorkbenchNavigatorHeader from './HDXWorkbenchNavigatorHeader.svelte'
-  import HDXAppItem from './HDXAppItem.svelte'
+  import HDXWorkbenchNavigator from './hdx/HDXWorkbenchNavigator.svelte'
+  import HDXWorkbenchNavigatorHeader from './hdx/HDXWorkbenchNavigatorHeader.svelte'
+  import HDXAppItem from './hdx/HDXAppItem.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg

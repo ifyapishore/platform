@@ -25,7 +25,7 @@
 
   import { isAppAllowed } from '../utils'
   import AppItem from './AppItem.svelte'
-  import HDXAppItem from './HDXAppItem.svelte'
+  import HDXAppItem from './hdx/HDXAppItem.svelte'
 
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []

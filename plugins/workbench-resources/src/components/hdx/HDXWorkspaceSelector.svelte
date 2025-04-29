@@ -38,7 +38,7 @@
   import { workbenchId } from '@hcengineering/workbench'
   import { onDestroy, onMount } from 'svelte'
 
-  import { workspacesStore } from '../utils'
+  import { workspacesStore } from '../../utils'
   // import Drag from './icons/Drag.svelte'
 
   export let onWorkspaceSelected: () => void
