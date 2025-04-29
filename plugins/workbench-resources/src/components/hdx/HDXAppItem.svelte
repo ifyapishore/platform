@@ -72,8 +72,7 @@ console.log('HDXAppItem', { label })
     height: var(--app-panel-action-height);
 
     background-color: transparent;
-
-    background-color: violet;
+    // background-color: violet;
     cursor: pointer;
 
     &.loading {
@@ -81,6 +80,9 @@ console.log('HDXAppItem', { label })
     }
     &:hover {
       background-color: rgba(0, 0, 0, 0.1);
+    }
+    &.selected {
+      background-color: rgba(0, 0, 0, 0.05);
     }
   }
 
@@ -93,7 +95,7 @@ console.log('HDXAppItem', { label })
     width: var(--app-panel-width);
     height: var(--app-panel-action-height);
     color: var(--theme-navpanel-icons-color);
-    background-color: red;
+    // background-color: red;
   }
 
   .HDXAppItem-Label {

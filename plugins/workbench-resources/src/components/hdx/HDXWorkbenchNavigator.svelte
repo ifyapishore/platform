@@ -139,7 +139,7 @@ TODO:
       width: var(--app-panel-width);
       height: 100%;
       border: none;
-      background-color: blue;
+      /* background-color: blue; */
 
       &.expanded {
         min-width: calc(var(--app-panel-width) * 3);
