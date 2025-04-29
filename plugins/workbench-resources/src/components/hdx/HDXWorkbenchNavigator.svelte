@@ -126,6 +126,7 @@ TODO:
 
     background-color: var(--theme-navpanel-color);
     border-right: 1px solid var(--theme-navpanel-divider);
+    /* margin-top: calc(var(--theme-hdx-app-title-height) * -1); */
   }
 
   .HDXWorkbenchNavigator-Inner {
