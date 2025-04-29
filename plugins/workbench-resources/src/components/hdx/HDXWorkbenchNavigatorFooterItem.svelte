@@ -2,6 +2,7 @@
   import { Writable } from 'svelte/store'
 
   // export let windowWorkspaceName: string
+  export let mode: 'action' | 'profile'
   export let expanded: boolean
   export let expandedWorkspaces: Writable<boolean>
   // export let appsMini: boolean
@@ -13,24 +14,22 @@
 </script>
 
 <div
-  class="HDXWorkbenchNavigatorFooter"
+  class="HDXWorkbenchNavigatorFooterItem"
   class:expanded={expanded}
+  class:modeAction={mode === 'action'}
+  class:modeProfile={mode === 'profile'}
   class:expandedWorkspace={$expandedWorkspaces}
 >
   <slot/>
 </div>
 
 <style>
-  .HDXWorkbenchNavigatorFooter {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    width: 100%;
+  .HDXWorkbenchNavigatorFooterItem {
+    display: flex; /* ✅ */
     flex-grow: 1;
-    min-height: 3rem;
-
-    display: none;
+    min-width: 0; /* optional, to prevent overflow */
+    justify-content: center;
+    align-items: center;
 
     &.expanded {
       display: flex;

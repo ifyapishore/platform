@@ -128,6 +128,7 @@
   import HDXWorkbenchNavigator from './hdx/HDXWorkbenchNavigator.svelte'
   import HDXWorkbenchNavigatorHeader from './hdx/HDXWorkbenchNavigatorHeader.svelte'
   import HDXWorkbenchNavigatorFooter from './hdx/HDXWorkbenchNavigatorFooter.svelte'
+  import HDXWorkbenchNavigatorFooterItem from './hdx/HDXWorkbenchNavigatorFooterItem.svelte'
   import HDXAppItem from './hdx/HDXAppItem.svelte'
 
   const HIDE_NAVIGATOR = 720
@@ -860,28 +861,28 @@
       </div>
       <svelte:fragment slot="footer" let:expanded let:expandedWorkspaces>
         <HDXWorkbenchNavigatorFooter
-          expanded={expanded}
+          {expanded}
           {expandedWorkspaces}
           >
-        <HDXAppItem
-          noLabel={true}
-          icon={IconSettings}
-          label={setting.string.Settings}
-          appsMini={appsMini}
-          on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
-        />
-        <a href={supportLink} target="_blank" rel="noopener noreferrer">
-          <HDXAppItem
-            noLabel={true}
-            icon={support.icon.Support}
-            label={support.string.ContactUs}
-            appsMini={appsMini}
-            notify={supportStatus?.hasUnreadMessages}
-            selected={supportStatus?.visible}
-            loading={supportWidgetLoading}
-          />
-        </a>
-        <!-- {#await supportClient then client}
+          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+            <AppItem
+              icon={IconSettings}
+              label={setting.string.Settings}
+              on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
+            />
+          </HDXWorkbenchNavigatorFooterItem>
+          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+            <a href={supportLink} target="_blank" rel="noopener noreferrer">
+              <AppItem
+                icon={support.icon.Support}
+                label={support.string.ContactUs}
+                notify={supportStatus?.hasUnreadMessages}
+                selected={supportStatus?.visible}
+                loading={supportWidgetLoading}
+              />
+            </a>
+        </HDXWorkbenchNavigatorFooterItem>
+      <!-- {#await supportClient then client}
           {#if client}
             <AppItem
               icon={support.icon.Support}
@@ -896,11 +897,7 @@
             />
           {/if}
         {/await} -->
-        <div
-          class="flex-center"
-          class:mt-3={$deviceInfo.navigator.direction === 'vertical'}
-          class:ml-2={$deviceInfo.navigator.direction === 'horizontal'}
-        >
+        <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div
@@ -913,7 +910,7 @@
               props={{ person, name: person?.name, size: 'small', showStatus: true }}
             />
           </div>
-        </div>
+        </HDXWorkbenchNavigatorFooterItem>
       </HDXWorkbenchNavigatorFooter>
     </svelte:fragment>
 
