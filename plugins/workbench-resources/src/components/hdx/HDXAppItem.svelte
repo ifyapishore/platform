@@ -28,8 +28,6 @@
   export let navigator: boolean = false
   export let appsMini: boolean
   export let expanded: Writable<boolean>
-
-console.log('HDXAppItem', { label })
 </script>
 
 <button

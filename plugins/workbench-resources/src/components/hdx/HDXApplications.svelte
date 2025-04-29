@@ -27,6 +27,7 @@
   import { isAppAllowed } from '../../utils'
   import AppItem from './AppItem.svelte'
   import HDXAppItem from './HDXAppItem.svelte'
+  import HDXScrollable from './HDXScrollable.svelte'
 
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []
@@ -67,84 +68,76 @@
   const inboxApp = inboxId as any as Ref<Application>
 </script>
 
-<div class="flex-{direction === 'horizontal' ? 'row-center' : 'col-center'} clear-mins apps-{direction} relative">
-  {#if loaded}
-    <Scroller
-      invertScroll
-      padding={direction === 'horizontal' ? '.75rem .5rem' : '.5rem .75rem'}
-      gap={direction === 'horizontal' ? 'gap-1' : 'gapV-1'}
-      horizontal={direction === 'horizontal'}
-      contentDirection={direction}
-      align={direction === 'horizontal' ? 'center' : 'start'}
-      buttons={'union'}
-    >
-      {#each topApps as app}
-        <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
-          <HDXAppItem
-            {expanded}
-            selected={app._id === active}
-            icon={app.icon}
-            label={app.label}
-            appsMini={appsMini}
-            navigator={app._id === active && $deviceInfo.navigator.visible}
-            on:click={() => {
-              if (app._id === active) dispatch('toggleNav')
-            }}
-          />
-        </NavLink>
-      {/each}
-      <div class="divider" />
-      {#each bottomdApps as app}
-        <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
-          <HDXAppItem
-            {expanded}
-            {appsMini}
-            selected={app._id === active}
-            icon={app.icon}
-            label={app.label}
-            navigator={app._id === active && $deviceInfo.navigator.visible}
-            on:click={() => {
-              if (app._id === active) dispatch('toggleNav')
-            }}
-          />
-        </NavLink>
-      {/each}
-      <div class="divider" />
-      <NavLink
-        app={inboxId}
-        shrink={0}
-        restoreLastLocation
-        disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && active === inboxApp}
-      >
-        <HDXAppItem
-          {expanded}
-          {appsMini}
-          icon={inbox.icon.Inbox}
-          label={inbox.string.Inbox}
-          selected={active === inboxApp}
-          navigator={active === inboxApp && $deviceInfo.navigator.visible}
-          notify={hasNewInboxNotifications}
-        />
-      </NavLink>
-      <NavLink
-        app={chatId}
-        shrink={0}
-        restoreLastLocation
-        disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && active === chatApp}
-      >
+<HDXScrollable
+  {expanded}
+>
+{#if loaded}
+{#each topApps as app}
+    <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
       <HDXAppItem
-          {expanded}
-          {appsMini}
-          icon={chat.icon.ChatBubble}
-          label={chat.string.Chat}
-          selected={active === chatApp}
-          navigator={active === chatApp && $deviceInfo.navigator.visible}
-        />
-      </NavLink>
-      <div class="apps-space-{direction}" />
-    </Scroller>
-  {/if}
-</div>
+        {expanded}
+        selected={app._id === active}
+        icon={app.icon}
+        label={app.label}
+        appsMini={appsMini}
+        navigator={app._id === active && $deviceInfo.navigator.visible}
+        on:click={() => {
+          if (app._id === active) dispatch('toggleNav')
+        }}
+      />
+    </NavLink>
+  {/each}
+  <div class="divider" />
+  {#each bottomdApps as app}
+    <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
+      <HDXAppItem
+        {expanded}
+        {appsMini}
+        selected={app._id === active}
+        icon={app.icon}
+        label={app.label}
+        navigator={app._id === active && $deviceInfo.navigator.visible}
+        on:click={() => {
+          if (app._id === active) dispatch('toggleNav')
+        }}
+      />
+    </NavLink>
+  {/each}
+  <div class="divider" />
+  <NavLink
+    app={inboxId}
+    shrink={0}
+    restoreLastLocation
+    disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && active === inboxApp}
+  >
+    <HDXAppItem
+      {expanded}
+      {appsMini}
+      icon={inbox.icon.Inbox}
+      label={inbox.string.Inbox}
+      selected={active === inboxApp}
+      navigator={active === inboxApp && $deviceInfo.navigator.visible}
+      notify={hasNewInboxNotifications}
+    />
+  </NavLink>
+  <NavLink
+    app={chatId}
+    shrink={0}
+    restoreLastLocation
+    disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && active === chatApp}
+  >
+  <HDXAppItem
+      {expanded}
+      {appsMini}
+      icon={chat.icon.ChatBubble}
+      label={chat.string.Chat}
+      selected={active === chatApp}
+      navigator={active === chatApp && $deviceInfo.navigator.visible}
+    />
+  </NavLink>
+  <div class="apps-space-{direction}" />
+{/if}
+</HDXScrollable>
 
 <style lang="scss">
   .apps-horizontal {

@@ -839,7 +839,6 @@
             notify={hasInboxNotifications}
           />
         </NavLink>
-        <div>test</div>
         <HDXApplications
           {apps}
           {expanded}

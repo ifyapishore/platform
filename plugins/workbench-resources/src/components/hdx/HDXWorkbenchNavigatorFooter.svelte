@@ -27,8 +27,9 @@
     flex-direction: row;
     align-items: stretch;
     width: 100%;
-    flex-grow: 1;
     min-height: 3rem;
+    max-height: 3rem;
+    height: 3rem;
 
     display: none;
 
