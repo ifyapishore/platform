@@ -107,7 +107,7 @@
   import AccountPopup from './AccountPopup.svelte'
   import AppItem from './AppItem.svelte'
   import AppSwitcher from './AppSwitcher.svelte'
-  import Applications from './Applications.svelte'
+  import HDXApplications from './hdx/HDXApplications.svelte'
   import NavFooter from './NavFooter.svelte'
   import NavHeader from './NavHeader.svelte'
   import Navigator from './Navigator.svelte'
@@ -839,8 +839,10 @@
             notify={hasInboxNotifications}
           />
         </NavLink>
-        <Applications
+        <div>test</div>
+        <HDXApplications
           {apps}
+          {expanded}
           active={currentApplication?._id}
           direction={$deviceInfo.navigator.direction}
           appsMini={appsMini}
