@@ -18,6 +18,7 @@
   import { Icon, Loading, tooltip, Label } from '@hcengineering/ui'
 
   export let label: IntlString
+  export let noLabel: boolean = false
   export let icon: Asset | AnySvelteComponent
   export let selected: boolean = false
   export let kind: 'default' | 'positive' | 'negative' | 'warning' | 'accented' = 'default'
@@ -54,9 +55,11 @@ console.log('HDXAppItem', { label })
       <Icon {icon} size={appsMini ? 'small' : 'medium'} />
       {#if notify}<div class="marker" />{/if}
     </div>
+    {#if !noLabel}
     <div class="HDXAppItem-Label">
       <Label label={label}/>
     </div>
+    {/if}
   {/if}
 </button>
 

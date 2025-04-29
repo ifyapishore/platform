@@ -88,7 +88,10 @@ TODO:
       expandedWorkspaces={expandedWorkspaces}
       onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
     <slot name="content" />
-    <slot name="footer" />
+    <slot name="footer"
+      expanded={$expanded}
+      expandedWorkspaces={expandedWorkspaces}
+    />
   </div>
 </div>
 

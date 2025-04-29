@@ -108,11 +108,9 @@
   import AppItem from './AppItem.svelte'
   import AppSwitcher from './AppSwitcher.svelte'
   import Applications from './Applications.svelte'
-  import Logo from './Logo.svelte'
   import NavFooter from './NavFooter.svelte'
   import NavHeader from './NavHeader.svelte'
   import Navigator from './Navigator.svelte'
-  import SelectWorkspaceMenu from './SelectWorkspaceMenu.svelte'
   import SpaceView from './SpaceView.svelte'
   import TopMenu from './icons/TopMenu.svelte'
   import WidgetsBar from './sidebar/Sidebar.svelte'
@@ -127,9 +125,9 @@
     tabsStore
   } from '../workbench'
   import { get } from 'svelte/store'
-  import inbox, { inboxId } from '@hcengineering/inbox'
   import HDXWorkbenchNavigator from './hdx/HDXWorkbenchNavigator.svelte'
   import HDXWorkbenchNavigatorHeader from './hdx/HDXWorkbenchNavigatorHeader.svelte'
+  import HDXWorkbenchNavigatorFooter from './hdx/HDXWorkbenchNavigatorFooter.svelte'
   import HDXAppItem from './hdx/HDXAppItem.svelte'
 
   const HIDE_NAVIGATOR = 720
@@ -797,6 +795,18 @@
           {expandedWorkspaces}
           onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
           />
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
+          <HDXAppItem
+            icon={TopMenu}
+            label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
+            selected={!$deviceInfo.navigator.visible}
+            appsMini={appsMini}
+            on:click={toggleNav}
+          />
+        </div>
+
       </svelte:fragment>
         <!-- class="logo-container clear-mins"
         class:mini={appsMini}
@@ -848,12 +858,13 @@
           on:toggleNav={toggleNav}
         />
       </div>
-      <div slot="footer"
-        class="info-box {$deviceInfo.navigator.direction}"
-        class:vertical-mobile={$deviceInfo.navigator.direction === 'vertical'}
-        class:mini={appsMini}
-      >
+      <svelte:fragment slot="footer" let:expanded let:expandedWorkspaces>
+        <HDXWorkbenchNavigatorFooter
+          expanded={expanded}
+          {expandedWorkspaces}
+          >
         <HDXAppItem
+          noLabel={true}
           icon={IconSettings}
           label={setting.string.Settings}
           appsMini={appsMini}
@@ -861,6 +872,7 @@
         />
         <a href={supportLink} target="_blank" rel="noopener noreferrer">
           <HDXAppItem
+            noLabel={true}
             icon={support.icon.Support}
             label={support.string.ContactUs}
             appsMini={appsMini}
@@ -902,18 +914,9 @@
             />
           </div>
         </div>
-      </div>
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
-          <HDXAppItem
-            icon={TopMenu}
-            label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
-            selected={!$deviceInfo.navigator.visible}
-            appsMini={appsMini}
-            on:click={toggleNav}
-          />
-        </div>
+      </HDXWorkbenchNavigatorFooter>
+    </svelte:fragment>
+
     </HDXWorkbenchNavigator>
     <ActionContext
       context={{
