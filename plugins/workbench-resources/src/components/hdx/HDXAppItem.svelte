@@ -32,15 +32,6 @@
 console.log('HDXAppItem', { label })
 </script>
 
-{#if navigator}
-  <style>
-    .HDXAppItem {
-      padding: 0.5rem 1rem;
-      background-color: var(--theme-navpanel-background-color);
-      border-radius: 0.5rem;
-    }
-  </style>
-{/if}
 <button
   class="HDXAppItem {kind}"
   class:loading
@@ -59,7 +50,7 @@ console.log('HDXAppItem', { label })
       {#if notify}<div class="marker" />{/if}
     </div>
     {#if !noLabel}
-    <div class="HDXAppItem-Label">
+    <div class="HDXAppItem-Label" class:selected class:expanded={$expanded}>
       <Label label={label}/>
     </div>
     {/if}
@@ -68,17 +59,22 @@ console.log('HDXAppItem', { label })
 
 <style lang="scss">
   .HDXAppItem {
-    position: relative;
-    flex-direction: row;
-    width: 100%;
-    height: 2.5rem;
     display: flex;
-    flex-direction: row;
+    position: relative;
     padding: 0;
     margin: 0;
-    background-color: transparent;
-    cursor: pointer;
     outline: none;
+    border: none;
+
+    flex-direction: row;
+    align-self: stretch;
+    width: 100%;
+    height: var(--app-panel-action-height);
+
+    background-color: transparent;
+
+    background-color: violet;
+    cursor: pointer;
 
     &.loading {
       pointer-events: none;
@@ -89,18 +85,30 @@ console.log('HDXAppItem', { label })
   }
 
   .HDXAppItem-Icon {
-    width: 4.5rem;
-    height: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: var(--app-panel-width);
+    max-width: var(--app-panel-width);
+    width: var(--app-panel-width);
+    height: var(--app-panel-action-height);
     color: var(--theme-navpanel-icons-color);
+    background-color: red;
   }
 
   .HDXAppItem-Label {
+    display: none;
     flex: 1;
-    margin-left: 0.5rem;
+    height: var(--app-panel-action-height);
+    align-items: center;
+//    padding-left: 0.5rem;
     font-size: var(--font-size-small);
     color: var(--theme-navpanel-icons-color);
     text-align: left;
     overflow: hidden;
+    &.expanded {
+      display: flex;
+    }
   }
 
   .marker {

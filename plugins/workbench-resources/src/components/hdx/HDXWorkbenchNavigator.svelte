@@ -26,6 +26,7 @@ TODO:
   - Expanded and edit state must be processed in the global mode (video components can be sensitive to this)
 -->
 <script lang="ts">
+  import { onMount } from 'svelte'
   import {
     deviceOptionsStore as deviceInfo
   } from '@hcengineering/ui'
@@ -34,15 +35,19 @@ TODO:
 
   // debug/beahvior constants;
   const hdxAlwaysExpand = false
+  const useFirstTimeShow = false
   const hdxAlwaysExpandWorkspaces = false
 
   // Local state
-  export const expanded = writable(hdxAlwaysExpand)
+  export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
+
+  const hoveredOnce = writable(hdxAlwaysExpand)
 
   function handleHover (): void {
     console.log('Hover started')
     expanded.set(true)
+    hoveredOnce.set(true)
     // TODO: visual feedback for hover inactivity though global model
   }
 
@@ -69,6 +74,16 @@ TODO:
 
   // Rendering shortcuts
   $: expandedWide = $expanded && $expandedWorkspaces
+
+  onMount(() => {
+    if (useFirstTimeShow) {
+      setTimeout(() => {
+        if (!$hoveredOnce) {
+          expanded.set(hdxAlwaysExpand)
+        }
+      }, 3000)
+    }
+  })
 </script>
 
 <div
@@ -87,7 +102,10 @@ TODO:
       expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
       onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
-    <slot name="content" />
+    <slot name="content" 
+      expanded={expanded}
+      expandedWorkspaces={expandedWorkspaces}
+    />
     <slot name="footer"
       expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
@@ -117,10 +135,16 @@ TODO:
       /* align-items: center; */
       flex-direction: column;
       min-width: var(--app-panel-width);
+      max-width: var(--app-panel-width);
+      width: var(--app-panel-width);
       height: 100%;
+      border: none;
+      background-color: blue;
 
       &.expanded {
-        min-width: calc(4.5rem * 3);
+        min-width: calc(var(--app-panel-width) * 3);
+        max-width: calc(var(--app-panel-width) * 3);
+        width: calc(var(--app-panel-width) * 3);
         z-index: 1;
         backdrop-filter: blur(20px);
         background-color:rgb(131 176 184 / 10%); /* rgba(255,255,255,0.1); */
@@ -129,7 +153,9 @@ TODO:
         border-bottom-right-radius: var(--medium-BorderRadius);
 
         &.expandedWide {
-          min-width: calc(4.5rem * 5);
+          min-width: calc(var(--app-panel-width) * 5);
+          max-width: calc(var(--app-panel-width) * 5);
+          width: calc(var(--app-panel-width) * 5);
           backdrop-filter: blur(30px);
           background-color:rgb(131 176 184 / 15%); /* rgba(255,255,255,0.1); */
           box-shadow: 0 0 20px rgba(0,0,0,0.1);

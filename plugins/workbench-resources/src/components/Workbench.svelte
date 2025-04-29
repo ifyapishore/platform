@@ -796,24 +796,18 @@
           {expandedWorkspaces}
           onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
           />
-        <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
-          <HDXAppItem
-            icon={TopMenu}
-            expanded={expanded}
-            label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
-            selected={!$deviceInfo.navigator.visible}
-            appsMini={appsMini}
-            on:click={toggleNav}
-          />
-        </div>
+        <HDXAppItem
+          icon={TopMenu}
+          expanded={expanded}
+          label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
+          selected={!$deviceInfo.navigator.visible}
+          appsMini={appsMini}
+          on:click={toggleNav}
+        />
 
       </svelte:fragment>
 
-      <div slot="content"
-        class="hamburger-container clear-mins"
-        class:portrait={$deviceInfo.navigator.direction === 'horizontal'}
-        class:landscape={$deviceInfo.navigator.direction === 'vertical'}
-      >
+      <svelte:fragment slot="content" let:expanded>
         <!-- <ActivityStatus status="active" /> -->
         <NavLink
           app={notificationId}
@@ -821,6 +815,7 @@
           disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId}
         >
           <HDXAppItem
+            expanded={expanded}
             icon={notification.icon.Notifications}
             label={notification.string.Inbox}
             selected={currentAppAlias === notificationId || inboxPopup !== undefined}
@@ -830,6 +825,7 @@
             on:click={(e) => {
               if (e.metaKey || e.ctrlKey) return
               if (!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId) {
+                // unexpected behavior without visual notification
                 toggleNav()
               } else if (currentAppAlias === notificationId && lastLoc !== undefined) {
                 e.preventDefault()
@@ -850,7 +846,8 @@
           appsMini={appsMini}
           on:toggleNav={toggleNav}
         />
-      </div>
+      </svelte:fragment>
+
       <svelte:fragment slot="footer" let:expanded let:expandedWorkspaces>
         <HDXWorkbenchNavigatorFooter
           {expanded}
