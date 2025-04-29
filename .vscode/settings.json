@@ -15,5 +15,6 @@
   },
   "[svelte]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  },
+  "svg.preview.background": "editor"
 }

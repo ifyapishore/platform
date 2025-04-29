@@ -19,11 +19,7 @@
   import { Writable } from 'svelte/store'
 
   export let label: IntlString
-  export let noLabel: boolean = false
-  export let icon: Asset | AnySvelteComponent
   export let selected: boolean = false
-  export let kind: 'default' | 'positive' | 'negative' | 'warning' | 'hero' | 'accented' = 'default'
-  export let stage: 'prod' | 'beta' = 'prod'
   export let loading: boolean = false
   export let notify: boolean = false
   export let navigator: boolean = false
@@ -32,7 +28,7 @@
 </script>
 
 <button
-  class="HDXAppItem {kind}"
+  class="HDXAppItemHero"
   class:loading
   class:selected
   class:expanded={$expanded}
@@ -44,20 +40,27 @@
   {#if loading}
     <Loading />
   {:else}
-    <div class="HDXAppItem-Icon" class:noty={notify}>
-      <Icon {icon} size={appsMini ? 'small' : 'medium'} />
-      {#if notify}<div class="marker" />{/if}
+    <div class="HDXAppItemHero-Icon" class:expanded={$expanded}>
+      <!-- EnvelopeIcon.svelte -->
+      <svg
+        viewBox="0 0 24 24" width="32" height="24"
+        fill="none" stroke="currentColor"
+        stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+
+          <path d="M3 4 Q8 12 18 12" />
+          <path d="M4 20 Q8 12 18 12" />
+          <polyline points="18 12 21.5 12" stroke-width="0.25"/>
+        </svg>
+      </div>
+    <div class="HDXAppItemHero-Label" class:selected class:expanded={$expanded}>
+      <!-- <Label label={label}/> -->
+      inbox prattle
     </div>
-    {#if !noLabel}
-    <div class="HDXAppItem-Label" class:selected class:expanded={$expanded}>
-      <Label label={label}/>
-    </div>
-    {/if}
   {/if}
 </button>
 
 <style lang="scss">
-  .HDXAppItem {
+  .HDXAppItemHero {
     display: flex;
     position: relative;
     padding: 0;
@@ -67,9 +70,11 @@
 
     flex-direction: row;
     width: 100%;
-    height: var(--app-panel-action-height);
+    height: calc(var(--app-panel-action-height) * 1.5);
+    margin-bottom: 0.5rem;
 
     background-color: transparent;
+    // background: linear-gradient(45deg, rgb(159 195 197 / 50%), rgb(159 195 197 / 30%), rgb(159 195 197 / 75%));
     // background-color: violet;
     cursor: pointer;
 
@@ -87,7 +92,7 @@
     }
   }
 
-  .HDXAppItem-Icon {
+  .HDXAppItemHero-Icon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -96,20 +101,26 @@
     width: var(--app-panel-width);
     height: var(--app-panel-action-height);
     color: var(--theme-navpanel-icons-color);
-    // background-color: red;
+
+    &.expanded {
+      opacity: 0;
+    }
   }
 
-  .HDXAppItem-Label {
+  .HDXAppItemHero-Label {
     display: none;
     flex: 1;
-    height: var(--app-panel-action-height);
+    height: calc(var(--app-panel-action-height) * 1.4);
     align-items: center;
-//    padding-left: 0.5rem;
-    font-size: var(--font-size-small);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding-left: 4.2rem;
     color: var(--theme-hdx-workbench-navigator-text-color);
     text-align: left;
     overflow: hidden;
     text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
+    text-transform: uppercase;
+
     &.expanded {
       display: flex;
     }

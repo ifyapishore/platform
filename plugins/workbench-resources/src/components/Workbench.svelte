@@ -130,6 +130,7 @@
   import HDXWorkbenchNavigatorFooter from './hdx/HDXWorkbenchNavigatorFooter.svelte'
   import HDXWorkbenchNavigatorFooterItem from './hdx/HDXWorkbenchNavigatorFooterItem.svelte'
   import HDXAppItem from './hdx/HDXAppItem.svelte'
+  import HDXAppItemHero from './hdx/HDXAppItemHero.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg
@@ -805,7 +806,7 @@
           shrink={0}
           disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId}
         >
-          <HDXAppItem
+          <HDXAppItemHero
             expanded={expanded}
             icon={notification.icon.Notifications}
             label={notification.string.Inbox}
