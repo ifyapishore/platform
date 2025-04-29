@@ -16,6 +16,7 @@
   import type { Asset, IntlString } from '@hcengineering/platform'
   import type { AnySvelteComponent } from '@hcengineering/ui'
   import { Icon, Loading, tooltip, Label } from '@hcengineering/ui'
+  import { Writable } from 'svelte/store'
 
   export let label: IntlString
   export let noLabel: boolean = false
@@ -26,6 +27,7 @@
   export let notify: boolean = false
   export let navigator: boolean = false
   export let appsMini: boolean
+  export let expanded: Writable<boolean>
 
 console.log('HDXAppItem', { label })
 </script>
@@ -43,6 +45,7 @@ console.log('HDXAppItem', { label })
   class="HDXAppItem {kind}"
   class:loading
   class:selected
+  class:expanded={$expanded}
   class:navigator
   id={'app-' + label}
   disabled={loading}

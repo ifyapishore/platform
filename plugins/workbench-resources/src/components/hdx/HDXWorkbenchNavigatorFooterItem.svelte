@@ -3,7 +3,7 @@
 
   // export let windowWorkspaceName: string
   export let mode: 'action' | 'profile'
-  export let expanded: boolean
+  export let expanded: Writable<boolean>
   export let expandedWorkspaces: Writable<boolean>
   // export let appsMini: boolean
     // class="info-box {$deviceInfo.navigator.direction}"
@@ -15,7 +15,7 @@
 
 <div
   class="HDXWorkbenchNavigatorFooterItem"
-  class:expanded={expanded}
+  class:expanded={$expanded}
   class:modeAction={mode === 'action'}
   class:modeProfile={mode === 'profile'}
   class:expandedWorkspace={$expandedWorkspaces}

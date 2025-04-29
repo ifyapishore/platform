@@ -2,7 +2,7 @@
   import { Writable } from 'svelte/store'
 
   // export let windowWorkspaceName: string
-  export let expanded: boolean
+  export let expanded: Writable<boolean>
   export let expandedWorkspaces: Writable<boolean>
   // export let appsMini: boolean
     // class="info-box {$deviceInfo.navigator.direction}"
@@ -14,7 +14,7 @@
 
 <div
   class="HDXWorkbenchNavigatorFooter"
-  class:expanded={expanded}
+  class:expanded={$expanded}
   class:expandedWorkspace={$expandedWorkspaces}
 >
   <slot/>

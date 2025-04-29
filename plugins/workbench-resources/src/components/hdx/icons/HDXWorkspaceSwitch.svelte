@@ -1,13 +1,15 @@
 <!-- WorkspaceSwitch.svelte -->
 <script lang="ts">
+  import { Writable } from 'svelte/store'
+
   export let size: 'small' | 'medium' | 'large'
   // export let fill: string = 'currentColor'
-  export let expanded: boolean
+  export let expandedWorkspaces: boolean
 
   </script>
 
-  <div class="HDXWorkspaceSwitch" class:expanded={expanded}>
-    {#if expanded}
+  <div class="HDXWorkspaceSwitch" class:expanded={expandedWorkspaces}>
+    {#if expandedWorkspaces}
     <svg width="24" height="24" viewBox="0 0 24 24" class="svg-{size}" fill="none"
         stroke="currentColor" stroke-width="1" stroke-linecap="round"
         stroke-linejoin="round">

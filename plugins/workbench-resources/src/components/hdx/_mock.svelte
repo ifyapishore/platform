@@ -2,7 +2,7 @@
   import { Writable } from 'svelte/store'
 
   // export let windowWorkspaceName: string
-  export let expanded: boolean
+  export let expanded: Writable<boolean>
   export let expandedWorkspaces: Writable<boolean>
 
   // Local expanded state
@@ -15,7 +15,7 @@
 
 <div
   class="HDXWorkbenchNavigatorBody"
-  class:expanded={expanded}
+  class:expanded={$expanded}
   class:appsMini={appsMini}
   class:expandedWorkspace={$expandedWorkspaces}
 >

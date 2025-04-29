@@ -33,7 +33,7 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = true
+  const hdxAlwaysExpand = false
   const hdxAlwaysExpandWorkspaces = false
 
   // Local state
@@ -63,7 +63,7 @@ TODO:
 
   function handleToggleWorkspaceSelector (): void {
     if (!hdxAlwaysExpandWorkspaces) {
-      expandedWorkspaces.set(!$expandedWorkspaces)
+      expandedWorkspaces.update(v => !v)
     }
   }
 
@@ -84,12 +84,12 @@ TODO:
     class:expandedWide={expandedWide}
     >
     <slot name="header"
-      expanded={$expanded}
+      expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
       onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
     <slot name="content" />
     <slot name="footer"
-      expanded={$expanded}
+      expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
     />
   </div>

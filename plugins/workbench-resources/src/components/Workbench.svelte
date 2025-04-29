@@ -796,11 +796,10 @@
           {expandedWorkspaces}
           onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
           />
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
           <HDXAppItem
             icon={TopMenu}
+            expanded={expanded}
             label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
             selected={!$deviceInfo.navigator.visible}
             appsMini={appsMini}
@@ -809,14 +808,7 @@
         </div>
 
       </svelte:fragment>
-        <!-- class="logo-container clear-mins"
-        class:mini={appsMini}
-        on:click={() => {
-          showPopup(SelectWorkspaceMenu, {}, popupSpacePosition)
-        }}
-      >
-        <Logo mini={appsMini} workspace={windowWorkspaceName ?? $resolvedLocationStore.path[1]} />
-      </div> -->
+
       <div slot="content"
         class="hamburger-container clear-mins"
         class:portrait={$deviceInfo.navigator.direction === 'horizontal'}

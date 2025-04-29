@@ -5,9 +5,7 @@
   import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
 
   export let windowWorkspaceName: string
-  export let expanded: boolean
-
-  // Local expanded state
+  export let expanded: Writable<boolean>
   export let expandedWorkspaces: Writable<boolean>
   export let onToggleExpandedWorkspaces: () => void
 
@@ -24,44 +22,44 @@
 
 <div
   class="HDXWorkbenchNavigatorHeader"
-  class:expanded={expanded}
+  class:expanded={$expanded}
   class:expandedWorkspace={$expandedWorkspaces}
 >
   <div
   class="HDXWorkbenchNavigatorHeaderTop"
-  class:expanded={expanded}
+  class:expanded={$expanded}
   class:expandedWorkspace={$expandedWorkspaces}
   role="presentation"
   on:click={toggleWorkspace}
   >
     <div
       class="HDXWorkbenchNavigatorHeaderTop-Logo"
-      class:expanded={expanded}
+      class:expanded={$expanded}
     >
       <Logo mini={appsMini} workspace={windowWorkspaceName} />
     </div>
     <div
       class="HDXWorkbenchNavigatorHeaderTop-Workspace"
-      class:expanded={expanded}
+      class:expanded={$expanded}
       role="presentation"
       on:click={toggleWorkspace}>
         <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Title"
-        class:expanded={expanded}>
+        class:expanded={$expanded}>
         Workspace
       </div>
       <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle"
-        class:expanded={expanded}>
+        class:expanded={$expanded}>
         {windowWorkspaceName}
       </div>
     </div>
     <div
       class="HDXWorkbenchNavigatorHeaderTop-WorkspaceSwitch"
-      class:expanded={expanded}
+      class:expanded={$expanded}
       role="presentation"
       on:click={toggleWorkspace}>
-      <HDXWorkspaceSwitch expanded={$expandedWorkspaces} size="medium"/>
+      <HDXWorkspaceSwitch expandedWorkspaces={$expandedWorkspaces} size="medium"/>
     </div>
   </div>
   {#if $expandedWorkspaces}
