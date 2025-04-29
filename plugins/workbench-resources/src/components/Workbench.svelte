@@ -130,6 +130,7 @@
   import inbox, { inboxId } from '@hcengineering/inbox'
   import HDXWorkbenchNavigator from './HDXWorkbenchNavigator.svelte'
   import HDXWorkbenchNavigatorHeader from './HDXWorkbenchNavigatorHeader.svelte'
+  import HDXAppItem from './HDXAppItem.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg
@@ -810,29 +811,19 @@
         class:portrait={$deviceInfo.navigator.direction === 'horizontal'}
         class:landscape={$deviceInfo.navigator.direction === 'vertical'}
       >
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <!-- svelte-ignore a11y-no-static-element-interactions -->
-        <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
-          <AppItem
-            icon={TopMenu}
-            label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
-            selected={!$deviceInfo.navigator.visible}
-            size={appsMini ? 'small' : 'medium'}
-            on:click={toggleNav}
-          />
-        </div>
         <!-- <ActivityStatus status="active" /> -->
         <NavLink
           app={notificationId}
           shrink={0}
           disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId}
         >
-          <AppItem
+          <HDXAppItem
             icon={notification.icon.Notifications}
             label={notification.string.Inbox}
             selected={currentAppAlias === notificationId || inboxPopup !== undefined}
             navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
               $deviceInfo.navigator.visible}
+            appsMini={appsMini}
             on:click={(e) => {
               if (e.metaKey || e.ctrlKey) return
               if (!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId) {
@@ -853,6 +844,7 @@
           {apps}
           active={currentApplication?._id}
           direction={$deviceInfo.navigator.direction}
+          appsMini={appsMini}
           on:toggleNav={toggleNav}
         />
       </div>
@@ -861,17 +853,17 @@
         class:vertical-mobile={$deviceInfo.navigator.direction === 'vertical'}
         class:mini={appsMini}
       >
-        <AppItem
+        <HDXAppItem
           icon={IconSettings}
           label={setting.string.Settings}
-          size={appsMini ? 'small' : 'large'}
+          appsMini={appsMini}
           on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
         />
         <a href={supportLink} target="_blank" rel="noopener noreferrer">
-          <AppItem
+          <HDXAppItem
             icon={support.icon.Support}
             label={support.string.ContactUs}
-            size={appsMini ? 'small' : 'large'}
+            appsMini={appsMini}
             notify={supportStatus?.hasUnreadMessages}
             selected={supportStatus?.visible}
             loading={supportWidgetLoading}
@@ -911,6 +903,17 @@
           </div>
         </div>
       </div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div class="topmenu-container clear-mins flex-no-shrink" class:mini={appsMini}>
+          <HDXAppItem
+            icon={TopMenu}
+            label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
+            selected={!$deviceInfo.navigator.visible}
+            appsMini={appsMini}
+            on:click={toggleNav}
+          />
+        </div>
     </HDXWorkbenchNavigator>
     <ActionContext
       context={{

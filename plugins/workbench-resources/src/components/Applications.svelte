@@ -25,10 +25,13 @@
 
   import { isAppAllowed } from '../utils'
   import AppItem from './AppItem.svelte'
+  import HDXAppItem from './HDXAppItem.svelte'
 
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []
   export let direction: 'vertical' | 'horizontal' = 'vertical'
+
+  export let appsMini: boolean
 
   const dispatch = createEventDispatcher()
 
@@ -75,10 +78,11 @@
     >
       {#each topApps as app}
         <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
-          <AppItem
+          <HDXAppItem
             selected={app._id === active}
             icon={app.icon}
             label={app.label}
+            appsMini={appsMini}
             navigator={app._id === active && $deviceInfo.navigator.visible}
             on:click={() => {
               if (app._id === active) dispatch('toggleNav')
@@ -89,10 +93,11 @@
       <div class="divider" />
       {#each bottomdApps as app}
         <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
-          <AppItem
+          <HDXAppItem
             selected={app._id === active}
             icon={app.icon}
             label={app.label}
+            appsMini={appsMini}
             navigator={app._id === active && $deviceInfo.navigator.visible}
             on:click={() => {
               if (app._id === active) dispatch('toggleNav')
@@ -147,9 +152,8 @@
     }
   }
   .apps-vertical {
-    margin-bottom: 0.5rem;
-    width: var(--app-panel-width);
-    min-width: 4rem;
+    // margin-bottom: 0.5rem;
+    width: 100%;
 
     .divider {
       margin-top: 1rem;
