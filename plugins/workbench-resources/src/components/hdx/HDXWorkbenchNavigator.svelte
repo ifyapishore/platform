@@ -34,9 +34,9 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = false
+  const hdxAlwaysExpand = true
   const useFirstTimeShow = false
-  const hdxAlwaysExpandWorkspaces = false
+  const hdxAlwaysExpandWorkspaces = true
 
   // Local state
   export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
@@ -102,14 +102,16 @@ TODO:
       expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
       onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
-    <slot name="content"
-      expanded={expanded}
-      expandedWorkspaces={expandedWorkspaces}
-    />
-    <slot name="footer"
-      expanded={expanded}
-      expandedWorkspaces={expandedWorkspaces}
-    />
+      {#if !$expandedWorkspaces}
+        <slot name="content"
+          expanded={expanded}
+          expandedWorkspaces={expandedWorkspaces}
+        />
+        <slot name="footer"
+          expanded={expanded}
+          expandedWorkspaces={expandedWorkspaces}
+        />
+    {/if}
   </div>
 </div>
 

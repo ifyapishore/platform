@@ -3,6 +3,7 @@
   import Logo from '../Logo.svelte'
   import HDXWorkspaceSwitch from './icons/HDXWorkspaceSwitch.svelte'
   import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
+  import HDXWorkspaceInfo from './HDXWorkspaceInfo.svelte'
 
   export let windowWorkspaceName: string
   export let expanded: Writable<boolean>
@@ -62,11 +63,11 @@
       <HDXWorkspaceSwitch expandedWorkspaces={$expandedWorkspaces} size="medium"/>
     </div>
   </div>
-  {#if $expandedWorkspaces}
-    <div class="HDXWorkspaceSelectorHeader">Switch to...</div>
-    <HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
-  {/if}
+  <HDXWorkspaceInfo/>
 </div>
+{#if $expandedWorkspaces}
+<HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
+{/if}
 
 <style>
   .HDXWorkbenchNavigatorHeader {
@@ -166,21 +167,5 @@
     &.expanded {
       display: flex;
     }
-  }
-  .HDXWorkspaceSelectorHeader {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    margin-left: 2rem;
-    padding-left: 0.7rem;
-    width: 100%;
-    height: 2rem;
-    font-size: 0.8rem;
-    font-weight: 100;
-    border-left: solid 0.6px #888;
-    color: var(--theme-navpanel-text);
-    opacity: 0.8;
   }
 </style>

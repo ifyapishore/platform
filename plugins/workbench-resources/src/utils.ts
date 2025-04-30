@@ -172,6 +172,25 @@ export const currentWorkspaceStore = derived(
   }
 )
 
+export function formatBackupSize (ws: WorkspaceInfoWithStatus): string {
+  if (ws.backupInfo === undefined) return ''
+
+  const sz = Math.max(
+    ws.backupInfo?.backupSize,
+    ws.backupInfo?.dataSize + ws?.backupInfo.blobsSize
+  )
+  const szGb = Math.round((sz * 100) / 1024) / 100
+  return szGb > 0 ? (Math.round((sz * 100) / 1024) / 100) + 'Gb' : Math.round(sz) + 'Mb'
+}
+
+export function formatLastVisitDays (ws?: WorkspaceInfoWithStatus): string {
+  if (ws === undefined) return 'N/A'
+  const has = ws?.lastVisit != null && ws.lastVisit !== 0
+  const lv = ws.lastVisit ?? 0
+  // i18n
+  return has ? Math.round((Date.now() - lv) / (1000 * 60 * 60 * 24)) + ' days ago' : 'N/A'
+}
+
 /**
  * @public
  */

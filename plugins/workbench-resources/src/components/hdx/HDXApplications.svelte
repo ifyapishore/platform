@@ -68,9 +68,7 @@
   const inboxApp = inboxId as any as Ref<Application>
 </script>
 
-<HDXScrollable
-  {expanded}
->
+<HDXScrollable>
 {#if loaded}
 {#each topApps as app}
     <NavLink app={app.alias} shrink={0} disabled={app._id === active}>

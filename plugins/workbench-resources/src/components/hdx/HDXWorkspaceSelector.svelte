@@ -39,6 +39,7 @@
   import { onDestroy, onMount } from 'svelte'
 
   import { workspacesStore } from '../../utils'
+  import HDXScrollable from './HDXScrollable.svelte'
   // import Drag from './icons/Drag.svelte'
 
   export let onWorkspaceSelected: () => void
@@ -122,6 +123,9 @@
     >) ?? {}
 </script>
 
+<div class="HDXWorkspaceSelector">
+  <div class="HDXWorkspaceSelectorHeader">Switch to...</div>
+  <HDXScrollable>
 {#if $workspacesStore.length}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   {#if isAdmin}
@@ -224,26 +228,52 @@
 {:else}
   <div class="antiPopup"><Loading /></div>
 {/if}
+</HDXScrollable>
+</div>
 
 <style lang="scss">
-  .HDRWorkspaceSelectorButton {
-    outline: none;
+  .HDXWorkspaceSelector {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .HDXWorkspaceSelectorHeader {
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    margin-left: 1.5rem;
+    height: 2rem;
+    font-size: 0.99rem;
+    font-weight: 100;
+    text-transform: uppercase;
+    color: var(--theme-navpanel-text);
+    opacity: 0.8;
+  }
+
+  .HDRWorkspaceSelectorButton {
+    outline: none;
+    position: relative;
+    display: flex
+;
+    flex-direction: row;
+    align-items: center;
+    /* justify-content: space-between; */
     width: 100%;
     padding: 0.5rem 0.7rem;
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
     margin-top: 0.5rem;
-    border-left: solid 0.5px rgba(0, 0, 0, 0.2);
+    /* border-left: solid 0.5px rgba(0, 0, 0, 0.2); */
     height: 3rem;
     border-radius: 0px;
     background-color: transparent;
     color: var(--theme-navpanel-text);
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    border-left: solid 0.5px rgba(0, 0, 0, 0.5);
+    margin-left: 4.5rem;
 
     &:hover {
       background-color: rgba(180, 191, 193, 0.5);

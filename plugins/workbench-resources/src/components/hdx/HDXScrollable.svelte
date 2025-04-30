@@ -19,19 +19,16 @@
   import { Writable } from 'svelte/store'
 
   export let loading: boolean = false
-  export let expanded: Writable<boolean>
 </script>
 
 <div
   class="HDXScrollable"
   class:loading
-  class:expanded={$expanded}
   id={'hdx-scrollable'}
 >
   <div
     class="HDXScrollable-Inner"
     class:loading
-    class:expanded={$expanded}
     id={'hdx-scrollable'}
   >
     <slot/>
