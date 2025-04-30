@@ -47,10 +47,12 @@
         fill="none" stroke="currentColor"
         stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
 
-          <path d="M3 4 Q8 12 18 12" />
-          <path d="M4 20 Q8 12 18 12" />
-          <polyline points="18 12 21.5 12" stroke-width="0.25"/>
-        </svg>
+        <path d="M3 4 Q8 12 18 12" />
+        <path d="M4 20 Q8 12 18 12" />
+        <path d="M5 9 Q4 12 6 15" />
+        <polyline points="18 12 21.5 12" stroke-width="0.25"/>
+
+      </svg>
       </div>
     <div class="HDXAppItemHero-Label" class:selected class:expanded={$expanded}>
       <!-- <Label label={label}/> -->
