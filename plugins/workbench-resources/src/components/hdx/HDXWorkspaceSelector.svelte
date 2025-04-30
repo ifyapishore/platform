@@ -153,6 +153,13 @@
         {@const wsName = ws.name ?? ws.url}
         {@const _activeSession = activeSessions[ws.uuid]}
         {@const lastUsageDays = Math.round((Date.now() - (ws.lastVisit ?? 0)) / (1000 * 3600 * 24))}
+        <HDXWorkspaceSelectorItem
+        name={ws.url}
+        selected={$resolvedLocationStore.path[1] === ws.url}
+        onSelect={(event) => {
+          clickHandler(event, ws.url)
+        }}
+        />
         <a
           class="stealth"
           href={getWorkspaceLink(ws)}
@@ -160,13 +167,6 @@
             await clickHandler(e, ws.url)
           }}
         >
-          <HDXWorkspaceSelectorItem
-            name={ws.url}
-            selected={$resolvedLocationStore.path[1] === ws.url}
-            onSelect={(event) => {
-              clickHandler(event, ws.url)
-            }}
-            />
           <button
             bind:this={btns[i]}
             class="HDRWorkspaceSelectorButton"

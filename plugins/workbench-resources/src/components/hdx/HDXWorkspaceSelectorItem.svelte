@@ -27,7 +27,7 @@
   >
 
   <div class="HDXWorkspaceSelectorItem-Status">
-    ico
+    healthy
   </div>
 
   <div class="HDXWorkspaceSelectorItem-Body">
@@ -47,7 +47,10 @@
   .HDXWorkspaceSelectorItem {
     display: flex;
     flex-direction: row;
-    height: 2rem;
+    height: 3rem;
+    align-items: stretch;
+    width: 100%;
+
     cursor: pointer;
     color: var(--theme-navpanel-text);
 
@@ -57,9 +60,15 @@
   }
 
   .HDXWorkspaceSelectorItem-Status {
-    width: 4.5rem;
-    background-color: red;
-  }
+    width: 4.25rem;
+    /* text-align: right; */
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.5rem;
+    font-size: 0.5rem;
+    border-right: solid 0.5px #888;  }
 
   .HDXWorkspaceSelectorItem-Body {
     display: flex;
@@ -73,7 +82,9 @@
     flex-grow: 1;
     align-items: center;
     font-size: 0.9rem;
+    margin-left: 0.5rem;
   }
+
   .HDXWorkspaceSelectorItem-Body-Check {
     display: flex;
     align-items: center;
