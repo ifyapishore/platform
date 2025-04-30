@@ -60,6 +60,7 @@
   }
 
   .HDXWorkspaceSelectorItem-Status {
+    position: relative;
     width: 4.25rem;
     /* text-align: right; */
     /* background-color: red; */
@@ -68,7 +69,19 @@
     justify-content: flex-end;
     padding-right: 0.5rem;
     font-size: 0.5rem;
-    border-right: solid 0.5px #888;  }
+
+    &::before {
+      position: absolute;
+      content: '';
+      display: block;
+      width: 0px;
+      height: 50%;
+      top: 25%;
+      right: 0;
+      border-left: solid 0.5px #fff;
+      border-right: solid 0.5px #888;
+    }
+  }
 
   .HDXWorkspaceSelectorItem-Body {
     display: flex;

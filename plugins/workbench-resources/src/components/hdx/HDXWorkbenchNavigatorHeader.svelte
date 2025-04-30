@@ -63,7 +63,9 @@
       <HDXWorkspaceSwitch expandedWorkspaces={$expandedWorkspaces} size="medium"/>
     </div>
   </div>
-  <HDXWorkspaceInfo/>
+  {#if $expandedWorkspaces}
+    <HDXWorkspaceInfo/>
+  {/if}
 </div>
 {#if $expandedWorkspaces}
 <HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
