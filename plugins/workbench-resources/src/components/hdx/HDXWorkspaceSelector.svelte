@@ -40,6 +40,7 @@
 
   import { workspacesStore } from '../../utils'
   import HDXScrollable from './HDXScrollable.svelte'
+  import HDXWorkspaceSelectorItem from './HDXWorkspaceSelectorItem.svelte'
   // import Drag from './icons/Drag.svelte'
 
   export let onWorkspaceSelected: () => void
@@ -159,6 +160,13 @@
             await clickHandler(e, ws.url)
           }}
         >
+          <HDXWorkspaceSelectorItem
+            name={ws.url}
+            selected={$resolvedLocationStore.path[1] === ws.url}
+            onSelect={(event) => {
+              clickHandler(event, ws.url)
+            }}
+            />
           <button
             bind:this={btns[i]}
             class="HDRWorkspaceSelectorButton"
