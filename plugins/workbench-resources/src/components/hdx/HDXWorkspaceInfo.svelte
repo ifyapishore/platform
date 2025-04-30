@@ -64,32 +64,34 @@
 </script>
 
 {#if ws}
-  <div>
-    <div>
-        <HDXWorkspaceInfoItem title="Status" on={isArchivingMode(ws.mode)}>
-          <Label label={presentation.string.Archived} />
-        </HDXWorkspaceInfoItem>
+  <div class="HDXWorkspaceInfo">
+    <HDXWorkspaceInfoItem title="Status" on={isArchivingMode(ws.mode)}>
+      <Label label={presentation.string.Archived} />
+    </HDXWorkspaceInfoItem>
 
-        <HDXWorkspaceInfoItem title="Region" on={itemRegionShow}>
-          {itemRegionValue}
-        </HDXWorkspaceInfoItem>
+    <HDXWorkspaceInfoItem title="Region" on={itemRegionShow}>
+      {itemRegionValue}
+    </HDXWorkspaceInfoItem>
 
-        <HDXWorkspaceInfoItem title="Last use" on={itemLastUsageShow}>
-          {itemLastUsageValue}
-        </HDXWorkspaceInfoItem>
+    <HDXWorkspaceInfoItem title="Last use" on={itemLastUsageShow}>
+      {itemLastUsageValue}
+    </HDXWorkspaceInfoItem>
 
-        <HDXWorkspaceInfoItem title="Backup" on={itemBackupShow}>
-          {itemBackupValue}
-        </HDXWorkspaceInfoItem>
+    <HDXWorkspaceInfoItem title="Backup" on={itemBackupShow}>
+      {itemBackupValue}
+    </HDXWorkspaceInfoItem>
 
-        <HDXWorkspaceInfoItem title="ID" on={itemBackupShow}>
-          {itemUrlValue}
-        </HDXWorkspaceInfoItem>
-    </div>
+    <HDXWorkspaceInfoItem title="ID" on={itemBackupShow}>
+      {itemUrlValue}
+    </HDXWorkspaceInfoItem>
   </div>
 {:else}
   <Loading />
 {/if}
 
 <style lang="scss">
+  .HDXWorkspaceInfo {
+    cursor: default;
+    user-select: text;
+  }
 </style>

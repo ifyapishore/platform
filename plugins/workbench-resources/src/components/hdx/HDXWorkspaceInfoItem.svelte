@@ -38,6 +38,8 @@ export let on: boolean
     margin-left: 4.3rem;
     font-size: 0.75rem;
     margin-bottom: 2px;
+    cursor: default;
+    user-select: text;
   }
 
   .HDXWorkspaceInfoItem-Label {
