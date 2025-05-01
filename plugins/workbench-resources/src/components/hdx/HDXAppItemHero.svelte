@@ -25,6 +25,8 @@
   export let navigator: boolean = false
   export let appsMini: boolean
   export let expanded: Writable<boolean>
+    // icon={notification.icon.Notifications}
+
 </script>
 
 <button
@@ -47,16 +49,34 @@
         fill="none" stroke="currentColor"
         stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
 
-        <path d="M3 4 Q8 12 18 12" />
-        <path d="M4 20 Q8 12 18 12" />
-        <path d="M5 9 Q4 12 6 15" />
-        <polyline points="18 12 21.5 12" stroke-width="0.25"/>
+          <!-- top -->
+          <path d="M3 4 Q8 12 18 12" />
+          <!-- down -->
+          <path d="M4 20 Q8 12 18 12" />
+          <!-- eye -->
+          <path d="M5 9 Q4 12 6 15" />
 
-      </svg>
+          <!-- above -->
+          <path d="M6 5 Q9 10 19 10"
+          stroke-width="0.02"
+          stroke-dasharray="3 2 1" />
+
+          <!-- eye brove lline-->
+          <polyline points="18 12 22 12"
+          stroke-width="0.55"/>
+
+          <!-- the point -->
+          <rect
+            x="10" y="4"
+            rx="1" ry="1"
+            stroke-width="0.05"
+            width="8" height="1.5"
+            />
+        </svg>
       </div>
     <div class="HDXAppItemHero-Label" class:selected class:expanded={$expanded}>
       <!-- <Label label={label}/> -->
-      inbox prattle
+      Talks
     </div>
   {/if}
 </button>
@@ -103,9 +123,10 @@
     width: var(--app-panel-width);
     height: var(--app-panel-action-height);
     color: var(--theme-navpanel-icons-color);
+    transform: rotate(180deg);
 
     &.expanded {
-      opacity: 0;
+      opacity: 1;
     }
   }
 
@@ -116,12 +137,12 @@
     align-items: center;
     font-size: 0.78rem;
     font-weight: 600;
-    padding-left: 4.2rem;
+    // padding-left: 0.2rem;
     color: var(--theme-hdx-workbench-navigator-text-color);
     text-align: left;
     overflow: hidden;
     text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
-    text-transform: uppercase;
+    // text-transform: uppercase;
 
     &.expanded {
       display: flex;

@@ -808,7 +808,6 @@
         >
           <HDXAppItemHero
             expanded={expanded}
-            icon={notification.icon.Notifications}
             label={notification.string.Inbox}
             selected={currentAppAlias === notificationId || inboxPopup !== undefined}
             navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
