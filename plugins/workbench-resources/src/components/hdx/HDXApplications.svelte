@@ -28,6 +28,7 @@
   import AppItem from './AppItem.svelte'
   import HDXAppItem from './HDXAppItem.svelte'
   import HDXScrollable from './HDXScrollable.svelte'
+  import HDXMoreApps from './HDXMoreApps.svelte'
 
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []
@@ -135,6 +136,7 @@
   </NavLink>
   <div class="apps-space-{direction}" />
 {/if}
+<HDXMoreApps/>
 </HDXScrollable>
 
 <style lang="scss">

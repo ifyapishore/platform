@@ -131,6 +131,7 @@
   import HDXWorkbenchNavigatorFooterItem from './hdx/HDXWorkbenchNavigatorFooterItem.svelte'
   import HDXAppItem from './hdx/HDXAppItem.svelte'
   import HDXAppItemHero from './hdx/HDXAppItemHero.svelte'
+  import HDXMoreApps from './hdx/HDXMoreApps.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg

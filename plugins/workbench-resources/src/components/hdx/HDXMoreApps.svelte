@@ -1,0 +1,98 @@
+<!--
+// Copyright © 2022 Hardcore Engineering Inc.
+//
+// Licensed under the Eclipse Public License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License. You may
+// obtain a copy of the License at https://www.eclipse.org/legal/epl-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//
+// See the License for the specific language governing permissions and
+// limitations under the License.
+-->
+<script lang="ts">
+  import core, { getCurrentAccount, type Ref } from '@hcengineering/core'
+  import type { Application } from '@hcengineering/workbench'
+  import { createQuery } from '@hcengineering/presentation'
+  import workbench from '@hcengineering/workbench'
+  import { hideApplication, isAppAllowed, showApplication } from '../../utils'
+  import { Loading, IconCheck, Label, Icon } from '@hcengineering/ui'
+  // import Drag from './icons/Drag.svelte'
+
+  export let apps: Application[] = []
+
+  let activeElement: HTMLElement
+  const btns: HTMLElement[] = []
+
+  function focusTarget (target: HTMLElement): void {
+    activeElement = target
+  }
+
+  let loaded: boolean = false
+  let hiddenAppsIds: Array<Ref<Application>> = []
+  const hiddenAppsIdsQuery = createQuery()
+  hiddenAppsIdsQuery.query(
+    workbench.class.HiddenApplication,
+    {
+      space: core.space.Workspace
+    },
+    (res) => {
+      hiddenAppsIds = res.map((r) => r.attachedTo)
+      loaded = true
+    }
+  )
+
+  const me = getCurrentAccount()
+
+  const filteredApps = apps.filter(
+    (it) => !hiddenAppsIds.includes(it._id) && isAppAllowed(it, me) && it.position !== 'top'
+  )
+</script>
+
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="HDXMoreApps">
+
+  <div class="HDXMoreAppsHeader">
+    More...
+  </div>
+
+  {#if loaded}
+    {#each filteredApps as app, i}
+      <button
+        bind:this={btns[i]}
+        class="ap-menuItem withIcon flex-row-center flex-grow"
+        class:hover={btns[i] === activeElement}
+        on:click={() => {
+          if (hiddenAppsIds.includes(app._id)) showApplication(app)
+          else hideApplication(app)
+        }}
+        on:mousemove={() => {
+          focusTarget(btns[i])
+        }}
+      >
+        <div class="icon mr-2"><Icon icon={app.icon} size={'small'} /></div>
+        <span class="label overflow-label flex-grow"><Label label={app.label} /></span>
+        <div class="ap-check">
+          {#if !hiddenAppsIds.includes(app._id)}
+            <IconCheck size={'small'} />
+          {/if}
+        </div>
+      </button>
+    {/each}
+  {:else}
+    <Loading />
+  {/if}
+</div>
+
+<style lang="scss">
+  .HDXMoreApps {
+    background-color: red;
+    height: 2rem;
+  }
+  .HDXMoreAppsHeader {
+    background-color: red;
+    height: 2rem;
+  }
+</style>
