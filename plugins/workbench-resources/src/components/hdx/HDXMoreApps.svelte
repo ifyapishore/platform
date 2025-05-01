@@ -23,6 +23,8 @@
 
   export let apps: Application[] = []
 
+  export let toggleAppMenuEditMode: () => void
+
   let activeElement: HTMLElement
   const btns: HTMLElement[] = []
 
@@ -56,9 +58,9 @@
 
   <div class="HDXMoreAppsHeader">
     <div class="HDXMoreAppsHeader-Title">
-      More...
+      The rest...
     </div>
-    <div class="HDXMoreAppsHeader-Action">
+    <button class="HDXMoreAppsHeader-Action" on:click={toggleAppMenuEditMode}>
       <svg
             viewBox="0 0 24 24"
             width="24" height="24"
@@ -76,7 +78,7 @@
         <line x1="4" y1="18" x2="20" y2="18" />
         <circle cx="17" cy="18" r="2" />
       </svg>
-    </div>
+    </button>
   </div>
 
   {#if loaded}
@@ -109,25 +111,43 @@
 
 <style lang="scss">
   .HDXMoreApps {
-    height: 2rem;
+    background-color: rgba(255, 255, 255, 0.01);
   }
 
   .HDXMoreAppsHeader {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    height: 2rem;
-    height: 2rem;
+    height: 3rem;
     font-size: 1rem;
-    padding-left: 1.4rem;
-    height: 2rem;
-    border-bottom: solid 0.5px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    padding-left: 4.2rem;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.01);
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      top: 0;
+      left: -2rem;
+      right: -2rem;
+      bottom: -2rem;
+      box-shadow: inset 10px 0 10px rgba(0, 0, 0, 0.05);
+    }
   }
 
   .HDXMoreAppsHeader-Title {
     display: flex;
     flex-grow: 1;
     align-items: center;
+    font-size: 0.6em;
+    font-weight: 800;
+    padding-left: 0.1rem;
   }
 
   .HDXMoreAppsHeader-Action {
@@ -135,5 +155,12 @@
     width: 3rem;
     align-items: center;
     justify-content: center;
+    color: rgb(102 142 131 / 50%);
+    pointer-events: visible;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(102 142 131 / 100%);
+    }
   }
 </style>

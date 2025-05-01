@@ -69,6 +69,10 @@
 
   const chatApp = chatId as any as Ref<Application>
   const inboxApp = inboxId as any as Ref<Application>
+
+  function toggleAppMenuEditMode () {
+    appMenuEditMode.update((v) => !v)
+  }
 </script>
 
 <HDXScrollable>
@@ -140,7 +144,7 @@
   </NavLink>
   <div class="apps-space-{direction}" />
 {/if}
-<HDXMoreApps/>
+<HDXMoreApps {toggleAppMenuEditMode}/>
 </HDXScrollable>
 
 <style lang="scss">
