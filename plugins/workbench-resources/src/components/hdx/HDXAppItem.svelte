@@ -29,6 +29,10 @@
   export let navigator: boolean = false
   export let appsMini: boolean
   export let expanded: Writable<boolean>
+  export let editMode: Writable<boolean> | undefined
+  export let editLock: boolean = true
+
+  $: removeAction = !editLock && editMode !== undefined
 </script>
 
 <button
@@ -52,6 +56,11 @@
     <div class="HDXAppItem-Label" class:selected class:expanded={$expanded}>
       <Label label={label}/>
     </div>
+    {/if}
+    {#if removeAction}
+      <div class="HDXAppItem-RemoveIcon">
+        (-)
+      </div>
     {/if}
   {/if}
 </button>

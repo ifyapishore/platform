@@ -13,7 +13,7 @@
 // limitations under the License.
 -->
 <script lang="ts">
-  import { Writable } from 'svelte/store'
+  import { Writable, writable } from 'svelte/store'
   import { createEventDispatcher } from 'svelte'
   import core, { getCurrentAccount, type Ref } from '@hcengineering/core'
   import { createNotificationsQuery, createQuery } from '@hcengineering/presentation'
@@ -36,6 +36,8 @@
 
   export let appsMini: boolean
   export let expanded: Writable<boolean>
+
+  const appMenuEditMode = writable(false)
 
   const dispatch = createEventDispatcher()
 
@@ -75,6 +77,8 @@
     <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
       <HDXAppItem
         {expanded}
+        editLock={true}
+        editMode={appMenuEditMode}
         selected={app._id === active}
         icon={app.icon}
         label={app.label}
