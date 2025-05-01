@@ -55,7 +55,28 @@
 <div class="HDXMoreApps">
 
   <div class="HDXMoreAppsHeader">
-    More...
+    <div class="HDXMoreAppsHeader-Title">
+      More...
+    </div>
+    <div class="HDXMoreAppsHeader-Action">
+      <svg
+            viewBox="0 0 24 24"
+            width="24" height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+        <line x1="4" y1="6" x2="20" y2="6" />
+        <circle cx="14" cy="6" r="2" />
+
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <circle cx="8" cy="12" r="2" />
+
+        <line x1="4" y1="18" x2="20" y2="18" />
+        <circle cx="17" cy="18" r="2" />
+      </svg>
+    </div>
   </div>
 
   {#if loaded}
@@ -88,11 +109,31 @@
 
 <style lang="scss">
   .HDXMoreApps {
-    background-color: red;
     height: 2rem;
   }
+
   .HDXMoreAppsHeader {
-    background-color: red;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
     height: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+    padding-left: 1.4rem;
+    height: 2rem;
+    border-bottom: solid 0.5px rgba(0, 0, 0, 0.5);
+  }
+
+  .HDXMoreAppsHeader-Title {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+  }
+
+  .HDXMoreAppsHeader-Action {
+    display: flex;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
   }
 </style>

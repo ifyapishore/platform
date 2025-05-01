@@ -34,9 +34,9 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = false
+  const hdxAlwaysExpand = true
   const useFirstTimeShow = false
-  const hdxAlwaysExpandWorkspaces = hdxAlwaysExpand
+  const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 
   // Local state
   export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
