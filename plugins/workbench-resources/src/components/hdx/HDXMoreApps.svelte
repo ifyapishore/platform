@@ -19,6 +19,7 @@
   import { isAppAllowed, showApplication } from '../../utils'
   import { deviceOptionsStore as deviceInfo } from '@hcengineering/ui'
   import HDRAppItem from './HDXAppItem.svelte'
+  import { NavLink } from '@hcengineering/view-resources'
 
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []
@@ -64,7 +65,8 @@
 
   <div class="HDXMoreAppsList">
     {#each filteredApps as app}
-    <HDRAppItem
+    <NavLink app={app.alias} shrink={0} disabled={app._id === active || appMenuEditMode}>
+      <HDRAppItem
       expanded={expanded}
       addIcon={true}
       editMode={appMenuEditMode}
@@ -82,6 +84,7 @@
           showApplication(app)
         }
       }}/>
+      </NavLink>
     {/each}
   </div>
 </div>

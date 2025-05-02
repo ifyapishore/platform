@@ -94,7 +94,7 @@
   {/each}
   <div class="divider" />
   {#each bottomdApps as app}
-    <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
+    <NavLink app={app.alias} shrink={0} disabled={app._id === active || $appMenuEditMode}>
       <HDXAppItem
         expanded={$expanded}
         {appsMini}
