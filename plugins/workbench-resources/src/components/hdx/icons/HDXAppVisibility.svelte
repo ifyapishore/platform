@@ -45,6 +45,7 @@
     justify-content: center;
     /* cursor: pointer; */
     pointer-events: none;
+    color: var(--theme-navpanel-icons-color);
 
     & > svg {
       width: 1.3rem;

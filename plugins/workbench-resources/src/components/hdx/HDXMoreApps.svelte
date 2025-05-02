@@ -38,11 +38,11 @@
 </script>
 
 <div class="HDXMoreApps">
-  <div class="HDXMoreAppsHeader">
-    <div class="HDXMoreAppsHeader-Title">
-      The rest...
+  <div class="HDXMoreAppsHeader" class:expanded={expanded} class:collapsed={!expanded}>
+    <div class="HDXMoreAppsHeader-Title" class:expanded={expanded} class:collapsed={!expanded}>
+      More apps...
     </div>
-    <button class="HDXMoreAppsHeader-Action" on:click={toggleAppMenuEditMode}>
+    <button class="HDXMoreAppsHeader-Action" class:expanded={expanded} class:collapsed={!expanded} on:click={toggleAppMenuEditMode}>
       <svg
             viewBox="0 0 24 24"
             width="24" height="24"
@@ -103,7 +103,13 @@
     height: 3rem;
     font-size: 1rem;
     text-transform: uppercase;
-    padding-left: 4.2rem;
+
+    &.collapsed {
+      padding-left: 0rem;
+    }
+    &.expanded {
+      padding-left: 4.2rem;
+    }
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.01);
@@ -128,11 +134,20 @@
     font-size: 0.6em;
     font-weight: 800;
     padding-left: 0.1rem;
+
+    &.collapsed {
+      display: none;
+    }
+    &.expanded {
+      display: flex;
+    }
   }
 
   .HDXMoreAppsHeader-Action {
     display: flex;
-    width: 3rem;
+    min-width: var(--app-panel-width);
+    max-width: var(--app-panel-width);
+    width: var(--app-panel-width);
     align-items: center;
     justify-content: center;
     color: rgb(102 142 131 / 50%);
