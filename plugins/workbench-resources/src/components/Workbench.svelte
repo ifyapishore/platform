@@ -843,6 +843,7 @@
         <HDXAppItem
           icon={TopMenu}
           expanded={expanded}
+          editLock={true}
           label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
           selected={!$deviceInfo.navigator.visible}
           appsMini={appsMini}

@@ -15,31 +15,29 @@
 <script lang="ts">
   import type { Asset, IntlString } from '@hcengineering/platform'
   import type { AnySvelteComponent } from '@hcengineering/ui'
-  import { Icon, Loading, tooltip, Label } from '@hcengineering/ui'
-  import { Writable } from 'svelte/store'
+  import { Icon, Loading, Label } from '@hcengineering/ui'
+  import HDXAppVisibility from './icons/HDXAppVisibility.svelte'
 
   export let label: IntlString
   export let noLabel: boolean = false
   export let icon: Asset | AnySvelteComponent
   export let selected: boolean = false
   export let kind: 'default' | 'positive' | 'negative' | 'warning' | 'hero' | 'accented' = 'default'
-  export let stage: 'prod' | 'beta' = 'prod'
   export let loading: boolean = false
   export let notify: boolean = false
   export let navigator: boolean = false
   export let appsMini: boolean
-  export let expanded: Writable<boolean>
-  export let editMode: Writable<boolean> | undefined
-  export let editLock: boolean = true
-
-  $: removeAction = !editLock && editMode !== undefined
+  export let expanded: boolean
+  export let editMode: boolean = false
+  export let addIcon: boolean = false
+  export let onToogleApp: (() => void) | undefined = undefined
 </script>
 
 <button
   class="HDXAppItem {kind}"
   class:loading
   class:selected
-  class:expanded={$expanded}
+  class:expanded={expanded}
   class:navigator
   id={'app-' + label}
   disabled={loading}
@@ -52,15 +50,17 @@
       <Icon {icon} size={appsMini ? 'small' : 'medium'} />
       {#if notify}<div class="marker" />{/if}
     </div>
-    {#if !noLabel}
-    <div class="HDXAppItem-Label" class:selected class:expanded={$expanded}>
+
+    <div class="HDXAppItem-Label"
+      class:selected
+      class:expanded={expanded}>
       <Label label={label}/>
     </div>
-    {/if}
-    {#if removeAction}
-      <div class="HDXAppItem-RemoveIcon">
-        (-)
-      </div>
+
+    {#if expanded && editMode}
+      <HDXAppVisibility addIcon={addIcon} on:click= {(e) => {
+        if (onToogleApp !== undefined) onToogleApp()
+      }}/>
     {/if}
   {/if}
 </button>
@@ -119,6 +119,8 @@
     text-align: left;
     overflow: hidden;
     text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
+    text-overflow: ellipsis;
+    white-space: nowrap;
     &.expanded {
       display: flex;
     }

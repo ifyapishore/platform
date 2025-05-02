@@ -13,49 +13,25 @@
 // limitations under the License.
 -->
 <script lang="ts">
-  import core, { getCurrentAccount, type Ref } from '@hcengineering/core'
+  import { getCurrentAccount, type Ref } from '@hcengineering/core'
   import type { Application } from '@hcengineering/workbench'
-  import { createQuery } from '@hcengineering/presentation'
-  import workbench from '@hcengineering/workbench'
-  import { hideApplication, isAppAllowed, showApplication } from '../../utils'
-  import { Loading, IconCheck, Label, Icon } from '@hcengineering/ui'
-  // import Drag from './icons/Drag.svelte'
+  import { isAppAllowed, showApplication } from '../../utils'
+  import HDRAppItem from './HDXAppItem.svelte'
 
   export let apps: Application[] = []
-
   export let toggleAppMenuEditMode: () => void
+  export let expanded: boolean
+  export let appMenuEditMode: boolean
 
-  let activeElement: HTMLElement
-  const btns: HTMLElement[] = []
+  export let hiddenAppsIds: Array<Ref<Application>> = []
 
-  function focusTarget (target: HTMLElement): void {
-    activeElement = target
-  }
-
-  let loaded: boolean = false
-  let hiddenAppsIds: Array<Ref<Application>> = []
-  const hiddenAppsIdsQuery = createQuery()
-  hiddenAppsIdsQuery.query(
-    workbench.class.HiddenApplication,
-    {
-      space: core.space.Workspace
-    },
-    (res) => {
-      hiddenAppsIds = res.map((r) => r.attachedTo)
-      loaded = true
-    }
-  )
-
-  const me = getCurrentAccount()
-
-  const filteredApps = apps.filter(
-    (it) => !hiddenAppsIds.includes(it._id) && isAppAllowed(it, me) && it.position !== 'top'
+    const me = getCurrentAccount()
+  $: filteredApps = apps.filter(
+    (it) => hiddenAppsIds.includes(it._id) && isAppAllowed(it, me) && it.position !== 'top'
   )
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="HDXMoreApps">
-
   <div class="HDXMoreAppsHeader">
     <div class="HDXMoreAppsHeader-Title">
       The rest...
@@ -81,37 +57,26 @@
     </button>
   </div>
 
-  {#if loaded}
-    {#each filteredApps as app, i}
-      <button
-        bind:this={btns[i]}
-        class="ap-menuItem withIcon flex-row-center flex-grow"
-        class:hover={btns[i] === activeElement}
-        on:click={() => {
-          if (hiddenAppsIds.includes(app._id)) showApplication(app)
-          else hideApplication(app)
-        }}
-        on:mousemove={() => {
-          focusTarget(btns[i])
-        }}
-      >
-        <div class="icon mr-2"><Icon icon={app.icon} size={'small'} /></div>
-        <span class="label overflow-label flex-grow"><Label label={app.label} /></span>
-        <div class="ap-check">
-          {#if !hiddenAppsIds.includes(app._id)}
-            <IconCheck size={'small'} />
-          {/if}
-        </div>
-      </button>
+  <div class="HDXMoreAppsList">
+    {#each filteredApps as app}
+    <HDRAppItem
+      expanded={expanded}
+      addIcon={true}
+      editMode={appMenuEditMode}
+      icon={app.icon}
+      label={app.label}
+      appsMini={false}
+      navigator={false}
+      onToogleApp={() => {
+        showApplication(app)
+      }}/>
     {/each}
-  {:else}
-    <Loading />
-  {/if}
+  </div>
 </div>
 
 <style lang="scss">
   .HDXMoreApps {
-    background-color: rgba(255, 255, 255, 0.01);
+    // background-color: rgba(255, 255, 255, 0.01);
   }
 
   .HDXMoreAppsHeader {
@@ -162,5 +127,10 @@
     &:hover {
       color: rgb(102 142 131 / 100%);
     }
+  }
+
+  .HDXMoreAppsList {
+    min-height: 2rem;
+    margin-bottom: 2rem;
   }
 </style>
