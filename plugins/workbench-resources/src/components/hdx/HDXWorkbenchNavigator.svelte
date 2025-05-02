@@ -34,13 +34,14 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = true
+  const hdxAlwaysExpand = false
   const useFirstTimeShow = false
   const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 
   // Local state
   export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
+  export const appMenuEditMode = writable(false)
 
   const hoveredOnce = writable(hdxAlwaysExpand)
 
@@ -54,6 +55,7 @@ TODO:
   function handleBlur (): void {
     console.log('Hover ended')
     expanded.set(hdxAlwaysExpand)
+    appMenuEditMode.set(false)
     if (!hdxAlwaysExpandWorkspaces) {
       expandedWorkspaces.set(false)
     }
@@ -105,6 +107,7 @@ TODO:
       {#if !$expandedWorkspaces}
         <slot name="content"
           expanded={expanded}
+          appMenuEditMode={appMenuEditMode}
           expandedWorkspaces={expandedWorkspaces}
         />
         <slot name="footer"

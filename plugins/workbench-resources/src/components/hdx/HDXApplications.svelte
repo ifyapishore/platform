@@ -35,8 +35,7 @@
 
   export let appsMini: boolean
   export let expanded: Writable<boolean>
-
-  const appMenuEditMode = writable(false)
+  export let appMenuEditMode: Writable<boolean>
 
   const dispatch = createEventDispatcher()
 
@@ -69,7 +68,7 @@
   const chatApp = chatId as any as Ref<Application>
   const inboxApp = inboxId as any as Ref<Application>
 
-  function toggleAppMenuEditMode () {
+  function toggleAppMenuEditMode (): void {
     appMenuEditMode.update((v) => !v)
   }
 </script>

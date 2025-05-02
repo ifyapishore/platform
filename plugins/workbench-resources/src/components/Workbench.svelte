@@ -800,7 +800,7 @@
           />
       </svelte:fragment>
 
-      <svelte:fragment slot="content" let:expanded>
+      <svelte:fragment slot="content" let:expanded let:appMenuEditMode>
         <!-- <ActivityStatus status="active" /> -->
         <NavLink
           app={notificationId}
@@ -834,16 +834,15 @@
         <HDXApplications
           {apps}
           {expanded}
+          {appMenuEditMode}
           active={currentApplication?._id}
           direction={$deviceInfo.navigator.direction}
           appsMini={appsMini}
           on:toggleNav={toggleNav}
         />
-        <div>TMP</div>
         <HDXAppItem
           icon={TopMenu}
-          expanded={expanded}
-          editLock={true}
+          expanded={false}
           label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
           selected={!$deviceInfo.navigator.visible}
           appsMini={appsMini}
