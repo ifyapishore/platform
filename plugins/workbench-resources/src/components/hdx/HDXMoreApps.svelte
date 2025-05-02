@@ -13,11 +13,14 @@
 // limitations under the License.
 -->
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte'
   import { getCurrentAccount, type Ref } from '@hcengineering/core'
   import type { Application } from '@hcengineering/workbench'
   import { isAppAllowed, showApplication } from '../../utils'
+  import { deviceOptionsStore as deviceInfo } from '@hcengineering/ui'
   import HDRAppItem from './HDXAppItem.svelte'
 
+  export let active: Ref<Application> | undefined
   export let apps: Application[] = []
   export let toggleAppMenuEditMode: () => void
   export let expanded: boolean
@@ -25,7 +28,9 @@
 
   export let hiddenAppsIds: Array<Ref<Application>> = []
 
-    const me = getCurrentAccount()
+  const dispatch = createEventDispatcher()
+  const me = getCurrentAccount()
+
   $: filteredApps = apps.filter(
     (it) => hiddenAppsIds.includes(it._id) && isAppAllowed(it, me) && it.position !== 'top'
   )
@@ -66,9 +71,16 @@
       icon={app.icon}
       label={app.label}
       appsMini={false}
-      navigator={false}
-      onToogleApp={() => {
-        showApplication(app)
+      selected={app._id === active}
+      navigator={app._id === active && $deviceInfo.navigator.visible}
+      on:click={() => {
+        if (app._id === active) dispatch('toggleNav')
+      }}
+
+      on:click={() => {
+        if (appMenuEditMode) {
+          showApplication(app)
+        }
       }}/>
     {/each}
   </div>

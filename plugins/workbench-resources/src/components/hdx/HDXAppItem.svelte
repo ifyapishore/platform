@@ -58,9 +58,7 @@
     </div>
 
     {#if expanded && editMode}
-      <HDXAppVisibility addIcon={addIcon} on:click= {(e) => {
-        if (onToogleApp !== undefined) onToogleApp()
-      }}/>
+      <HDXAppVisibility addIcon={addIcon}/>
     {/if}
   {/if}
 </button>

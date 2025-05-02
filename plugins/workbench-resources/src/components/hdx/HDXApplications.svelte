@@ -24,7 +24,7 @@
   import inbox, { inboxId } from '@hcengineering/inbox'
   import chat, { chatId } from '@hcengineering/chat'
 
-  import { isAppAllowed } from '../../utils'
+  import { hideApplication, isAppAllowed } from '../../utils'
   import HDXAppItem from './HDXAppItem.svelte'
   import HDXScrollable from './HDXScrollable.svelte'
   import HDXMoreApps from './HDXMoreApps.svelte'
@@ -80,7 +80,7 @@
     <NavLink app={app.alias} shrink={0} disabled={app._id === active}>
       <HDXAppItem
         expanded={$expanded}
-        editMode={$appMenuEditMode}
+        editMode={false}
         selected={app._id === active}
         icon={app.icon}
         label={app.label}
@@ -104,7 +104,11 @@
         label={app.label}
         navigator={app._id === active && $deviceInfo.navigator.visible}
         on:click={() => {
-          if (app._id === active) dispatch('toggleNav')
+          if ($appMenuEditMode) {
+            hideApplication(app)
+          } else if (app._id === active) {
+            dispatch('toggleNav')
+          }
         }}
       />
     </NavLink>
@@ -119,7 +123,7 @@
     <HDXAppItem
       expanded={$expanded}
       {appsMini}
-      editMode={$appMenuEditMode}
+      editMode={false}
       icon={inbox.icon.Inbox}
       label={inbox.string.Inbox}
       selected={active === inboxApp}
@@ -136,7 +140,7 @@
   <HDXAppItem
       expanded={$expanded}
       {appsMini}
-      editMode={$appMenuEditMode}
+      editMode={false}
       icon={chat.icon.ChatBubble}
       label={chat.string.Chat}
       selected={active === chatApp}
@@ -147,6 +151,7 @@
 {/if}
 <HDXMoreApps
   expanded={$expanded}
+  active={active}
   appMenuEditMode={$appMenuEditMode}
   {toggleAppMenuEditMode}
   hiddenAppsIds={hiddenAppsIds}

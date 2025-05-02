@@ -14,7 +14,7 @@
         width="16" height="16"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
+        stroke-width="1"
         stroke-linecap="round"
         stroke-linejoin="round">
       <circle cx="12" cy="12" r="9" />
@@ -26,7 +26,7 @@
             width="16" height="16"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            stroke-width="1"
             stroke-linecap="round"
             stroke-linejoin="round">
         <circle cx="12" cy="12" r="9" />
