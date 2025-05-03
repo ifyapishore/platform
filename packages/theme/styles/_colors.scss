@@ -710,3 +710,32 @@
   --theme-hdx-workbench-navigator-bg-color-expanded2: rgb(36 61 49 / 55%);
   --theme-hdx-workbench-navigator-text-color: #eee;
 }
+
+/**
+Hue steps	360 / 7 ≈ 51.4° apart
+Saturation	65% (vibrant, but not neon)
+Lightness	60% for icons (solid), 80% for bg on light theme, 30% for bg on dark theme
+*/
+
+// Constants
+$workspace-color-saturation: 65%;
+$workspace-icon-lightness: 60%;
+$workspace-bg-light-lightness: 80%;
+$workspace-bg-dark-lightness: 30%;
+
+// Mixin: defines both icon and bg colors for given index
+@mixin define-workspace-colors($prefix, $bg-lightness) {
+  @for $i from 1 through 7 {
+    $hue: ($i - 1) * (360 / 7); // evenly spread hues
+
+    --#{$prefix}-icon-color-#{$i}: hsla(#{$hue}, #{$workspace-color-saturation},  #{$workspace-icon-lightness}, 1);
+    --#{$prefix}-bg-color-#{$i}: hsla(#{$hue},  #{$workspace-color-saturation}, #{$bg-lightness}, 0.5);
+  }
+}
+.theme-light {
+  @include define-workspace-colors('hdx-workspace', $workspace-bg-light-lightness);
+}
+
+.theme-dark {
+  @include define-workspace-colors('hdx-workspace', $workspace-bg-dark-lightness);
+}

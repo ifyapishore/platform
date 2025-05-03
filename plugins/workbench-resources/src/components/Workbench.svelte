@@ -791,8 +791,11 @@
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
     <HDXWorkbenchNavigator>
-      <svelte:fragment slot="header" let:expanded let:expandedWorkspaces let:onToggleExpandedWorkspaces>
+      <svelte:fragment slot="header" let:expanded let:expandedWorkspaces 
+        let:workspaceColor
+      let:onToggleExpandedWorkspaces>
         <HDXWorkbenchNavigatorHeader
+          workspaceColor={workspaceColor}
           windowWorkspaceName={windowWorkspaceName}
           expanded={expanded}
           {expandedWorkspaces}

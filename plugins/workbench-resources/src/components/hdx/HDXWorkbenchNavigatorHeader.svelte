@@ -4,10 +4,12 @@
   import HDXWorkspaceSwitch from './icons/HDXWorkspaceSwitch.svelte'
   import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
   import HDXWorkspaceInfo from './HDXWorkspaceInfo.svelte'
+  import HDXWorkspaceColorPicker from './HDXWorkspaceColorPicker.svelte'
 
   export let windowWorkspaceName: string
   export let expanded: Writable<boolean>
   export let expandedWorkspaces: Writable<boolean>
+  export let workspaceColor: Writable<number>
   export let onToggleExpandedWorkspaces: () => void
 
   const appsMini = false
@@ -65,6 +67,12 @@
   </div>
   {#if $expandedWorkspaces}
     <HDXWorkspaceInfo/>
+    <HDXWorkspaceColorPicker
+      workspaceColor={$workspaceColor}
+      onChange={ (colorNumber) => {
+        workspaceColor.set(colorNumber)
+        // console.log('Selected color:', colorNumber)
+      }}/>
   {/if}
 </div>
 {#if $expandedWorkspaces}
@@ -87,7 +95,7 @@
         background-color: rgb(131 176 184 / 30%);
         box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.05);
         margin-bottom: 1rem;
-        padding-bottom: 1rem;
+        padding-bottom: 0.25rem;
       }
     }
 

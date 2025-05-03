@@ -34,14 +34,15 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = false
+  const hdxAlwaysExpand = true
   const useFirstTimeShow = false
-  const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
+  const hdxAlwaysExpandWorkspaces = true // hdxAlwaysExpand
 
   // Local state
   export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
   export const appMenuEditMode = writable(false)
+  export const workspaceColor = writable(1)
 
   const hoveredOnce = writable(hdxAlwaysExpand)
 
@@ -103,6 +104,7 @@ TODO:
     <slot name="header"
       expanded={expanded}
       expandedWorkspaces={expandedWorkspaces}
+      workspaceColor={workspaceColor}
       onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
       {#if !$expandedWorkspaces}
         <slot name="content"
