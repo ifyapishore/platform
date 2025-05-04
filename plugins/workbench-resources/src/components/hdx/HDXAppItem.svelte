@@ -84,12 +84,12 @@
       pointer-events: none;
     }
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--hdx-workspace-panel-hover-bg-color);
     }
     &.selected {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: var(--hdx-workspace-panel-selected-bg-color);
       &:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: var(--hdx-workspace-panel-hover-bg-color);
       }
     }
   }
