@@ -40,7 +40,7 @@
 <div class="HDXMoreApps">
   <div class="HDXMoreAppsHeader" class:expanded={expanded} class:collapsed={!expanded}>
     <div class="HDXMoreAppsHeader-Title" class:expanded={expanded} class:collapsed={!expanded}>
-      More apps...
+      Huly apps
     </div>
     <button class="HDXMoreAppsHeader-Action" class:expanded={expanded} class:collapsed={!expanded} on:click={toggleAppMenuEditMode}>
       <svg
@@ -102,13 +102,12 @@
     align-items: stretch;
     height: 3rem;
     font-size: 1rem;
-    text-transform: uppercase;
 
     &.collapsed {
       padding-left: 0rem;
     }
     &.expanded {
-      padding-left: 4.2rem;
+      padding-left: 0rem;
     }
 
     &:hover {
@@ -131,9 +130,9 @@
     display: flex;
     flex-grow: 1;
     align-items: center;
-    font-size: 0.6em;
+    font-size: 0.7rem;
     font-weight: 800;
-    padding-left: 0.1rem;
+    padding-left: 1.3rem;
 
     &.collapsed {
       display: none;
@@ -145,9 +144,9 @@
 
   .HDXMoreAppsHeader-Action {
     display: flex;
-    min-width: var(--app-panel-width);
-    max-width: var(--app-panel-width);
-    width: var(--app-panel-width);
+    min-width: 3rem;
+    max-width: 3rem;
+    width: 3rem;
     align-items: center;
     justify-content: center;
     color: rgb(102 142 131 / 50%);
@@ -156,6 +155,16 @@
 
     &:hover {
       color: rgb(102 142 131 / 100%);
+    }
+    &.collapsed {
+      min-width: var(--app-panel-width);
+      max-width: var(--app-panel-width);
+      width: var(--app-panel-width);
+    }
+    &.expanded {
+      min-width: 3rem;
+      max-width: 3rem;
+      width: 3rem;
     }
   }
 

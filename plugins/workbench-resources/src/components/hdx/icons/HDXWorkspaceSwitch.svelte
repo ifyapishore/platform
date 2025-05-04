@@ -14,23 +14,23 @@
         stroke="currentColor" stroke-width="1" stroke-linecap="round"
         stroke-linejoin="round">
         <!--    <path d="M12 5v8" />-->
-        <path d="M12 8l-3 -3" />
-        <path d="M12 8l3 -3" />
-        <path d="M12 13v-2" />
-        <path d="M12 16l-3 3" />
-        <path d="M12 16l3 3" />
-    </svg>
+        <path d="M12 10l-3 -3" />
+        <path d="M12 10l3 -3" />
+        <path d="M3 12.5h18" stroke-width="0.5"/>
+        <path d="M12 15l-3 3"/>
+        <path d="M12 15l3 3" />
+      </svg>
     {:else}
       <svg width="24" height="24" viewBox="0 0 24 24" class="svg-{size}" fill="none"
           stroke="currentColor" stroke-width="1" stroke-linecap="round"
           stroke-linejoin="round">
       <!--    <path d="M12 5v8" />-->
-      <path d="M12 5l-3 3" />
-      <path d="M12 5l3 3" />
-      <path d="M12 14v-4" />
-      <path d="M12 19l-3-3" />
-      <path d="M12 19l3-3" />
-      </svg>
+      <path d="M12 18l-3 -3" />
+      <path d="M12 18l3 -3" />
+      <path d="M3 12.5h18" stroke-width="0.5"/>
+      <path d="M12 6l-3 3"/>
+      <path d="M12 6l3 3" />
+    </svg>
     {/if}
   </div>
 
