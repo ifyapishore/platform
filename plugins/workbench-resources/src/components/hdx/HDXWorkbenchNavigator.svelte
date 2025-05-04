@@ -167,7 +167,7 @@ TODO:
           max-width: calc(var(--app-panel-width) * 5);
           width: calc(var(--app-panel-width) * 5);
           backdrop-filter: blur(30px);
-          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+          box-shadow: 0 0 20px rgba(0,0,0,0.15);
         }
 
         &.panel-theme-1 {
