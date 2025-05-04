@@ -711,28 +711,6 @@
   --theme-hdx-workbench-navigator-text-color: #eee;
 }
 
-/**
-Hue steps	360 / 7 ≈ 51.4° apart
-Saturation	65% (vibrant, but not neon)
-Lightness	60% for icons (solid), 80% for bg on light theme, 30% for bg on dark theme
-*/
-
-// Constants
-$workspace-color-saturation: 65%;
-$workspace-icon-lightness: 60%;
-$workspace-bg-light-lightness: 80%;
-$workspace-bg-dark-lightness: 30%;
-
-// Mixin: defines both icon and bg colors for given index
-@mixin define-workspace-colors($prefix, $bg-lightness) {
-  @for $i from 1 through 7 {
-    $hue: ($i - 1) * (360 / 7); // evenly spread hues
-
-    --#{$prefix}-icon-color-#{$i}: hsla(#{$hue}, #{$workspace-color-saturation},  #{$workspace-icon-lightness}, 1);
-    --#{$prefix}-bg-color-#{$i}: hsla(#{$hue},  #{$workspace-color-saturation}, #{$bg-lightness}, 0.5);
-  }
-}
-
 .theme-light {
   --hdx-workspace-panel-hover-bg-color: rgba(0, 0, 0, 0.1);
   --hdx-workspace-panel-selected-bg-color: rgba(0, 0, 0, 0.05);
@@ -759,8 +737,6 @@ $workspace-bg-dark-lightness: 30%;
   --hdx-workspace-panel-bg-color-5: hsl(25deg 27.18% 61.76% / 25%);
   --hdx-workspace-panel-header-bg-color-5: hsl(25deg 27.18% 61.76% / 30%);
   --hdx-workspace-panel-icon-color-5: hsl(25deg 27.18% 61.76%);
-
-  @include define-workspace-colors('hdx-workspace', $workspace-bg-light-lightness);
 }
 
 .theme-dark {
@@ -782,9 +758,11 @@ $workspace-bg-dark-lightness: 30%;
   --hdx-workspace-panel-header-bg-color-3: hsl(89.06deg 27.18% 61.76% / 30%);
   --hdx-workspace-panel-icon-color-3: hsl(89.06deg 27.18% 61.76%);
 
+  --hdx-workspace-panel-bg-color-4: hsl(255deg 27.18% 61.76% / 40%);
+  --hdx-workspace-panel-header-bg-color-4: hsl(255deg 27.18% 61.76% / 30%);
+  --hdx-workspace-panel-icon-color-4: hsl(255deg 27.18% 61.76%);
+
   --hdx-workspace-panel-bg-color-5: hsl(25deg 27.18% 61.76% / 40%);
   --hdx-workspace-panel-header-bg-color-5: hsl(25deg 27.18% 61.76% / 30%);
   --hdx-workspace-panel-icon-color-5: hsl(25deg 27.18% 61.76%);
-
-  @include define-workspace-colors('hdx-workspace', $workspace-bg-dark-lightness);
 }
