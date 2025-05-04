@@ -34,9 +34,9 @@ TODO:
   import { writable } from 'svelte/store'
 
   // debug/beahvior constants;
-  const hdxAlwaysExpand = true
+  const hdxAlwaysExpand = false
   const useFirstTimeShow = false
-  const hdxAlwaysExpandWorkspaces = true // hdxAlwaysExpand
+  const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 
   // Local state
   export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
@@ -90,14 +90,14 @@ TODO:
 </script>
 
 <div
-  class="HDXWorkbenchNavigator {$deviceInfo.navigator.direction} no-print"
+  class="HDXWorkbenchNavigator {$deviceInfo.navigator.direction} panel-theme-{$workspaceColor} no-print"
   class:lastDivider={!$deviceInfo.navigator.visible}
   role="presentation"
   on:mouseenter={handleHover}
   on:mouseleave={handleBlur}
   on:click={handleClick}>
   <div
-    class="HDXWorkbenchNavigator-Inner"
+    class="HDXWorkbenchNavigator-Inner panel-theme-{$workspaceColor}"
     class:expanded={$expanded}
     class:expandedWide={expandedWide}
     >
@@ -120,7 +120,7 @@ TODO:
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .HDXWorkbenchNavigator {
     position: relative;
     flex-shrink: 0;
@@ -133,7 +133,8 @@ TODO:
 
     background-color: var(--theme-navpanel-color);
     border-right: 1px solid var(--theme-navpanel-divider);
-    z-index: 1000000
+    z-index: 1000000;
+
     /* margin-top: calc(var(--theme-hdx-app-title-height) * -1); */
   }
 
@@ -156,7 +157,6 @@ TODO:
         width: calc(var(--app-panel-width) * 3);
         z-index: 1;
         backdrop-filter: blur(30px);
-        background-color: var(--theme-hdx-workbench-navigator-bg-color-expanded);
 
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         border-top-right-radius: var(--medium-BorderRadius);
@@ -167,8 +167,11 @@ TODO:
           max-width: calc(var(--app-panel-width) * 5);
           width: calc(var(--app-panel-width) * 5);
           backdrop-filter: blur(30px);
-          background-color: var(--theme-hdx-workbench-navigator-bg-color-expanded2);
           box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        &.panel-theme-1 {
+          background-color: var(--hdx-workspace-panel-bg-color-1);
         }
       }
     }

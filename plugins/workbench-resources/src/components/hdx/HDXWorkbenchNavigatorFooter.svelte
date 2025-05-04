@@ -20,7 +20,7 @@
   <slot/>
 </div>
 
-<style>
+<style lang="scss">
   .HDXWorkbenchNavigatorFooter {
     position: relative;
     display: flex;

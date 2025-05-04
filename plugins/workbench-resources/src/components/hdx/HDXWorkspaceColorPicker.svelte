@@ -18,13 +18,13 @@
         on:click={(e) => { handleClick(e, color) }}>
         <div
           class="color-box"
-          style="background-color: var(--hdx-workspace-icon-color-{color});"
+          style="background-color: var(--hdx-workspace-panel-icon-color-{color});"
         />
       </button>
     {/each}
   </div>
 
-  <style>
+  <style lang="scss">
     .picker {
       display: flex;
       align-items: center;

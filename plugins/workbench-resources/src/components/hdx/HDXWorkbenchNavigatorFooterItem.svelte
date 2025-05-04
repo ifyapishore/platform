@@ -23,7 +23,7 @@
   <slot/>
 </div>
 
-<style>
+<style lang="scss">
   .HDXWorkbenchNavigatorFooterItem {
     display: flex; /* ✅ */
     flex-grow: 1;

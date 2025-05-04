@@ -24,7 +24,7 @@
 </script>
 
 <div
-  class="HDXWorkbenchNavigatorHeader"
+  class="HDXWorkbenchNavigatorHeader panel-theme-{$workspaceColor} no-print"
   class:expanded={$expanded}
   class:expandedWorkspace={$expandedWorkspaces}
 >
@@ -79,7 +79,7 @@
 <HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
 {/if}
 
-<style>
+<style lang="scss">
   .HDXWorkbenchNavigatorHeader {
     position: relative;
     display: flex;
@@ -88,19 +88,17 @@
     width: 100%;
 
     &.expanded {
-      background-color:rgb(131 176 184 / 10%); /* rgba(255,255,255,0.1); */
+      // background-color:rgb(131 176 184 / 10%); /* rgba(255,255,255,0.1); */
       box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.05);
-
       &.expandedWorkspace {
-        background-color: rgb(131 176 184 / 30%);
         box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.05);
         margin-bottom: 1rem;
         padding-bottom: 0.25rem;
       }
-    }
 
-    &:hover {
-      background-color: rgb(131 176 184 / 30%);
+      &.panel-theme-1 {
+        background-color: var(--hdx-workspace-panel-header-bg-color-1);
+      }
     }
   }
 
@@ -150,6 +148,7 @@
     font-size: 0.6rem;
     text-transform: uppercase;
     height: 2.2rem;
+    color: var(--hdx-workspace-panel-header-color);
   }
 
   .HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle {
@@ -159,10 +158,10 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: start;
-    color: #797878;
     font-size: 0.9rem;
     font-weight: 500;
     height: 2.25rem;
+    color: var(--hdx-workspace-panel-header-color);
   }
 
   .HDXWorkbenchNavigatorHeaderTop-WorkspaceSwitch {

@@ -40,6 +40,7 @@ export let on: boolean
     margin-bottom: 2px;
     cursor: default;
     user-select: text;
+    color: var(--hdx-workspace-panel-header-info-color)
   }
 
   .HDXWorkspaceInfoItem-Label {
