@@ -732,6 +732,7 @@ $workspace-bg-dark-lightness: 30%;
     --#{$prefix}-bg-color-#{$i}: hsla(#{$hue},  #{$workspace-color-saturation}, #{$bg-lightness}, 0.5);
   }
 }
+
 .theme-light {
   --hdx-workspace-panel-hover-bg-color: rgba(0, 0, 0, 0.1);
   --hdx-workspace-panel-selected-bg-color: rgba(0, 0, 0, 0.05);
