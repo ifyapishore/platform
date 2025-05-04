@@ -99,6 +99,18 @@
       &.panel-theme-1 {
         background-color: var(--hdx-workspace-panel-header-bg-color-1);
       }
+      &.panel-theme-2 {
+        background-color: var(--hdx-workspace-panel-header-bg-color-2);
+      }
+      &.panel-theme-3 {
+        background-color: var(--hdx-workspace-panel-header-bg-color-3);
+      }
+      &.panel-theme-4 {
+        background-color: var(--hdx-workspace-panel-header-bg-color-4);
+      }
+      &.panel-theme-5 {
+        background-color: var(--hdx-workspace-panel-header-bg-color-5);
+      }
     }
   }
 

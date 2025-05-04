@@ -52,10 +52,10 @@
     width: 100%;
 
     cursor: pointer;
-    color: var(--theme-navpanel-text);
+    color: var(--theme-hdx-workbench-navigator-text-color);
 
     &:hover {
-      background-color: rgb(131 176 184 / 10%);
+      background-color: var(--hdx-workspace-panel-hover-bg-color);
     }
   }
 

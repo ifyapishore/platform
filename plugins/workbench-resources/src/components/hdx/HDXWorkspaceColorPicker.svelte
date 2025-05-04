@@ -2,7 +2,7 @@
     export let workspaceColor: number = 1
     export let onChange: (colorNumber: number) => void
 
-    const COLORS = [1, 2, 3, 4, 5, 6, 7]
+    const COLORS = [1, 2, 3, 4, 5]
 
     function handleClick (e: MouseEvent, color: number): void {
       e.stopPropagation()

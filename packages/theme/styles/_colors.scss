@@ -744,12 +744,28 @@ $workspace-bg-dark-lightness: 30%;
   --hdx-workspace-panel-header-bg-color-1: hsl(189.06deg 27.18% 61.76% / 30%);
   --hdx-workspace-panel-icon-color-1: hsl(189.06deg 27.18% 61.76%);
 
+  --hdx-workspace-panel-bg-color-2: rgba(200,200,200, 0.3);
+  --hdx-workspace-panel-header-bg-color-2: rgba(100,100,100, 0.25);
+  --hdx-workspace-panel-icon-color-2: #000;
+
+  --hdx-workspace-panel-bg-color-3: hsl(89.06deg 27.18% 61.76% / 25%);
+  --hdx-workspace-panel-header-bg-color-3: hsl(89.06deg 27.18% 61.76% / 30%);
+  --hdx-workspace-panel-icon-color-3: hsl(89.06deg 27.18% 61.76%);
+
+  --hdx-workspace-panel-bg-color-4: hsl(255deg 27.18% 61.76% / 25%);
+  --hdx-workspace-panel-header-bg-color-4: hsl(255deg 27.18% 61.76% / 30%);
+  --hdx-workspace-panel-icon-color-4: hsl(255deg 27.18% 61.76%);
+
+  --hdx-workspace-panel-bg-color-5: hsl(25deg 27.18% 61.76% / 25%);
+  --hdx-workspace-panel-header-bg-color-5: hsl(25deg 27.18% 61.76% / 30%);
+  --hdx-workspace-panel-icon-color-5: hsl(25deg 27.18% 61.76%);
+
   @include define-workspace-colors('hdx-workspace', $workspace-bg-light-lightness);
 }
 
 .theme-dark {
-  --hdx-workspace-panel-hover-bg-color: rgba(0,0,0, 0.1);
-  --hdx-workspace-panel-selected-bg-color: rgba(0,0,0, 0.05);
+  --hdx-workspace-panel-hover-bg-color: rgba(0, 0, 0, 0.25);
+  --hdx-workspace-panel-selected-bg-color: rgba(0, 0, 0, 0.50);
 
   --hdx-workspace-panel-header-color: #eee;
   --hdx-workspace-panel-header-info-color: #ddd;
@@ -757,6 +773,18 @@ $workspace-bg-dark-lightness: 30%;
   --hdx-workspace-panel-bg-color-1: hsl(189.06deg 27.18% 61.76% / 40%);
   --hdx-workspace-panel-header-bg-color-1: hsl(189.06deg 27.18% 61.76% / 30%);
   --hdx-workspace-panel-icon-color-1: hsl(189.06deg 27.18% 61.76%);
+
+  --hdx-workspace-panel-bg-color-2: rgb(55 53 53 / 45%);
+  --hdx-workspace-panel-header-bg-color-2: rgba(200,200,200, 0.25);
+  --hdx-workspace-panel-icon-color-2: #666;
+
+  --hdx-workspace-panel-bg-color-3: hsl(89.06deg 27.18% 61.76% / 40%);
+  --hdx-workspace-panel-header-bg-color-3: hsl(89.06deg 27.18% 61.76% / 30%);
+  --hdx-workspace-panel-icon-color-3: hsl(89.06deg 27.18% 61.76%);
+
+  --hdx-workspace-panel-bg-color-5: hsl(25deg 27.18% 61.76% / 40%);
+  --hdx-workspace-panel-header-bg-color-5: hsl(25deg 27.18% 61.76% / 30%);
+  --hdx-workspace-panel-icon-color-5: hsl(25deg 27.18% 61.76%);
 
   @include define-workspace-colors('hdx-workspace', $workspace-bg-dark-lightness);
 }
