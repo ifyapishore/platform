@@ -84,7 +84,6 @@
         icon={app.icon}
         label={app.label}
         appsMini={appsMini}
-        navigator={app._id === active && $deviceInfo.navigator.visible}
         on:click={() => {
           if (app._id === active) dispatch('toggleNav')
         }}
@@ -101,7 +100,6 @@
         selected={app._id === active}
         icon={app.icon}
         label={app.label}
-        navigator={app._id === active && $deviceInfo.navigator.visible}
         on:click={() => {
           if ($appMenuEditMode) {
             hideApplication(app)
@@ -126,7 +124,6 @@
       icon={inbox.icon.Inbox}
       label={inbox.string.Inbox}
       selected={active === inboxApp}
-      navigator={active === inboxApp && $deviceInfo.navigator.visible}
       notify={hasNewInboxNotifications}
     />
   </NavLink>
@@ -143,7 +140,6 @@
       icon={chat.icon.ChatBubble}
       label={chat.string.Chat}
       selected={active === chatApp}
-      navigator={active === chatApp && $deviceInfo.navigator.visible}
     />
   </NavLink>
   <div class="apps-space-{direction}" />

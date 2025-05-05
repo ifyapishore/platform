@@ -19,26 +19,24 @@
   import HDXAppVisibility from './icons/HDXAppVisibility.svelte'
 
   export let label: IntlString
-  export let noLabel: boolean = false
   export let icon: Asset | AnySvelteComponent
   export let selected: boolean = false
-  export let kind: 'default' | 'positive' | 'negative' | 'warning' | 'hero' | 'accented' = 'default'
   export let loading: boolean = false
   export let notify: boolean = false
-  export let navigator: boolean = false
   export let appsMini: boolean
   export let expanded: boolean
   export let editMode: boolean = false
   export let addIcon: boolean = false
-  export let onToogleApp: (() => void) | undefined = undefined
+
+    // WHY? navigator={active && $deviceInfo.navigator.visible}
+
 </script>
 
 <button
-  class="HDXAppItem {kind}"
+  class="HDXAppItem"
   class:loading
   class:selected
   class:expanded={expanded}
-  class:navigator
   id={'app-' + label}
   disabled={loading}
   on:click

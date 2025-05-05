@@ -13,19 +13,16 @@
 // limitations under the License.
 -->
 <script lang="ts">
-  import type { Asset, IntlString } from '@hcengineering/platform'
-  import type { AnySvelteComponent } from '@hcengineering/ui'
-  import { Icon, Loading, tooltip, Label } from '@hcengineering/ui'
   import { Writable } from 'svelte/store'
+
+  import type { IntlString } from '@hcengineering/platform'
+  import { Loading } from '@hcengineering/ui'
 
   export let label: IntlString
   export let selected: boolean = false
   export let loading: boolean = false
   export let notify: boolean = false
-  export let navigator: boolean = false
-  export let appsMini: boolean
   export let expanded: Writable<boolean>
-    // icon={notification.icon.Notifications}
 
 </script>
 
@@ -34,7 +31,6 @@
   class:loading
   class:selected
   class:expanded={$expanded}
-  class:navigator
   id={'app-' + label}
   disabled={loading}
   on:click
@@ -106,11 +102,14 @@
     &.loading {
       pointer-events: none;
     }
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.1);
     }
+
     &.selected {
       background-color: rgba(0, 0, 0, 0.05);
+
       &:hover {
         background-color: rgba(0, 0, 0, 0.1);
       }

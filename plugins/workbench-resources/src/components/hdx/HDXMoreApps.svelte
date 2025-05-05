@@ -17,7 +17,6 @@
   import { getCurrentAccount, type Ref } from '@hcengineering/core'
   import type { Application } from '@hcengineering/workbench'
   import { isAppAllowed, showApplication } from '../../utils'
-  import { deviceOptionsStore as deviceInfo } from '@hcengineering/ui'
   import HDRAppItem from './HDXAppItem.svelte'
   import { NavLink } from '@hcengineering/view-resources'
 
@@ -74,7 +73,6 @@
       label={app.label}
       appsMini={false}
       selected={app._id === active}
-      navigator={app._id === active && $deviceInfo.navigator.visible}
       on:click={() => {
         if (app._id === active) dispatch('toggleNav')
       }}
@@ -91,6 +89,7 @@
 
 <style lang="scss">
   .HDXMoreApps {
+    display: block;
     // background-color: rgba(255, 255, 255, 0.01);
   }
 
