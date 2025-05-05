@@ -24,6 +24,9 @@
   export let notify: boolean = false
   export let expanded: Writable<boolean>
 
+    // navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
+    //           $deviceInfo.navigator.visible}
+
 </script>
 
 <button

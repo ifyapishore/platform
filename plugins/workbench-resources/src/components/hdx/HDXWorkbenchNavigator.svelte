@@ -205,9 +205,6 @@ TODO:
             expanded={expanded}
             label={notification.string.Inbox}
             selected={currentAppAlias === notificationId || inboxPopup !== undefined}
-            navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
-              $deviceInfo.navigator.visible}
-            appsMini={appsMini}
             on:click={(e) => {
               // WHY?
               if (e.metaKey || e.ctrlKey) return
