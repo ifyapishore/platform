@@ -76,7 +76,10 @@
       </div>
     <div class="HDXAppItemHero-Label" class:selected class:expanded={$expanded}>
       <!-- <Label label={label}/> -->
-      Talks
+      Talkabouts
+      {#if notify}
+        <div class="marker" />
+      {/if}
     </div>
   {/if}
 </button>

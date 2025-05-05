@@ -135,7 +135,7 @@ TODO:
     border-right: 1px solid var(--theme-navpanel-divider);
     z-index: 1000000;
 
-    /* margin-top: calc(var(--theme-hdx-app-title-height) * -1); */
+    margin-top: calc(var(--theme-hdx-app-title-height) * -1);
   }
 
   .HDXWorkbenchNavigator-Inner {
