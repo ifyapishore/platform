@@ -1,6 +1,6 @@
 // WorkbenchNavigatorStore.ts
 
-import { writable, derived, get, type Readable } from 'svelte/store'
+import { writable, derived, get, type Readable, type Subscriber } from 'svelte/store'
 import { pluginListStore } from '../stores/pluginListStore'
 import { userPreferencesStore } from '../stores/userPreferencesStore'
 
@@ -12,7 +12,7 @@ const state = writable({
 })
 
 // value barrier utility to limit recalculation
-function valueBarrier<T> (source: Readable<T>, isEqual = (a: T, b: T) => a === b): Readable<T> {
+function valueBarrier<T>(source: Readable<T>, isEqual = (a: T, b: T) => a === b): Readable<T> {
   let last: T
   return derived(source, ($v, set) => {
     if (!isEqual($v, last)) {
@@ -22,28 +22,80 @@ function valueBarrier<T> (source: Readable<T>, isEqual = (a: T, b: T) => a === b
   })
 }
 
+// key-based value barrier using hash-style comparison before optional equality check on full value
+function valueKeyBarrier<T, K>(
+  source: Readable<T>,
+  keyOf: (v: T) => K,
+  isEqual: (a: T, b: T) => boolean = (a, b) => a === b,
+  memoizeKey: boolean = false
+): Readable<T> {
+  let lastKey: K
+  let lastValue: T
+  let hasKey = false
+  const keyCache = new WeakMap<T, K>()
+  return derived(source, ($v, set) => {
+    const key = memoizeKey
+      ? keyCache.get($v) ?? (() => {
+          const k = keyOf($v)
+          keyCache.set($v, k)
+          return k
+        })()
+      : keyOf($v)
+
+    if (!hasKey || key !== lastKey || !isEqual($v, lastValue)) {
+      lastKey = key
+      lastValue = $v
+      hasKey = true
+      set($v)
+    }
+  })
+}
+
+// promote legacy async values into store-friendly reactive output
+export function fromAsync<T>(promiseFn: () => Promise<T>): Readable<{ v: T | undefined; m: 'await' | 'ok' }> {
+  const store = writable<{ v: T | undefined; m: 'await' | 'ok' }>({ v: undefined, m: 'await' })
+  promiseFn().then(result => {
+    store.set({ v: result, m: 'ok' })
+  })
+  return store
+}
+
+// derived values (defined in correct order to avoid circular refs)
+const isExpanded = derived(state, s => s.expanded)
+const isWorkspaceMode = derived(state, s => s.workspaceMode)
+const isAppsEditMode = derived(state, s => s.appsEditMode)
+const hasPlugins = valueBarrier(derived(pluginListStore, list => list.length > 0))
+const prefersCompact = derived(userPreferencesStore, p => p.ui.compactMode === true)
+const isOn = derived([state, userPreferencesStore], ([$s, $p]) => $s.expanded && $p.ui.compactMode === false)
+const isOnTop = derived(state, $s => $s.workspaceMode && get(isOn))
+const isOnBottom = derived(state, $s => $s.appsEditMode && get(isOn))
+const isOnMiddle = derived([isOnTop, isOnBottom], ([top, bottom]) => !top && !bottom)
+const isTaskCompleted = fromAsync(() => Promise.resolve(true))
+
 // store definition
 const storeDefinition = {
-  // reactive selectors
-  isExpanded: derived(state, s => s.expanded),
-  isWorkspaceMode: derived(state, s => s.workspaceMode),
-  isAppsEditMode: derived(state, s => s.appsEditMode),
-
-  // reactive integration with external stores (examples)
-  hasPlugins: valueBarrier(derived(pluginListStore, list => list.length > 0)),
-  prefersCompact: derived(userPreferencesStore, p => p.ui.compactMode === true),
+  isExpanded,
+  isWorkspaceMode,
+  isAppsEditMode,
+  hasPlugins,
+  prefersCompact,
+  isOn,
+  isOnTop,
+  isOnBottom,
+  isOnMiddle,
+  isTaskCompleted,
 
   // actions
-  onHover () {
+  onHover() {
     state.update(s => ({ ...s, expanded: true }))
   },
-  onBlur () {
+  onBlur() {
     state.update(s => ({ ...s, expanded: false, workspaceMode: false }))
   },
-  toggleWorkspaceMode () {
+  toggleWorkspaceMode() {
     state.update(s => ({ ...s, workspaceMode: !s.workspaceMode }))
   },
-  toggleAppsEditMode () {
+  toggleAppsEditMode() {
     state.update(s => ({ ...s, appsEditMode: !s.appsEditMode }))
   }
 }
@@ -73,83 +125,52 @@ This store provides a reactive, centralized state for managing UI transitions an
 ✅ Architecture:
 1. Global store with internal `state` object.
 2. Exposes **per-field derived values** (`isExpanded`, `isWorkspaceMode`, etc.) for precise reactivity.
-3. Integrates **external stores** via derived values and `valueBarrier()` to prevent unnecessary recalculations.
+3. Integrates **external stores** via derived values and `valueBarrier()` or `valueKeyBarrier()` to prevent unnecessary recalculations.
 4. All **actions** are centralized and update multiple fields transactionally.
 5. Store object is passed as a single prop to children.
 6. Children use `$store.isExpanded` or invoke `store.toggleWorkspaceMode()` directly.
 
-📌 Example usage in child:
-```svelte
-<script lang="ts">
-  import type { IWorkbenchStore } from './WorkbenchNavigatorStore'
-  export let store: IWorkbenchStore
-</script>
+📌 When to use:
 
-<div class:expanded={$store.isExpanded}>
-  <button on:click={store.toggleWorkspaceMode}>Toggle Workspace</button>
-</div>
-```
+- Use `valueBarrier()` when:
+  - You want to prevent rerender unless the entire value is equal.
+  - You can afford (or require) comparing full values directly.
 
-📌 Example usage in parent:
-```svelte
-<script>
-  import { store as navigatorStore } from './WorkbenchNavigatorStore'
-  import NavigatorPanel from './NavigatorPanel.svelte'
-</script>
+- Use `valueKeyBarrier()` when:
+  - The actual value is **expensive to compare or noisy**, but you're interested in derived hash/key (like `id`, `version`, `status`).
+  - The source value updates frequently but shouldn't trigger rerenders unless the derived key changes.
+  - You want a `hashCode + equals`-style optimization:
+    - Fast `keyOf()` short-circuits frequent updates
+    - Optional `isEqual()` compares final value only if needed
+    - If `memoizeKey = true`, `keyOf()` is only called once per object identity (if source is stable).
 
-<NavigatorPanel store={navigatorStore} />
-```
-
-📌 🔄 Local instance (alternative to singleton):
+📌 Example:
 ```ts
-// WorkbenchNavigatorStore.local.ts
-import { writable, derived, type Readable } from 'svelte/store'
+valueKeyBarrier(appListStore, list => list.serverVersion + ':' + list.clientVersion, (a, b) => deepEqual(a, b))
+```
+This avoids re-rendering when internal list content changes (e.g. during background fetch), but updates UI when server/client version updates.
 
-export function createWorkbenchStore(): IWorkbenchStore {
-  const state = writable({
-    expanded: false,
-    workspaceMode: false,
-    appsEditMode: false
-  })
+📌 Promoting Promises into UI state:
+```ts
+const promoted = fromAsync(() => legacyStore.getProfile())
+$: if ($promoted.m === 'await') showSpinner()
+```
+Provides `{ v, m }` for safe async tracking.
 
-  return {
-    isExpanded: derived(state, s => s.expanded),
-    isWorkspaceMode: derived(state, s => s.workspaceMode),
-    isAppsEditMode: derived(state, s => s.appsEditMode),
-    hasPlugins: derived([], () => false), // override as needed
-    prefersCompact: derived([], () => false),
-    onHover: () => state.update(s => ({ ...s, expanded: true })),
-    onBlur: () => state.update(s => ({ ...s, expanded: false, workspaceMode: false })),
-    toggleWorkspaceMode: () => state.update(s => ({ ...s, workspaceMode: !s.workspaceMode })),
-    toggleAppsEditMode: () => state.update(s => ({ ...s, appsEditMode: !s.appsEditMode }))
-  }
-}
+📌 Example store usage:
+```ts
+isTaskCompleted: fromAsync(() => taskStatusApi.getStatus('task1'))
 ```
 
-```svelte
-<script lang="ts">
-  import { createWorkbenchStore, type IWorkbenchStore } from './WorkbenchNavigatorStore.local'
-  const store: IWorkbenchStore = createWorkbenchStore()
-</script>
+📌 Pattern for dependent derived values:
+If derived values depend on other derived fields within the same store:
+1. **Define them outside** the store object first
+2. Use `get(storeField)` only during initialization
+3. Maintain definition **order** to avoid circular references
 
-<NavigatorPanel store={store} />
+```ts
+const isOn = derived([state, otherStore], ...)
+const isOnTop = derived(state, ... get(isOn))
+const isOnMiddle = derived([isOnTop, isOnBottom], ...)
 ```
-
-📌 Integration with external stores:
-- `pluginListStore` is used to derive `hasPlugins`
-- `userPreferencesStore` is used to derive `prefersCompact`
-
-🧠 Answers to Key Questions:
-
-1️⃣ **Will children rerender in one cycle on complex action?**
-✅ Yes. Svelte batches updates to `writable` stores during a single `.update()` call, so if multiple properties change together (as in `onBlur()`), all derived store subscribers update in **one render cycle**.
-
-2️⃣ **Will children rerender only on real dependencies?**
-✅ Yes. Children using only `$store.isExpanded` will not rerender if only `workspaceMode` changes. `valueBarrier()` ensures costly derived computations are skipped if values haven't changed.
-
-🛠️ Tips:
-- Use `valueBarrier()` around derived stores to debounce recalculations from heavy or unstable dependencies.
-- Keep store integration code colocated and scoped logically.
-- Consider prefixing external store accessors with `has`, `uses`, `prefers` for semantic clarity.
-
 */
