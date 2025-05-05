@@ -27,13 +27,85 @@ TODO:
 -->
 <script lang="ts">
   import { onMount } from 'svelte'
+  import notification, { DocNotifyContext, InboxNotification, notificationId } from '@hcengineering/notification'
+  import { BrowserNotificatator, InboxNotificationsClientImpl } from '@hcengineering/notification-resources'
+  import { broadcastEvent, getMetadata, getResource, IntlString, translate } from '@hcengineering/platform'
+
+  import { WithLookup } from '@hcengineering/core'
   import {
-    deviceOptionsStore as deviceInfo
+    accessDeniedStore,
+    ActionHandler,
+    ListSelectionProvider,
+    migrateViewOpttions,
+    NavLink,
+    parseLinkId,
+    updateFocus
+  } from '@hcengineering/view-resources'
+  import type {
+    Application,
+    NavigatorModel,
+    SpecialNavModel,
+    ViewConfiguration,
+    WorkbenchTab
+  } from '@hcengineering/workbench'
+  import contact, { getCurrentEmployee } from '@hcengineering/contact'
+  import {
+    AnyComponent,
+    areLocationsEqual,
+    Button,
+    closePanel,
+    closePopup,
+    closeTooltip,
+    CompAndProps,
+    Component,
+    defineSeparators,
+    deviceOptionsStore as deviceInfo,
+    Dock,
+    getCurrentLocation,
+    getLocation,
+    IconSettings,
+    Label,
+    languageStore,
+    Location,
+    location,
+    locationStorageKeyId,
+    locationToUrl,
+    mainSeparators,
+    navigate,
+    showPanel,
+    PanelInstance,
+    Popup,
+    PopupAlignment,
+    PopupPosAlignment,
+    PopupResult,
+    popupstore,
+    pushRootBarComponent,
+    ResolvedLocation,
+    resolvedLocationStore,
+    Separator,
+    setResolvedLocation,
+    showPopup,
+    TooltipInstance,
+    workbenchSeparators,
+    resizeObserver,
+    isSameSegments
   } from '@hcengineering/ui'
+  import setting from '@hcengineering/setting'
+  import support, { supportLink, SupportStatus } from '@hcengineering/support'
+  import workbench from '../../plugin'
+  import AccountPopup from '../AccountPopup.svelte'
+  import AppSwitcher from '../AppSwitcher.svelte'
+  import TopMenu from '../icons/TopMenu.svelte'
 
   import { writable } from 'svelte/store'
   import HDXWorkbenchNavigatorHeader from './HDXWorkbenchNavigatorHeader.svelte'
-
+  import HDXAppItemHero from './HDXAppItemHero.svelte'
+  import HDXWorkbenchNavigatorFooter from './HDXWorkbenchNavigatorFooter.svelte'
+  import HDXWorkbenchNavigatorFooterItem from './HDXWorkbenchNavigatorFooterItem.svelte'
+  import HDXApplications from './HDXApplications.svelte'
+  import HDXAppItem from './HDXAppItem.svelte'
+  import AppItem from '../AppItem.svelte'
+  import { Person } from '@hcengineering/contact'
   // debug/beahvior constants;
   const hdxAlwaysExpand = false
   const useFirstTimeShow = false
@@ -44,10 +116,23 @@ TODO:
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
   export const appMenuEditMode = writable(false)
   export const workspaceColor = writable(1)
+
   export let windowWorkspaceName: string
+  export let currentAppAlias: string | undefined
+  export let inboxPopup: PopupResult | undefined
+  export let apps: Application[]
+  export let appsMini: boolean
+  export let toggleNav: () => void
+  export let hasInboxNotifications: boolean
+  export let currentApplication: Application | undefined
+  export let popupPosition: PopupPosAlignment
+  export let supportStatus: SupportStatus | undefined
+  export let supportWidgetLoading: boolean
+  export let person: WithLookup<Person> | undefined
 
   const hoveredOnce = writable(hdxAlwaysExpand)
 
+  let lastLoc: Location | undefined = undefined
   function handleHover (): void {
     console.log('Hover started')
     expanded.set(true)
@@ -111,15 +196,105 @@ TODO:
     onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
     />
       {#if !$expandedWorkspaces}
-        <slot name="content"
-          expanded={expanded}
-          appMenuEditMode={appMenuEditMode}
-          expandedWorkspaces={expandedWorkspaces}
+        <!-- <ActivityStatus status="active" /> -->
+        <NavLink
+          app={notificationId}
+          shrink={0}
+          disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId}
+        >
+          <HDXAppItemHero
+            expanded={expanded}
+            label={notification.string.Inbox}
+            selected={currentAppAlias === notificationId || inboxPopup !== undefined}
+            navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
+              $deviceInfo.navigator.visible}
+            appsMini={appsMini}
+            on:click={(e) => {
+              if (e.metaKey || e.ctrlKey) return
+              if (!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId) {
+                // unexpected behavior without visual notification
+                toggleNav()
+              } else if (currentAppAlias === notificationId && lastLoc !== undefined) {
+                e.preventDefault()
+                e.stopPropagation()
+                navigate(lastLoc)
+                lastLoc = undefined
+              } else {
+                lastLoc = $location
+              }
+            }}
+            notify={hasInboxNotifications}
+          />
+        </NavLink>
+        <HDXApplications
+          {apps}
+          {expanded}
+          {appMenuEditMode}
+          active={currentApplication?._id}
+          direction={$deviceInfo.navigator.direction}
+          appsMini={appsMini}
+          on:toggleNav={toggleNav}
         />
-        <slot name="footer"
-          expanded={expanded}
-          expandedWorkspaces={expandedWorkspaces}
+        <HDXAppItem
+          icon={TopMenu}
+          expanded={false}
+          label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
+          selected={!$deviceInfo.navigator.visible}
+          appsMini={appsMini}
+          on:click={toggleNav}
         />
+        <HDXWorkbenchNavigatorFooter
+          {expanded}
+          {expandedWorkspaces}
+          >
+          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+            <AppItem
+              icon={IconSettings}
+              label={setting.string.Settings}
+              on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
+            />
+          </HDXWorkbenchNavigatorFooterItem>
+          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+            <a href={supportLink} target="_blank" rel="noopener noreferrer">
+              <AppItem
+                icon={support.icon.Support}
+                label={support.string.ContactUs}
+                notify={supportStatus?.hasUnreadMessages}
+                selected={supportStatus?.visible}
+                loading={supportWidgetLoading}
+              />
+            </a>
+        </HDXWorkbenchNavigatorFooterItem>
+      <!-- {#await supportClient then client}
+          {#if client}
+            <AppItem
+              icon={support.icon.Support}
+              label={support.string.ContactUs}
+              size={appsMini ? 'small' : 'large'}
+              notify={supportStatus?.hasUnreadMessages}
+              selected={supportStatus?.visible}
+              loading={supportWidgetLoading}
+              on:click={async () => {
+                await handleToggleSupportWidget()
+              }}
+            />
+          {/if}
+        {/await} -->
+        <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <!-- svelte-ignore a11y-no-static-element-interactions -->
+          <div
+            id="profile-button"
+            class="cursor-pointer"
+            on:click|stopPropagation={() => showPopup(AccountPopup, {}, popupPosition)}
+          >
+            <Component
+              is={contact.component.Avatar}
+              props={{ person, name: person?.name, size: 'small', showStatus: true }}
+            />
+          </div>
+        </HDXWorkbenchNavigatorFooterItem>
+      </HDXWorkbenchNavigatorFooter>
     {/if}
   </div>
 </div>

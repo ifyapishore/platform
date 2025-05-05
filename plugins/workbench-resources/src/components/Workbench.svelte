@@ -746,7 +746,6 @@
   $: checkInbox($popupstore)
 
   let inboxPopup: PopupResult | undefined = undefined
-  let lastLoc: Location | undefined = undefined
 
   defineSeparators('workbench', workbenchSeparators)
   defineSeparators('main', mainSeparators)
@@ -788,113 +787,22 @@
     </clipPath>
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
-    <HDXWorkbenchNavigator windowWorkspaceName={windowWorkspaceName}>
-      <svelte:fragment slot="content" let:expanded let:appMenuEditMode>
-        <!-- <ActivityStatus status="active" /> -->
-        <NavLink
-          app={notificationId}
-          shrink={0}
-          disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId}
-        >
-          <HDXAppItemHero
-            expanded={expanded}
-            label={notification.string.Inbox}
-            selected={currentAppAlias === notificationId || inboxPopup !== undefined}
-            navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
-              $deviceInfo.navigator.visible}
-            appsMini={appsMini}
-            on:click={(e) => {
-              if (e.metaKey || e.ctrlKey) return
-              if (!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId) {
-                // unexpected behavior without visual notification
-                toggleNav()
-              } else if (currentAppAlias === notificationId && lastLoc !== undefined) {
-                e.preventDefault()
-                e.stopPropagation()
-                navigate(lastLoc)
-                lastLoc = undefined
-              } else {
-                lastLoc = $location
-              }
-            }}
-            notify={hasInboxNotifications}
-          />
-        </NavLink>
-        <HDXApplications
-          {apps}
-          {expanded}
-          {appMenuEditMode}
-          active={currentApplication?._id}
-          direction={$deviceInfo.navigator.direction}
-          appsMini={appsMini}
-          on:toggleNav={toggleNav}
-        />
-        <HDXAppItem
-          icon={TopMenu}
-          expanded={false}
-          label={$deviceInfo.navigator.visible ? workbench.string.HideMenu : workbench.string.ShowMenu}
-          selected={!$deviceInfo.navigator.visible}
-          appsMini={appsMini}
-          on:click={toggleNav}
-        />
-      </svelte:fragment>
 
-      <svelte:fragment slot="footer" let:expanded let:expandedWorkspaces>
-        <HDXWorkbenchNavigatorFooter
-          {expanded}
-          {expandedWorkspaces}
-          >
-          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
-            <AppItem
-              icon={IconSettings}
-              label={setting.string.Settings}
-              on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
-            />
-          </HDXWorkbenchNavigatorFooterItem>
-          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
-            <a href={supportLink} target="_blank" rel="noopener noreferrer">
-              <AppItem
-                icon={support.icon.Support}
-                label={support.string.ContactUs}
-                notify={supportStatus?.hasUnreadMessages}
-                selected={supportStatus?.visible}
-                loading={supportWidgetLoading}
-              />
-            </a>
-        </HDXWorkbenchNavigatorFooterItem>
-      <!-- {#await supportClient then client}
-          {#if client}
-            <AppItem
-              icon={support.icon.Support}
-              label={support.string.ContactUs}
-              size={appsMini ? 'small' : 'large'}
-              notify={supportStatus?.hasUnreadMessages}
-              selected={supportStatus?.visible}
-              loading={supportWidgetLoading}
-              on:click={async () => {
-                await handleToggleSupportWidget()
-              }}
-            />
-          {/if}
-        {/await} -->
-        <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
-          <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <!-- svelte-ignore a11y-no-static-element-interactions -->
-          <div
-            id="profile-button"
-            class="cursor-pointer"
-            on:click|stopPropagation={() => showPopup(AccountPopup, {}, popupPosition)}
-          >
-            <Component
-              is={contact.component.Avatar}
-              props={{ person, name: person?.name, size: 'small', showStatus: true }}
-            />
-          </div>
-        </HDXWorkbenchNavigatorFooterItem>
-      </HDXWorkbenchNavigatorFooter>
-    </svelte:fragment>
+    <HDXWorkbenchNavigator
+      windowWorkspaceName={windowWorkspaceName}
+      inboxPopup={inboxPopup}
+      apps={apps}
+      appsMini={appsMini}
+      toggleNav={toggleNav}
+      currentAppAlias={currentAppAlias}
+      hasInboxNotifications={hasInboxNotifications}
+      currentApplication={currentApplication}
+      popupPosition={popupPosition}
+      supportStatus={supportStatus}
+      supportWidgetLoading={supportWidgetLoading}
+      person={person}
+    />
 
-    </HDXWorkbenchNavigator>
     <ActionContext
       context={{
         mode: 'workbench',
