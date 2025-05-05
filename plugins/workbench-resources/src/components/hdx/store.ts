@@ -1,6 +1,6 @@
 // WorkbenchNavigatorStore.ts
 
-import { writable, derived, get, type Readable } from 'svelte/store'
+import { writable, derived, type Readable } from 'svelte/store'
 import { pluginListStore } from '../stores/pluginListStore'
 import { userPreferencesStore } from '../stores/userPreferencesStore'
 
@@ -18,7 +18,7 @@ type ExtractStoreShape<T> = {
 // ───────────────────────────────────────────────────────────────
 // VALUE BARRIERS
 // ───────────────────────────────────────────────────────────────
-export function valueBarrier<T>(source: Readable<T>, isEqual = (a: T, b: T) => a === b): Readable<T> {
+export function valueBarrier<T> (source: Readable<T>, isEqual = (a: T, b: T) => a === b): Readable<T> {
   let last: T
   return derived(source, ($v, set) => {
     if (!isEqual($v, last)) {
@@ -28,7 +28,7 @@ export function valueBarrier<T>(source: Readable<T>, isEqual = (a: T, b: T) => a
   })
 }
 
-export function valueKeyBarrier<T, K>(
+export function valueKeyBarrier<T extends WeakKey, K> (
   source: Readable<T>,
   keyOf: (v: T) => K,
   isEqual: (a: T, b: T) => boolean = (a, b) => a === b,
@@ -65,7 +65,7 @@ export function fromAsync<T> (promiseFn: () => Promise<T>): Readable<{ v: T | un
 }
 
 // ───────────────────────────────────────────────────────────────
-// STORE DEFINITION
+// STORE INTERNALS
 // ───────────────────────────────────────────────────────────────
 const state = writable({
   expanded: false,
@@ -106,22 +106,25 @@ const storeDefinition = {
   isAppsEditMode,
   hasPlugins,
   prefersCompact,
-  isOn,
+  //   isOn, // some internal logic CANBE/MUST be hidden from the outside due the BL
   isOnTop,
   isOnBottom,
   isOnMiddle,
   isTaskCompleted,
 
-  // actions
+  // actions (TODO: redux style, optimize)
   onHover () {
     state.update(s => ({ ...s, expanded: true }))
   },
+
   onBlur () {
     state.update(s => ({ ...s, expanded: false, workspaceMode: false }))
   },
+
   toggleWorkspaceMode () {
     state.update(s => ({ ...s, workspaceMode: !s.workspaceMode }))
   },
+
   toggleAppsEditMode () {
     state.update(s => ({ ...s, appsEditMode: !s.appsEditMode }))
   }
