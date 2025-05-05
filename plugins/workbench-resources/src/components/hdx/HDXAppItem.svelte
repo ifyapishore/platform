@@ -83,11 +83,14 @@
     &.loading {
       pointer-events: none;
     }
+
     &:hover {
       background-color: var(--hdx-workspace-panel-hover-bg-color);
     }
+
     &.selected {
       background-color: var(--hdx-workspace-panel-selected-bg-color);
+
       &:hover {
         background-color: var(--hdx-workspace-panel-hover-bg-color);
       }
@@ -119,6 +122,7 @@
     text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
     text-overflow: ellipsis;
     white-space: nowrap;
+
     &.expanded {
       display: flex;
     }

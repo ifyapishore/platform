@@ -106,15 +106,22 @@ TODO:
   import HDXAppItem from './HDXAppItem.svelte'
   import AppItem from '../AppItem.svelte'
   import { Person } from '@hcengineering/contact'
-  // debug/beahvior constants;
+
+  // debug/behavior constants;
+  // use for debug purpuses only
   const hdxAlwaysExpand = false
+  // if true, the navigator will always be expanded at first and collapse after delay
   const useFirstTimeShow = false
+  const firstTimeDelay = 3000 // 3 seconds
   const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 
   // Local state
   export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
   export const appMenuEditMode = writable(false)
+  // used to prevent the navigator if user hover it durig firstTimeDelay
+  const hoveredOnce = writable(hdxAlwaysExpand)
+
   export const workspaceColor = writable(1)
 
   export let windowWorkspaceName: string
@@ -130,30 +137,20 @@ TODO:
   export let supportWidgetLoading: boolean
   export let person: WithLookup<Person> | undefined
 
-  const hoveredOnce = writable(hdxAlwaysExpand)
-
   let lastLoc: Location | undefined = undefined
+
   function handleHover (): void {
-    console.log('Hover started')
     expanded.set(true)
     hoveredOnce.set(true)
-    // TODO: visual feedback for hover inactivity though global model
   }
 
   function handleBlur (): void {
-    console.log('Hover ended')
     expanded.set(hdxAlwaysExpand)
+    // autoclose edit mode on blur
     appMenuEditMode.set(false)
     if (!hdxAlwaysExpandWorkspaces) {
       expandedWorkspaces.set(false)
     }
-    // TODO: visual feedback for hover inactivity though global model
-  }
-
-  function handleClick (): void {
-    console.log('Clicked inside WorkbenchNavigator')
-    // You can collapse or do something here
-    // event.stopPropagation(); // Prevent bubbling if needed
   }
 
   function onToggleExpandedWorkspaces (): void {
@@ -162,27 +159,29 @@ TODO:
     }
   }
 
-  // Rendering shortcuts
-  $: expandedWide = $expanded && $expandedWorkspaces
-
   onMount(() => {
     if (useFirstTimeShow) {
       setTimeout(() => {
         if (!$hoveredOnce) {
           expanded.set(hdxAlwaysExpand)
         }
-      }, 3000)
+      }, firstTimeDelay)
     }
   })
+
+  // Rendering shortcuts
+  $: expandedWide = $expanded && $expandedWorkspaces
+
 </script>
 
 <div
-  class="HDXWorkbenchNavigator {$deviceInfo.navigator.direction} panel-theme-{$workspaceColor} no-print"
+  class="HDXWorkbenchNavigator
+  {$deviceInfo.navigator.direction}
+  panel-theme-{$workspaceColor} no-print"
   class:lastDivider={!$deviceInfo.navigator.visible}
   role="presentation"
   on:mouseenter={handleHover}
-  on:mouseleave={handleBlur}
-  on:click={handleClick}>
+  on:mouseleave={handleBlur}>
   <div
     class="HDXWorkbenchNavigator-Inner panel-theme-{$workspaceColor}"
     class:expanded={$expanded}
@@ -210,9 +209,11 @@ TODO:
               $deviceInfo.navigator.visible}
             appsMini={appsMini}
             on:click={(e) => {
+              // WHY?
               if (e.metaKey || e.ctrlKey) return
+              // WHY: It is mixed logic from VSCode.
+              // Unexpected behavior without visual notification for most of non tech users
               if (!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId) {
-                // unexpected behavior without visual notification
                 toggleNav()
               } else if (currentAppAlias === notificationId && lastLoc !== undefined) {
                 e.preventDefault()
@@ -308,12 +309,13 @@ TODO:
     width: var(--app-panel-width);
     max-width: var(--app-panel-width);
 
-    height: 100%;
+    height: 100vh;
 
     background-color: var(--theme-navpanel-color);
     border-right: 1px solid var(--theme-navpanel-divider);
     z-index: 1000000;
 
+    //TODO: tmp fix for the main layout
     margin-top: calc(var(--theme-hdx-app-title-height) * -1);
   }
 
