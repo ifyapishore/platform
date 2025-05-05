@@ -126,12 +126,10 @@
   } from '../workbench'
   import { get } from 'svelte/store'
   import HDXWorkbenchNavigator from './hdx/HDXWorkbenchNavigator.svelte'
-  import HDXWorkbenchNavigatorHeader from './hdx/HDXWorkbenchNavigatorHeader.svelte'
   import HDXWorkbenchNavigatorFooter from './hdx/HDXWorkbenchNavigatorFooter.svelte'
   import HDXWorkbenchNavigatorFooterItem from './hdx/HDXWorkbenchNavigatorFooterItem.svelte'
   import HDXAppItem from './hdx/HDXAppItem.svelte'
   import HDXAppItemHero from './hdx/HDXAppItemHero.svelte'
-  import HDXMoreApps from './hdx/HDXMoreApps.svelte'
 
   const HIDE_NAVIGATOR = 720
   const FLOAT_ASIDE = 1024 // lg
@@ -790,19 +788,7 @@
     </clipPath>
   </svg>
   <div class="workbench-container apps-{$deviceInfo.navigator.direction}">
-    <HDXWorkbenchNavigator>
-      <svelte:fragment slot="header" let:expanded let:expandedWorkspaces 
-        let:workspaceColor
-      let:onToggleExpandedWorkspaces>
-        <HDXWorkbenchNavigatorHeader
-          workspaceColor={workspaceColor}
-          windowWorkspaceName={windowWorkspaceName}
-          expanded={expanded}
-          {expandedWorkspaces}
-          onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
-          />
-      </svelte:fragment>
-
+    <HDXWorkbenchNavigator windowWorkspaceName={windowWorkspaceName}>
       <svelte:fragment slot="content" let:expanded let:appMenuEditMode>
         <!-- <ActivityStatus status="active" /> -->
         <NavLink

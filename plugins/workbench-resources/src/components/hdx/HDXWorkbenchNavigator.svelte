@@ -32,6 +32,7 @@ TODO:
   } from '@hcengineering/ui'
 
   import { writable } from 'svelte/store'
+  import HDXWorkbenchNavigatorHeader from './HDXWorkbenchNavigatorHeader.svelte'
 
   // debug/beahvior constants;
   const hdxAlwaysExpand = false
@@ -43,6 +44,7 @@ TODO:
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
   export const appMenuEditMode = writable(false)
   export const workspaceColor = writable(1)
+  export let windowWorkspaceName: string
 
   const hoveredOnce = writable(hdxAlwaysExpand)
 
@@ -69,7 +71,7 @@ TODO:
     // event.stopPropagation(); // Prevent bubbling if needed
   }
 
-  function handleToggleWorkspaceSelector (): void {
+  function onToggleExpandedWorkspaces (): void {
     if (!hdxAlwaysExpandWorkspaces) {
       expandedWorkspaces.update(v => !v)
     }
@@ -101,11 +103,13 @@ TODO:
     class:expanded={$expanded}
     class:expandedWide={expandedWide}
     >
-    <slot name="header"
-      expanded={expanded}
-      expandedWorkspaces={expandedWorkspaces}
-      workspaceColor={workspaceColor}
-      onToggleExpandedWorkspaces={handleToggleWorkspaceSelector}/>
+    <HDXWorkbenchNavigatorHeader
+    workspaceColor={workspaceColor}
+    windowWorkspaceName={windowWorkspaceName}
+    expanded={expanded}
+    {expandedWorkspaces}
+    onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
+    />
       {#if !$expandedWorkspaces}
         <slot name="content"
           expanded={expanded}
