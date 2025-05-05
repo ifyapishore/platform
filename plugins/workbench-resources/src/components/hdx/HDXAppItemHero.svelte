@@ -74,7 +74,7 @@
         </svg>
       </div>
     <div class="HDXAppItemHero-Label" class:selected class:expanded={$expanded}>
-      <!-- <Label label={label}/> -->
+      <!-- TODO: i18n -->
       Talkabouts
       {#if notify}
         <div class="marker" />
