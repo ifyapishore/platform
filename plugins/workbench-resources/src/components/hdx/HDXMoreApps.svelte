@@ -79,12 +79,10 @@
       appsMini={false}
       selected={app._id === active}
       on:click={() => {
-        if (app._id === active) dispatch('toggleNav')
-      }}
-
-      on:click={() => {
         if ($appMenuEditMode) {
           showApplication(app)
+        } else {
+          if (app._id === active) dispatch('toggleNav')
         }
       }}/>
       </NavLink>
