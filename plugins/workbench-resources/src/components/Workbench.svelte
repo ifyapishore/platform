@@ -704,15 +704,6 @@
     subscribeMobile(setTheme)
   })
 
-  function checkInbox (popups: CompAndProps[]) {
-    if (inboxPopup !== undefined) {
-      const exists = popups.find((p) => p.id === inboxPopup?.id)
-      if (!exists) {
-        inboxPopup = undefined
-      }
-    }
-  }
-
   let supportStatus: SupportStatus | undefined = undefined
   function handleSupportStatusChanged (status: SupportStatus) {
     supportStatus = status
@@ -742,10 +733,6 @@
     clearTimeout(timer)
     supportWidgetLoading = false
   }
-
-  $: checkInbox($popupstore)
-
-  let inboxPopup: PopupResult | undefined = undefined
 
   defineSeparators('workbench', workbenchSeparators)
   defineSeparators('main', mainSeparators)
@@ -790,7 +777,6 @@
 
     <HDXWorkbenchNavigator
       windowWorkspaceName={windowWorkspaceName}
-      inboxPopup={inboxPopup}
       apps={apps}
       appsMini={appsMini}
       toggleNav={toggleNav}

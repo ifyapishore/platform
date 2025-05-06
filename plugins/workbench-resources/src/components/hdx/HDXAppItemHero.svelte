@@ -23,8 +23,6 @@
   export let notify: boolean = false
   export let workbenchUiModel: IWorkbenchUiModel
 
-    // navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
-    //           $deviceInfo.navigator.visible}
   $: expanded = workbenchUiModel.isExpanded
 </script>
 

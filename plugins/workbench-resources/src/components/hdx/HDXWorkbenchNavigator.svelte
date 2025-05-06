@@ -112,7 +112,6 @@ TODO:
   // Props
   export let windowWorkspaceName: string
   export let currentAppAlias: string | undefined
-  export let inboxPopup: PopupResult | undefined
   export let apps: Application[]
   export let appsMini: boolean
   export let toggleNav: () => void
@@ -161,7 +160,7 @@ TODO:
           <HDXAppItemHero
             {workbenchUiModel}
             label={notification.string.Inbox}
-            selected={currentAppAlias === notificationId || inboxPopup !== undefined}
+            selected={currentAppAlias === notificationId}
             on:click={(e) => {
               // WHY?
               if (e.metaKey || e.ctrlKey) return
