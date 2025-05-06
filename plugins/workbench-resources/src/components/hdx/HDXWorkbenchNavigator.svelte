@@ -30,7 +30,7 @@ TODO:
   import notification, { DocNotifyContext, InboxNotification, notificationId } from '@hcengineering/notification'
   import { BrowserNotificatator, InboxNotificationsClientImpl } from '@hcengineering/notification-resources'
   import { broadcastEvent, getMetadata, getResource, IntlString, translate } from '@hcengineering/platform'
-
+  import { get } from 'svelte/store'
   import { WithLookup } from '@hcengineering/core'
   import {
     accessDeniedStore,
@@ -106,7 +106,7 @@ TODO:
   import HDXAppItem from './HDXAppItem.svelte'
   import AppItem from '../AppItem.svelte'
   import { Person } from '@hcengineering/contact'
-
+  import { workbenchUiModel } from './HDXWorkspaceModel'
   // debug/behavior constants;
   // use for debug purpuses only
   const hdxAlwaysExpand = false
@@ -116,7 +116,7 @@ TODO:
   const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 
   // Local state
-  export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
+  // export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
   export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
   export const appMenuEditMode = writable(false)
   // used to prevent the navigator if user hover it durig firstTimeDelay
@@ -140,12 +140,13 @@ TODO:
   let lastLoc: Location | undefined = undefined
 
   function handleHover (): void {
-    expanded.set(true)
+    workbenchUiModel.onHover()
     hoveredOnce.set(true)
   }
 
   function handleBlur (): void {
-    expanded.set(hdxAlwaysExpand)
+    workbenchUiModel.onBlur()
+    // expanded.set(hdxAlwaysExpand)
     // autoclose edit mode on blur
     appMenuEditMode.set(false)
     if (!hdxAlwaysExpandWorkspaces) {
@@ -163,25 +164,23 @@ TODO:
     if (useFirstTimeShow) {
       setTimeout(() => {
         if (!$hoveredOnce) {
-          expanded.set(hdxAlwaysExpand)
+          // expanded.set(hdxAlwaysExpand)
         }
       }, firstTimeDelay)
     }
   })
 
   // Rendering shortcuts
-  $: expandedWide = $expanded && $expandedWorkspaces
+  $: expanded = workbenchUiModel.isExpanded
+  $: expandedWide = get(workbenchUiModel.isExpanded) && $expandedWorkspaces
 
 </script>
 
 <div
-  class="HDXWorkbenchNavigator
-  {$deviceInfo.navigator.direction}
-  panel-theme-{$workspaceColor} no-print"
-  class:lastDivider={!$deviceInfo.navigator.visible}
+  class="HDXWorkbenchNavigator panel-theme-{$workspaceColor} no-print"
+  class:expanded={get(workbenchUiModel.isExpanded)}
   role="presentation"
-  on:mouseenter={handleHover}
-  on:mouseleave={handleBlur}>
+  on:mouseenter={handleHover} on:mouseleave={handleBlur}>
   <div
     class="HDXWorkbenchNavigator-Inner panel-theme-{$workspaceColor}"
     class:expanded={$expanded}
@@ -190,7 +189,7 @@ TODO:
     <HDXWorkbenchNavigatorHeader
     workspaceColor={workspaceColor}
     windowWorkspaceName={windowWorkspaceName}
-    expanded={expanded}
+    {workbenchUiModel}
     {expandedWorkspaces}
     onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
     />
@@ -202,7 +201,7 @@ TODO:
           disabled={!$deviceInfo.navigator.visible && $deviceInfo.navigator.float && currentAppAlias === notificationId}
         >
           <HDXAppItemHero
-            expanded={expanded}
+            {workbenchUiModel}
             label={notification.string.Inbox}
             selected={currentAppAlias === notificationId || inboxPopup !== undefined}
             on:click={(e) => {
@@ -226,7 +225,7 @@ TODO:
         </NavLink>
         <HDXApplications
           {apps}
-          {expanded}
+          {workbenchUiModel}
           {appMenuEditMode}
           active={currentApplication?._id}
           direction={$deviceInfo.navigator.direction}
@@ -242,17 +241,17 @@ TODO:
           on:click={toggleNav}
         />
         <HDXWorkbenchNavigatorFooter
-          {expanded}
+          {workbenchUiModel}
           {expandedWorkspaces}
           >
-          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+          <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel} {expandedWorkspaces}>
             <AppItem
               icon={IconSettings}
               label={setting.string.Settings}
               on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
             />
           </HDXWorkbenchNavigatorFooterItem>
-          <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+          <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel} {expandedWorkspaces}>
             <a href={supportLink} target="_blank" rel="noopener noreferrer">
               <AppItem
                 icon={support.icon.Support}
@@ -278,7 +277,7 @@ TODO:
             />
           {/if}
         {/await} -->
-        <HDXWorkbenchNavigatorFooterItem mode="action" {expanded} {expandedWorkspaces}>
+        <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel} {expandedWorkspaces}>
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div

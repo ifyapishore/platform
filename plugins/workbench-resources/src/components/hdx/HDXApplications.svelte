@@ -23,22 +23,24 @@
   import workbench from '@hcengineering/workbench'
   import inbox, { inboxId } from '@hcengineering/inbox'
   import chat, { chatId } from '@hcengineering/chat'
+  import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
 
   import { hideApplication, isAppAllowed } from '../../utils'
   import HDXAppItem from './HDXAppItem.svelte'
   import HDXScrollable from './HDXScrollable.svelte'
   import HDXMoreApps from './HDXMoreApps.svelte'
 
+  export let workbenchUiModel: IWorkbenchUiModel
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []
   export let direction: 'vertical' | 'horizontal' = 'vertical'
 
   export let appsMini: boolean
-  export let expanded: Writable<boolean>
   export let appMenuEditMode: Writable<boolean>
 
   const dispatch = createEventDispatcher()
 
+  $: expanded = workbenchUiModel.isExpanded
   let loaded: boolean = false
   let hiddenAppsIds: Array<Ref<Application>> = []
   const hiddenAppsIdsQuery = createQuery()

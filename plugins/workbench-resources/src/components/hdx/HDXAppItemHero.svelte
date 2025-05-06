@@ -13,20 +13,19 @@
 // limitations under the License.
 -->
 <script lang="ts">
-  import { Writable } from 'svelte/store'
-
   import type { IntlString } from '@hcengineering/platform'
   import { Loading } from '@hcengineering/ui'
+  import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
 
   export let label: IntlString
   export let selected: boolean = false
   export let loading: boolean = false
   export let notify: boolean = false
-  export let expanded: Writable<boolean>
+  export let workbenchUiModel: IWorkbenchUiModel
 
     // navigator={(currentAppAlias === notificationId || inboxPopup !== undefined) &&
     //           $deviceInfo.navigator.visible}
-
+  $: expanded = workbenchUiModel.isExpanded
 </script>
 
 <button

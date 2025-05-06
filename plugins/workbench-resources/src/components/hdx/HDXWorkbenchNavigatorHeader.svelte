@@ -5,9 +5,10 @@
   import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
   import HDXWorkspaceInfo from './HDXWorkspaceInfo.svelte'
   import HDXWorkspaceColorPicker from './HDXWorkspaceColorPicker.svelte'
+  import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
 
   export let windowWorkspaceName: string
-  export let expanded: Writable<boolean>
+  export let workbenchUiModel: IWorkbenchUiModel
   export let expandedWorkspaces: Writable<boolean>
   export let workspaceColor: Writable<number>
   export let onToggleExpandedWorkspaces: () => void
@@ -25,41 +26,41 @@
 
 <div
   class="HDXWorkbenchNavigatorHeader panel-theme-{$workspaceColor} no-print"
-  class:expanded={$expanded}
+  class:expanded={workbenchUiModel.isExpanded}
   class:expandedWorkspace={$expandedWorkspaces}
 >
   <div
   class="HDXWorkbenchNavigatorHeaderTop"
-  class:expanded={$expanded}
+  class:expanded={workbenchUiModel.isExpanded}
   class:expandedWorkspace={$expandedWorkspaces}
   role="presentation"
   on:click={toggleWorkspace}
   >
     <div
       class="HDXWorkbenchNavigatorHeaderTop-Logo"
-      class:expanded={$expanded}
-    >
+      class:expanded={workbenchUiModel.isExpanded}
+      >
       <Logo mini={appsMini} workspace={windowWorkspaceName} />
     </div>
     <div
       class="HDXWorkbenchNavigatorHeaderTop-Workspace"
-      class:expanded={$expanded}
+      class:expanded={workbenchUiModel.isExpanded}
       role="presentation"
       on:click={toggleWorkspace}>
         <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Title"
-        class:expanded={$expanded}>
+        class:expanded={workbenchUiModel.isExpanded}>
         My Workspace
       </div>
       <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Subtitle"
-        class:expanded={$expanded}>
+        class:expanded={workbenchUiModel.isExpanded}>
         {windowWorkspaceName}
       </div>
     </div>
     <div
       class="HDXWorkbenchNavigatorHeaderTop-WorkspaceSwitch"
-      class:expanded={$expanded}
+      class:expanded={workbenchUiModel.isExpanded}
       role="presentation"
       on:click={toggleWorkspace}>
       <HDXWorkspaceSwitch expandedWorkspaces={$expandedWorkspaces} size="medium"/>
