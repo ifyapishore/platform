@@ -139,26 +139,20 @@ TODO:
 
 <div
   class="HDXWorkbenchNavigator panel-theme-{$workspaceColor} no-print"
-  class:expanded={get(workbenchUiModel.isExpanded)}
+  class:expanded={$expanded}
   role="presentation"
   on:mouseenter={workbenchUiModel.onHover} on:mouseleave={workbenchUiModel.onBlur}>
   <div
     class="HDXWorkbenchNavigator-Inner panel-theme-{$workspaceColor}"
     class:expanded={$expanded}
-    class:expandedWide={expandedWide}
+    class:expandedWide={$expandedWide}
     >
 
-    <HDXWorkbenchNavigatorHeader
-    windowWorkspaceName={windowWorkspaceName}
-    {workbenchUiModel}
-    />
+    <HDXWorkbenchNavigatorHeader windowWorkspaceName={windowWorkspaceName} {workbenchUiModel}/>
 
     {#if $isWorkspaceMode}
       <HDXWorkspaceSelector {workbenchUiModel}/>
-    {/if}
-
-    {#if !$isWorkspaceMode}
-        <!-- <ActivityStatus status="active" /> -->
+    {:else}
         <NavLink
           app={notificationId}
           shrink={0}
