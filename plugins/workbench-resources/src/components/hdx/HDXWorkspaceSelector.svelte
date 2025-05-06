@@ -17,6 +17,7 @@
   import login from '@hcengineering/login'
   import { getMetadata, getResource } from '@hcengineering/platform'
   import presentation, { decodeTokenPayload, isAdminUser } from '@hcengineering/presentation'
+  import setting, { SettingsCategory, settingId } from '@hcengineering/setting'
   import {
     Loading,
     Location,
@@ -30,8 +31,20 @@
     locationToUrl,
     navigate,
     resolvedLocationStore,
+    showPopup,
     ticker
   } from '@hcengineering/ui'
+  import {
+    AccountRole,
+    DocumentQuery,
+    Ref,
+    SortingOrder,
+    Space,
+    getCurrentAccount,
+    hasAccountRole,
+    notEmpty,
+    AccountUuid
+  } from '@hcengineering/core'
   import { workbenchId } from '@hcengineering/workbench'
   import { onDestroy, onMount } from 'svelte'
 
@@ -39,6 +52,8 @@
   import HDXScrollable from './HDXScrollable.svelte'
   import HDXWorkspaceSelectorItem from './HDXWorkspaceSelectorItem.svelte'
   import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
+  import Icon from '@hcengineering/ui/src/components/Icon.svelte'
+  import Label from '@hcengineering/ui/src/components/Label.svelte'
 
     // Props
   export let workbenchUiModel: IWorkbenchUiModel
@@ -98,6 +113,7 @@
   if (endpoint.endsWith('/')) {
     endpoint = endpoint.substring(0, endpoint.length - 1)
   }
+  const account = getCurrentAccount()
 
   let data: any
   onDestroy(
@@ -120,6 +136,10 @@
       data?: Record<string, any>
     }>
     >) ?? {}
+
+    function inviteWorkspace (): void {
+      showPopup(login.component.InviteLink, {})
+    }
 </script>
 
 <div class="HDXWorkspaceSelector">
@@ -160,6 +180,23 @@
         />
       {/each}
     </div>
+    {#if hasAccountRole(account, AccountRole.User)}
+    <div on:click={(e) => { inviteWorkspace() }} class="HDRWorkspaceSelectorButton" role="presentation">
+      <Icon icon={setting.icon.InviteWorkspace} size="small"/>
+      <Label label={setting.string.InviteWorkspace}/>
+    </div>
+    <!-- <Icon name={setting.icon.InviteWorkspace}/>
+    <Label text={setting.string.InviteWorkspace}/>
+      actions.push({
+        icon: setting.icon.InviteWorkspace,
+        label: setting.string.InviteWorkspace,
+        action: async () => {
+          inviteWorkspace()
+        },
+        group: 'end'
+      }) -->
+    {/if}
+
   </div>
   <div class="ap-space x2" />
 {:else}

@@ -258,7 +258,8 @@ TODO:
 
     background-color: var(--theme-navpanel-color);
     border-right: 1px solid var(--theme-navpanel-divider);
-    z-index: 1000000;
+    // z-index: 10000;
+    z-index: 9999; // below popup
 
     //TODO: tmp fix for the main layout
     height: 100vh;

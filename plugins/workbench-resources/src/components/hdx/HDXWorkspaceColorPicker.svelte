@@ -36,12 +36,20 @@
     .item {
       width: 1rem;
       height: 1rem;
-      border: 1px solid #ccc;
+      border: 0.5px solid rgba(128, 128, 128, 0.3);
       border-radius: 0.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+
+      &:hover {
+        border-color: rgba(128, 128, 128, 0.75);
+      }
+
+      &.selected {
+        border-color: rgba(128, 128, 128, 0.95);
+      }
     }
 
     .color-box {
@@ -50,7 +58,4 @@
       border-radius: 0.1rem;
     }
 
-    .selected {
-      border-color: black;
-    }
 </style>
