@@ -1,27 +1,18 @@
 <script lang="ts">
-  import { Writable } from 'svelte/store'
   import Logo from '../Logo.svelte'
   import HDXWorkspaceSwitch from './icons/HDXWorkspaceSwitch.svelte'
-  import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
   import HDXWorkspaceInfo from './HDXWorkspaceInfo.svelte'
   import HDXWorkspaceColorPicker from './HDXWorkspaceColorPicker.svelte'
   import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
 
+  // Props
   export let windowWorkspaceName: string
   export let workbenchUiModel: IWorkbenchUiModel
-  export let expandedWorkspaces: Writable<boolean>
-  export let workspaceColor: Writable<number>
-  export let onToggleExpandedWorkspaces: () => void
 
-  const appsMini = false
-
-  // $: debugTitle = expanded ? 'yes' : 'no'
-
-  function toggleWorkspace (event: MouseEvent): void {
-    onToggleExpandedWorkspaces()
-    event.stopPropagation()
-    event.preventDefault()
-  }
+  // Rendering shortcuts
+  $: expandedWorkspaces = workbenchUiModel.isWorkspaceMode
+  $: workspaceColor = workbenchUiModel.workspaceColor
+  $: appsMini = workbenchUiModel.appsMini
 </script>
 
 <div
@@ -34,19 +25,17 @@
   class:expanded={workbenchUiModel.isExpanded}
   class:expandedWorkspace={$expandedWorkspaces}
   role="presentation"
-  on:click={toggleWorkspace}
+  on:click={workbenchUiModel.toggleWorkspaceMode}
   >
     <div
       class="HDXWorkbenchNavigatorHeaderTop-Logo"
       class:expanded={workbenchUiModel.isExpanded}
       >
-      <Logo mini={appsMini} workspace={windowWorkspaceName} />
+      <Logo mini={$appsMini} workspace={windowWorkspaceName} />
     </div>
     <div
       class="HDXWorkbenchNavigatorHeaderTop-Workspace"
-      class:expanded={workbenchUiModel.isExpanded}
-      role="presentation"
-      on:click={toggleWorkspace}>
+      class:expanded={workbenchUiModel.isExpanded}>
         <div
         class="HDXWorkbenchNavigatorHeaderTop-Workspace-Title"
         class:expanded={workbenchUiModel.isExpanded}>
@@ -60,9 +49,7 @@
     </div>
     <div
       class="HDXWorkbenchNavigatorHeaderTop-WorkspaceSwitch"
-      class:expanded={workbenchUiModel.isExpanded}
-      role="presentation"
-      on:click={toggleWorkspace}>
+      class:expanded={workbenchUiModel.isExpanded}>
       <HDXWorkspaceSwitch expandedWorkspaces={$expandedWorkspaces} size="medium"/>
     </div>
   </div>
@@ -70,15 +57,10 @@
     <HDXWorkspaceInfo/>
     <HDXWorkspaceColorPicker
       workspaceColor={$workspaceColor}
-      onChange={ (colorNumber) => {
-        workspaceColor.set(colorNumber)
-        // console.log('Selected color:', colorNumber)
-      }}/>
+      onChange={ (colorNumber) => { workbenchUiModel.setWorkspaceColor(colorNumber) } }
+      />
   {/if}
 </div>
-{#if $expandedWorkspaces}
-<HDXWorkspaceSelector onWorkspaceSelected={onToggleExpandedWorkspaces}/>
-{/if}
 
 <style lang="scss">
   .HDXWorkbenchNavigatorHeader {

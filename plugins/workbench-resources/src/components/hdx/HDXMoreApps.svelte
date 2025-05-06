@@ -19,17 +19,22 @@
   import { isAppAllowed, showApplication } from '../../utils'
   import HDRAppItem from './HDXAppItem.svelte'
   import { NavLink } from '@hcengineering/view-resources'
+  import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
+
+  // Props
+  export let workbenchUiModel: IWorkbenchUiModel
 
   export let active: Ref<Application> | undefined
   export let apps: Application[] = []
-  export let toggleAppMenuEditMode: () => void
-  export let expanded: boolean
-  export let appMenuEditMode: boolean
-
   export let hiddenAppsIds: Array<Ref<Application>> = []
 
   const dispatch = createEventDispatcher()
   const me = getCurrentAccount()
+
+  // Rendering shortcuts
+  $: expanded = workbenchUiModel.isExpanded
+  $: appMenuEditMode = workbenchUiModel.isAppsEditMode
+  // $: expandedWorkspaces = workbenchUiModel.isWorkspaceMode
 
   $: filteredApps = apps.filter(
     (it) => hiddenAppsIds.includes(it._id) && isAppAllowed(it, me) && it.position !== 'top'
@@ -37,11 +42,11 @@
 </script>
 
 <div class="HDXMoreApps">
-  <div class="HDXMoreAppsHeader" class:expanded={expanded} class:collapsed={!expanded}>
-    <div class="HDXMoreAppsHeader-Title" class:expanded={expanded} class:collapsed={!expanded}>
+  <div class="HDXMoreAppsHeader" class:expanded={$expanded} class:collapsed={!$expanded}>
+    <div class="HDXMoreAppsHeader-Title" class:expanded={$expanded} class:collapsed={!$expanded}>
       Huly apps
     </div>
-    <button class="HDXMoreAppsHeader-Action" class:expanded={expanded} class:collapsed={!expanded} on:click={toggleAppMenuEditMode}>
+    <button class="HDXMoreAppsHeader-Action" class:expanded={$expanded} class:collapsed={!$expanded} on:click={workbenchUiModel.toggleAppsEditMode}>
       <svg
             viewBox="0 0 24 24"
             width="24" height="24"
@@ -64,11 +69,11 @@
 
   <div class="HDXMoreAppsList">
     {#each filteredApps as app}
-    <NavLink app={app.alias} shrink={0} disabled={app._id === active || appMenuEditMode}>
+    <NavLink app={app.alias} shrink={0} disabled={app._id === active || $appMenuEditMode}>
       <HDRAppItem
-      expanded={expanded}
+      expanded={$expanded}
       addIcon={true}
-      editMode={appMenuEditMode}
+      editMode={$appMenuEditMode}
       icon={app.icon}
       label={app.label}
       appsMini={false}
@@ -78,7 +83,7 @@
       }}
 
       on:click={() => {
-        if (appMenuEditMode) {
+        if ($appMenuEditMode) {
           showApplication(app)
         }
       }}/>

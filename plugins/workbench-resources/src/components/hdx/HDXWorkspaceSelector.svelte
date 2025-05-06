@@ -13,19 +13,16 @@
 // limitations under the License.
 -->
 <script lang="ts">
-  import contact from '@hcengineering/contact'
-  import { isArchivingMode, WorkspaceInfoWithStatus } from '@hcengineering/core'
+  import { WorkspaceInfoWithStatus } from '@hcengineering/core'
   import login from '@hcengineering/login'
   import { getMetadata, getResource } from '@hcengineering/platform'
   import presentation, { decodeTokenPayload, isAdminUser } from '@hcengineering/presentation'
   import {
-    Icon,
-    IconCheck,
-    Label,
     Loading,
     Location,
     SearchEdit,
     closePopup,
+    closeTooltip,
     fetchMetadataLocalStorage,
     getCurrentLocation,
     isSameSegments,
@@ -41,9 +38,10 @@
   import { workspacesStore } from '../../utils'
   import HDXScrollable from './HDXScrollable.svelte'
   import HDXWorkspaceSelectorItem from './HDXWorkspaceSelectorItem.svelte'
-  // import Drag from './icons/Drag.svelte'
+  import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
 
-  export let onWorkspaceSelected: () => void
+    // Props
+  export let workbenchUiModel: IWorkbenchUiModel
 
   onMount(() => {
     void getResource(login.function.GetWorkspaces).then(async (f) => {
@@ -61,7 +59,7 @@
   async function clickHandler (e: MouseEvent, wsUrl: string): Promise<void> {
     if (!e.metaKey && !e.ctrlKey) {
       e.preventDefault()
-      closePopup()
+      closeTooltip()
       closePopup()
       const current = getCurrentLocation()
       if (wsUrl !== current.path[1]) {
@@ -79,7 +77,7 @@
       }
     }
     // notify ui about select action in all cases
-    onWorkspaceSelected()
+    workbenchUiModel.onWorkspaceSelected()
   }
 
   let activeElement: HTMLElement
@@ -195,8 +193,7 @@
   .HDRWorkspaceSelectorButton {
     outline: none;
     position: relative;
-    display: flex
-;
+    display: flex;
     flex-direction: row;
     align-items: center;
     /* justify-content: space-between; */
@@ -227,6 +224,7 @@
       font-weight: 400;
     }
   }
+
   .active {
     background-color: var(--theme-inbox-people-counter-bgcolor);
   }

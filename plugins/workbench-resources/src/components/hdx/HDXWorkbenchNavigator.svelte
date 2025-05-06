@@ -97,7 +97,6 @@ TODO:
   import AppSwitcher from '../AppSwitcher.svelte'
   import TopMenu from '../icons/TopMenu.svelte'
 
-  import { writable } from 'svelte/store'
   import HDXWorkbenchNavigatorHeader from './HDXWorkbenchNavigatorHeader.svelte'
   import HDXAppItemHero from './HDXAppItemHero.svelte'
   import HDXWorkbenchNavigatorFooter from './HDXWorkbenchNavigatorFooter.svelte'
@@ -107,23 +106,10 @@ TODO:
   import AppItem from '../AppItem.svelte'
   import { Person } from '@hcengineering/contact'
   import { workbenchUiModel } from './HDXWorkspaceModel'
-  // debug/behavior constants;
-  // use for debug purpuses only
-  const hdxAlwaysExpand = false
-  // if true, the navigator will always be expanded at first and collapse after delay
-  const useFirstTimeShow = false
-  const firstTimeDelay = 3000 // 3 seconds
-  const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
-
-  // Local state
-  // export const expanded = writable(useFirstTimeShow ? true : hdxAlwaysExpand)
-  export const expandedWorkspaces = writable(hdxAlwaysExpandWorkspaces)
-  export const appMenuEditMode = writable(false)
+  import HDXWorkspaceSelector from './HDXWorkspaceSelector.svelte'
   // used to prevent the navigator if user hover it durig firstTimeDelay
-  const hoveredOnce = writable(hdxAlwaysExpand)
 
-  export const workspaceColor = writable(1)
-
+  // Props
   export let windowWorkspaceName: string
   export let currentAppAlias: string | undefined
   export let inboxPopup: PopupResult | undefined
@@ -139,40 +125,15 @@ TODO:
 
   let lastLoc: Location | undefined = undefined
 
-  function handleHover (): void {
-    workbenchUiModel.onHover()
-    hoveredOnce.set(true)
-  }
-
-  function handleBlur (): void {
-    workbenchUiModel.onBlur()
-    // expanded.set(hdxAlwaysExpand)
-    // autoclose edit mode on blur
-    appMenuEditMode.set(false)
-    if (!hdxAlwaysExpandWorkspaces) {
-      expandedWorkspaces.set(false)
-    }
-  }
-
-  function onToggleExpandedWorkspaces (): void {
-    if (!hdxAlwaysExpandWorkspaces) {
-      expandedWorkspaces.update(v => !v)
-    }
-  }
-
   onMount(() => {
-    if (useFirstTimeShow) {
-      setTimeout(() => {
-        if (!$hoveredOnce) {
-          // expanded.set(hdxAlwaysExpand)
-        }
-      }, firstTimeDelay)
-    }
+    workbenchUiModel.onMount()
   })
 
   // Rendering shortcuts
   $: expanded = workbenchUiModel.isExpanded
-  $: expandedWide = get(workbenchUiModel.isExpanded) && $expandedWorkspaces
+  $: expandedWide = workbenchUiModel.isExpandedWide
+  $: workspaceColor = workbenchUiModel.workspaceColor
+  $: isWorkspaceMode = workbenchUiModel.isWorkspaceMode
 
 </script>
 
@@ -180,20 +141,23 @@ TODO:
   class="HDXWorkbenchNavigator panel-theme-{$workspaceColor} no-print"
   class:expanded={get(workbenchUiModel.isExpanded)}
   role="presentation"
-  on:mouseenter={handleHover} on:mouseleave={handleBlur}>
+  on:mouseenter={workbenchUiModel.onHover} on:mouseleave={workbenchUiModel.onBlur}>
   <div
     class="HDXWorkbenchNavigator-Inner panel-theme-{$workspaceColor}"
     class:expanded={$expanded}
     class:expandedWide={expandedWide}
     >
+
     <HDXWorkbenchNavigatorHeader
-    workspaceColor={workspaceColor}
     windowWorkspaceName={windowWorkspaceName}
     {workbenchUiModel}
-    {expandedWorkspaces}
-    onToggleExpandedWorkspaces={onToggleExpandedWorkspaces}
     />
-      {#if !$expandedWorkspaces}
+
+    {#if $isWorkspaceMode}
+      <HDXWorkspaceSelector {workbenchUiModel}/>
+    {/if}
+
+    {#if !$isWorkspaceMode}
         <!-- <ActivityStatus status="active" /> -->
         <NavLink
           app={notificationId}
@@ -226,10 +190,8 @@ TODO:
         <HDXApplications
           {apps}
           {workbenchUiModel}
-          {appMenuEditMode}
           active={currentApplication?._id}
           direction={$deviceInfo.navigator.direction}
-          appsMini={appsMini}
           on:toggleNav={toggleNav}
         />
         <HDXAppItem
@@ -240,18 +202,15 @@ TODO:
           appsMini={appsMini}
           on:click={toggleNav}
         />
-        <HDXWorkbenchNavigatorFooter
-          {workbenchUiModel}
-          {expandedWorkspaces}
-          >
-          <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel} {expandedWorkspaces}>
+        <HDXWorkbenchNavigatorFooter {workbenchUiModel}>
+          <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel}>
             <AppItem
               icon={IconSettings}
               label={setting.string.Settings}
               on:click={() => showPopup(AppSwitcher, { apps }, popupPosition)}
             />
           </HDXWorkbenchNavigatorFooterItem>
-          <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel} {expandedWorkspaces}>
+          <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel}>
             <a href={supportLink} target="_blank" rel="noopener noreferrer">
               <AppItem
                 icon={support.icon.Support}
@@ -277,12 +236,11 @@ TODO:
             />
           {/if}
         {/await} -->
-        <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel} {expandedWorkspaces}>
-          <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel}>
           <div
             id="profile-button"
             class="cursor-pointer"
+            role="presentation"
             on:click|stopPropagation={() => showPopup(AccountPopup, {}, popupPosition)}
           >
             <Component
@@ -305,13 +263,12 @@ TODO:
     width: var(--app-panel-width);
     max-width: var(--app-panel-width);
 
-    height: 100vh;
-
     background-color: var(--theme-navpanel-color);
     border-right: 1px solid var(--theme-navpanel-divider);
     z-index: 1000000;
 
     //TODO: tmp fix for the main layout
+    height: 100vh;
     margin-top: calc(var(--theme-hdx-app-title-height) * -1);
   }
 

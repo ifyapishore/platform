@@ -1,17 +1,13 @@
 <script lang="ts">
-  import { Writable } from 'svelte/store'
   import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
-  // export let windowWorkspaceName: string
+
+  // Props
   export let mode: 'action' | 'profile'
   export let workbenchUiModel: IWorkbenchUiModel
-  export let expandedWorkspaces: Writable<boolean>
-  // export let appsMini: boolean
-    // class="info-box {$deviceInfo.navigator.direction}"
-    //     class:vertical-mobile={$deviceInfo.navigator.direction === 'vertical'}
-    //     class:mini={appsMini}
 
-    // let direction = $deviceInfo.navigator.direction
+  // Rendering shortcuts
   $: expanded = workbenchUiModel.isExpanded
+  $: expandedWorkspaces = workbenchUiModel.isWorkspaceMode
 </script>
 
 <div

@@ -35,9 +35,6 @@
   export let apps: Application[] = []
   export let direction: 'vertical' | 'horizontal' = 'vertical'
 
-  export let appsMini: boolean
-  export let appMenuEditMode: Writable<boolean>
-
   const dispatch = createEventDispatcher()
 
   $: expanded = workbenchUiModel.isExpanded
@@ -70,9 +67,9 @@
   const chatApp = chatId as any as Ref<Application>
   const inboxApp = inboxId as any as Ref<Application>
 
-  function toggleAppMenuEditMode (): void {
-    appMenuEditMode.update((v) => !v)
-  }
+  $: appMenuEditMode = workbenchUiModel.isAppsEditMode
+  $: appsMini = workbenchUiModel.appsMini
+
 </script>
 
 <HDXScrollable>
@@ -85,7 +82,7 @@
         selected={app._id === active}
         icon={app.icon}
         label={app.label}
-        appsMini={appsMini}
+        appsMini={$appsMini}
         on:click={() => {
           if (app._id === active) dispatch('toggleNav')
         }}
@@ -97,7 +94,7 @@
     <NavLink app={app.alias} shrink={0} disabled={app._id === active || $appMenuEditMode}>
       <HDXAppItem
         expanded={$expanded}
-        {appsMini}
+        appsMini={$appsMini}
         editMode={$appMenuEditMode}
         selected={app._id === active}
         icon={app.icon}
@@ -121,7 +118,7 @@
   >
     <HDXAppItem
       expanded={$expanded}
-      {appsMini}
+      appsMini={$appsMini}
       editMode={false}
       icon={inbox.icon.Inbox}
       label={inbox.string.Inbox}
@@ -137,7 +134,7 @@
   >
   <HDXAppItem
       expanded={$expanded}
-      {appsMini}
+      appsMini={$appsMini}
       editMode={false}
       icon={chat.icon.ChatBubble}
       label={chat.string.Chat}
@@ -147,10 +144,8 @@
   <div class="apps-space-{direction}" />
 {/if}
 <HDXMoreApps
-  expanded={$expanded}
+  {workbenchUiModel}
   active={active}
-  appMenuEditMode={$appMenuEditMode}
-  {toggleAppMenuEditMode}
   hiddenAppsIds={hiddenAppsIds}
   apps={apps}
 />
