@@ -18,6 +18,9 @@
   import { getMetadata, getResource } from '@hcengineering/platform'
   import presentation, { decodeTokenPayload, isAdminUser } from '@hcengineering/presentation'
   import setting, { SettingsCategory, settingId } from '@hcengineering/setting'
+  import HDXMenuAction from './HDXMenuAction.svelte'
+  import support, { docsLink, reportBugLink, supportLink, privacyPolicyLink } from '@hcengineering/support'
+  import { i18nt } from './ux-dev'
   import {
     Loading,
     Location,
@@ -143,9 +146,30 @@
 </script>
 
 <div class="HDXWorkspaceSelector">
-  <div class="HDXWorkspaceSelectorHeader">Switch to...</div>
   <HDXScrollable>
-{#if $workspacesStore.length}
+
+    {#if hasAccountRole(account, AccountRole.User)}
+    <HDXMenuAction
+      on:click={ () => { inviteWorkspace() } }
+      icon={setting.icon.InviteWorkspace}
+      label={i18nt('Invite')}
+      description={i18nt('Send a link to join')}/>
+
+    <HDXMenuAction
+      on:click={ () => { inviteWorkspace() } }
+      icon={setting.icon.Setting}
+      label={i18nt('Settings')}
+      description={i18nt('Configure your workspace')}/>
+
+      <HDXMenuAction
+      on:click={ () => { inviteWorkspace() } }
+      icon={support.icon.Support}
+      label={i18nt('Support')}
+      description={i18nt('Contact your admin')}/>
+    {/if}
+
+    <div class="HDXWorkspaceSelectorHeader">Switch to...</div>
+    {#if $workspacesStore.length}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   {#if isAdmin}
     <div class="p-2 ml-2 mr-2 mb-2 flex-grow flex-row-center">
@@ -163,41 +187,20 @@
       {decodeTokenPayload(getMetadata(presentation.metadata.Token) ?? '').workspace ?? ''}
     </div>
   {/if}
-  <div class="ap-scroll">
-    <div class="ap-box">
-      {#each $workspacesStore
-        .filter((it) => search === '' || (it.name?.includes(search) ?? false) || it.url.includes(search))
-        .slice(0, 500) as ws, i}
-        {@const wsName = ws.name ?? ws.url}
-        {@const _activeSession = activeSessions[ws.uuid]}
-        {@const lastUsageDays = Math.round((Date.now() - (ws.lastVisit ?? 0)) / (1000 * 3600 * 24))}
-        <HDXWorkspaceSelectorItem
-        name={ws.url}
-        selected={$resolvedLocationStore.path[1] === ws.url}
-        onSelect={(event) => {
-          clickHandler(event, ws.url)
-        }}
-        />
-      {/each}
-    </div>
-    {#if hasAccountRole(account, AccountRole.User)}
-    <div on:click={(e) => { inviteWorkspace() }} class="HDRWorkspaceSelectorButton" role="presentation">
-      <Icon icon={setting.icon.InviteWorkspace} size="small"/>
-      <Label label={setting.string.InviteWorkspace}/>
-    </div>
-    <!-- <Icon name={setting.icon.InviteWorkspace}/>
-    <Label text={setting.string.InviteWorkspace}/>
-      actions.push({
-        icon: setting.icon.InviteWorkspace,
-        label: setting.string.InviteWorkspace,
-        action: async () => {
-          inviteWorkspace()
-        },
-        group: 'end'
-      }) -->
-    {/if}
-
-  </div>
+  {#each $workspacesStore
+    .filter((it) => search === '' || (it.name?.includes(search) ?? false) || it.url.includes(search))
+    .slice(0, 500) as ws, i}
+    {@const wsName = ws.name ?? ws.url}
+    {@const _activeSession = activeSessions[ws.uuid]}
+    {@const lastUsageDays = Math.round((Date.now() - (ws.lastVisit ?? 0)) / (1000 * 3600 * 24))}
+    <HDXWorkspaceSelectorItem
+    name={ws.url}
+    selected={$resolvedLocationStore.path[1] === ws.url}
+    onSelect={(event) => {
+      clickHandler(event, ws.url)
+    }}
+    />
+  {/each}
   <div class="ap-space x2" />
 {:else}
   <div class="antiPopup"><Loading /></div>
