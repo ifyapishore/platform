@@ -3,8 +3,8 @@ import type { ExtractStoreShape } from './model-utils'
 
 // debug/behavior constants;
 // use for debug purpuses only
-const hdxAlwaysExpand = true
-const hdxAlwaysExpandWorkspaces = true // hdxAlwaysExpand
+const hdxAlwaysExpand = false
+const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 // if true, the navigator will always be expanded at first and collapse after delay
 const useFirstTimeShow = false
 const firstTimeDelay = 3000 // 3 seconds

@@ -13,6 +13,7 @@
 // limitations under the License.
 -->
 <script lang="ts">
+  import HelpAndSupport from '../HelpAndSupport.svelte'
   import { WorkspaceInfoWithStatus } from '@hcengineering/core'
   import login from '@hcengineering/login'
   import { getMetadata, getResource } from '@hcengineering/platform'
@@ -162,13 +163,15 @@
       description={i18nt('Configure your workspace')}/>
 
       <HDXMenuAction
-      on:click={ () => { inviteWorkspace() } }
+      on:click={ () => {
+        showPopup(HelpAndSupport, {}, 'help-center')
+      } }
       icon={support.icon.Support}
       label={i18nt('Support')}
       description={i18nt('Contact your admin')}/>
     {/if}
 
-    <div class="HDXWorkspaceSelectorHeader">Switch to...</div>
+    <div class="HDXWorkspaceSelectorHeader">Switch workspace to...</div>
     {#if $workspacesStore.length}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   {#if isAdmin}
@@ -206,6 +209,11 @@
   <div class="antiPopup"><Loading /></div>
 {/if}
 </HDXScrollable>
+<HDXMenuAction
+on:click={ () => { inviteWorkspace() } }
+icon={setting.icon.Signout}
+label={i18nt('Forget this device')}
+description={i18nt('Clean-up local data and sign-out')}/>
 </div>
 
 <style lang="scss">
