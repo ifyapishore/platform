@@ -3,11 +3,11 @@ import type { ExtractStoreShape } from './model-utils'
 
 // debug/behavior constants;
 // use for debug purpuses only
-const hdxAlwaysExpand = false
+const hdxAlwaysExpand = true
+const hdxAlwaysExpandWorkspaces = true // hdxAlwaysExpand
 // if true, the navigator will always be expanded at first and collapse after delay
 const useFirstTimeShow = false
 const firstTimeDelay = 3000 // 3 seconds
-const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
 
 // ───────────────────────────────────────────────────────────────
 // STORE INTERNALS
@@ -55,7 +55,7 @@ const storeDefinition = {
   onBlur () {
     state.update(s => ({
       ...s,
-      expanded: false,
+      expanded: hdxAlwaysExpandWorkspaces || hdxAlwaysExpand,
       appsEditMode: false,
       workspaceMode: hdxAlwaysExpandWorkspaces && hdxAlwaysExpand
     }))

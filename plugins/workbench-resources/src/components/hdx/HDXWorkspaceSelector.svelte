@@ -222,7 +222,7 @@
     align-items: center;
     justify-content: flex-start;
     margin-left: 1.5rem;
-    height: 3rem;
+    height: 4.5rem;
     font-size: 0.99rem;
     font-weight: 100;
     text-transform: uppercase;

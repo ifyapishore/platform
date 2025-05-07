@@ -31,9 +31,9 @@
     <Icon {icon} size={'medium'} />
   </div>
 
-  <div class="HDXMenuAction-Label">
-    <Label label={label}/>
-    <Label label={description}/>
+  <div class="HDXMenuAction-Header">
+    <div class="HDXMenuAction-Header-Title"><Label label={label}/></div>
+    <div class="HDXMenuAction-Header-Subtitle"><Label label={description}/></div>
   </div>
 </button>
 
@@ -48,7 +48,7 @@
 
     flex-direction: row;
     width: 100%;
-    height: var(--app-panel-action-height);
+    height: var(--app-panel-big-action-height);
 
     background-color: transparent;
     // background-color: violet;
@@ -66,23 +66,40 @@
     min-width: var(--app-panel-width);
     max-width: var(--app-panel-width);
     width: var(--app-panel-width);
-    height: var(--app-panel-action-height);
+    height: var(--app-panel-big-action-height);
     color: var(--theme-navpanel-icons-color);
-    // background-color: red;
   }
 
-  .HDXMenuAction-Label {
+  .HDXMenuAction-Header {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: stretch;
+    height: var(--app-panel-big-action-height);
+  }
+
+  .HDXMenuAction-Header-Title,
+  .HDXMenuAction-Header-Subtitle {
     display: flex;
     flex: 1;
-    height: var(--app-panel-action-height);
-    align-items: center;
-//    padding-left: 0.5rem;
-    font-size: var(--font-size-small);
     color: var(--theme-hdx-workbench-navigator-text-color);
-    text-align: left;
+    justify-content: flex-start;
     overflow: hidden;
     text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .HDXMenuAction-Header-Title {
+    height: calc(var(--app-panel-big-action-height) * 0.5);
+    font-size: var(--font-size-small);
+    font-weight: bold;
+    align-items: flex-end;
+  }
+
+  .HDXMenuAction-Header-Subtitle {
+    height: calc(var(--app-panel-big-action-height) * 0.5);
+    font-size: var(--font-size-small);
+    align-items: flex-start;
   }
 </style>
