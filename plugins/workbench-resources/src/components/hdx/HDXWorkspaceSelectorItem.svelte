@@ -27,7 +27,7 @@
   >
 
   <div class="HDXWorkspaceSelectorItem-Status">
-    healthy
+    h
   </div>
 
   <div class="HDXWorkspaceSelectorItem-Body">
@@ -49,7 +49,7 @@
     flex-direction: row;
     height: 3rem;
     align-items: stretch;
-    width: 100%;
+    width: calc(100%);
 
     cursor: pointer;
     color: var(--theme-hdx-workbench-navigator-text-color);
@@ -61,13 +61,14 @@
 
   .HDXWorkspaceSelectorItem-Status {
     position: relative;
-    width: 4.25rem;
+    min-width: var(--app-panel-width);
+    max-width: var(--app-panel-width);
+    width: var(--app-panel-width);
     /* text-align: right; */
     /* background-color: red; */
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding-right: 0.5rem;
+    justify-content: center;
     font-size: 0.5rem;
 
     &::before {
@@ -78,8 +79,8 @@
       height: 50%;
       top: 25%;
       right: 0;
-      border-left: solid 0.5px #fff;
-      border-right: solid 0.5px #888;
+      border-left: solid 0.5px rgba(0,0,0,0.5);
+      border-right: solid 0.5px rgaba(255,255,255,0.5);
     }
   }
 
