@@ -175,12 +175,10 @@
       description={i18nt('Send a link to join')}/>
 
     <HDXMenuAction
-      on:click={ async () => {
-        openWorkspaceSettings()
-      } }
+      on:click={ async () => {openWorkspaceSettings()} }
       icon={setting.icon.Setting}
-      label={i18nt('Settings')}
-      description={i18nt('Configure your workspace')}/>
+      label={setting.string.Settings}
+      description={setting.string.SettingsSubtitle}/>
 
       <HDXMenuAction
       on:click={ () => {

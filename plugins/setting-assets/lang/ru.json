@@ -1,6 +1,7 @@
 {
   "string": {
     "Setting": "Настройки",
+    "SettingsSubtitle": "Manage your workspace settings<<AUTOTRANSLATE>>",
     "Spaces": "Пространства",
     "Integrations": "Интеграции",
     "Support": "Поддержка",

@@ -1,6 +1,7 @@
 {
   "string": {
     "Setting": "设置",
+    "SettingsSubtitle": "Manage your workspace settings<<AUTOTRANSLATE>>",
     "Spaces": "空间", 
     "Integrations": "集成",
     "Support": "支持",
@@ -12,7 +13,7 @@
     "ChangePassword": "更改密码",
     "CurrentPassword": "当前密码",
     "NewPassword": "新密码",
-    "Disconnect": "断开连接",
+    "Disconnect": "断开连接", 
     "Saving": "保存中...",
     "Saved": "已保存",
     "Add": "添加",

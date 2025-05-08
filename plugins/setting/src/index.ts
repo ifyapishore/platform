@@ -178,6 +178,7 @@ export default plugin(settingId, {
     Mailboxes: '' as AnyComponent
   },
   string: {
+    SettingsSubtitle: '' as IntlString,
     Settings: '' as IntlString,
     Setting: '' as IntlString,
     Spaces: '' as IntlString,
