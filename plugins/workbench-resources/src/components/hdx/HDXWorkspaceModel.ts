@@ -3,9 +3,10 @@ import type { ExtractStoreShape } from './model-utils'
 import { workspacesStore } from '../../utils'
 import { resolvedLocationStore } from '@hcengineering/ui'
 // debug/behavior constants;
-// use for debug purpuses only
+// use for debug and A/B testing purpuses only
 const hdxAlwaysExpand = false
 const hdxAlwaysExpandWorkspaces = false // hdxAlwaysExpand
+const hdxShowBottomActions = false // hdxAlwaysExpandWorkspaces
 // if true, the navigator will always be expanded at first and collapse after delay
 const useFirstTimeShow = false
 const firstTimeDelay = 3000 // 3 seconds
@@ -19,7 +20,8 @@ const state = writable({
   appsEditMode: false,
   hoveredOnce: false,
   workspaceColor: 1,
-  ws: undefined
+  ws: undefined,
+  showBottomActions: hdxShowBottomActions
 })
 
 // ───────────────────────────────────────────────────────────────
@@ -38,7 +40,7 @@ const workspaceColor = derived(state, s => s.workspaceColor)
 // Group C — Computed values
 const isExpandedWide = derived(state, s => s.expanded && s.workspaceMode)
 const currentWorkspace = derived(workspacesStore, (sa) => sa.find((ws) => get(resolvedLocationStore).path[1] === ws.url))
-
+const showBottomActions = derived(state, s => s.showBottomActions)
 const appsMini = derived(state, s => false)
 
 const storeDefinition = {
@@ -49,6 +51,7 @@ const storeDefinition = {
   workspaceColor,
   appsMini,
   currentWorkspace,
+  showBottomActions,
 
   onMount () {
     if (useFirstTimeShow) {

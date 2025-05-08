@@ -36,8 +36,10 @@
     navigate,
     resolvedLocationStore,
     showPopup,
+    getCurrentResolvedLocation,
     ticker
   } from '@hcengineering/ui'
+
   import {
     AccountRole,
     DocumentQuery,
@@ -142,7 +144,23 @@
     >) ?? {}
 
     function inviteWorkspace (): void {
+      workbenchUiModel.onBlur()
       showPopup(login.component.InviteLink, {})
+    }
+
+    function openWorkspaceSettings (sp?: SettingsCategory): void {
+      workbenchUiModel.onBlur()
+      const loc = getCurrentResolvedLocation()
+      loc.fragment = undefined
+      loc.query = undefined
+      loc.path[2] = settingId
+      if (sp) {
+        loc.path[3] = sp.name
+        loc.path.length = 4
+      } else {
+        loc.path.length = 3
+      }
+      navigate(loc)
     }
 </script>
 
@@ -157,7 +175,9 @@
       description={i18nt('Send a link to join')}/>
 
     <HDXMenuAction
-      on:click={ () => { inviteWorkspace() } }
+      on:click={ async () => {
+        openWorkspaceSettings()
+      } }
       icon={setting.icon.Setting}
       label={i18nt('Settings')}
       description={i18nt('Configure your workspace')}/>

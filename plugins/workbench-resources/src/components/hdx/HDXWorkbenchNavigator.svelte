@@ -195,6 +195,7 @@ TODO:
           appsMini={appsMini}
           on:click={toggleNav}
         />
+        {#if get(workbenchUiModel.showBottomActions)}
         <HDXWorkbenchNavigatorFooter {workbenchUiModel}>
           <HDXWorkbenchNavigatorFooterItem mode="action" {workbenchUiModel}>
             <AppItem
@@ -243,6 +244,7 @@ TODO:
           </div>
         </HDXWorkbenchNavigatorFooterItem>
       </HDXWorkbenchNavigatorFooter>
+      {/if}
     {/if}
   </div>
 </div>
