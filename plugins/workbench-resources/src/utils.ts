@@ -172,7 +172,8 @@ export const currentWorkspaceStore = derived(
   }
 )
 
-export function formatBackupSize (ws: WorkspaceInfoWithStatus): string {
+export function formatBackupSize (ws?: WorkspaceInfoWithStatus): string {
+  if (ws === undefined) return ''
   if (ws.backupInfo === undefined) return ''
 
   const sz = Math.max(

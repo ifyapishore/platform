@@ -1,6 +1,7 @@
 import { writable, derived, get } from 'svelte/store'
 import type { ExtractStoreShape } from './model-utils'
-
+import { workspacesStore } from '../../utils'
+import { resolvedLocationStore } from '@hcengineering/ui'
 // debug/behavior constants;
 // use for debug purpuses only
 const hdxAlwaysExpand = false
@@ -17,7 +18,8 @@ const state = writable({
   workspaceMode: hdxAlwaysExpandWorkspaces,
   appsEditMode: false,
   hoveredOnce: false,
-  workspaceColor: 1
+  workspaceColor: 1,
+  ws: undefined
 })
 
 // ───────────────────────────────────────────────────────────────
@@ -35,6 +37,7 @@ const workspaceColor = derived(state, s => s.workspaceColor)
 
 // Group C — Computed values
 const isExpandedWide = derived(state, s => s.expanded && s.workspaceMode)
+const currentWorkspace = derived(workspacesStore, (sa) => sa.find((ws) => get(resolvedLocationStore).path[1] === ws.url))
 
 const appsMini = derived(state, s => false)
 
@@ -45,11 +48,20 @@ const storeDefinition = {
   isAppsEditMode,
   workspaceColor,
   appsMini,
+  currentWorkspace,
+
+  onMount () {
+    if (useFirstTimeShow) {
+      setTimeout(() => {
+        state.update(s => ({ ...s, expanded: false }))
+      }, firstTimeDelay)
+    }
+  },
 
   // actions (TODO: redux style, optimize)
   onHover () {
     state.update(s => ({ ...s, expanded: true, hoveredOnce: true }))
-    console.log('onHover' + get(this.isExpanded))
+    console.log('onHover' + get(isExpanded))
   },
 
   onBlur () {
@@ -60,7 +72,7 @@ const storeDefinition = {
       workspaceMode: hdxAlwaysExpandWorkspaces && hdxAlwaysExpand
     }))
 
-    console.log('onBlur' + get(this.isExpanded))
+    console.log('onBlur' + get(isExpanded))
   },
 
   toggleWorkspaceMode () {
@@ -71,14 +83,6 @@ const storeDefinition = {
 
   toggleAppsEditMode () {
     state.update(s => ({ ...s, appsEditMode: !s.appsEditMode }))
-  },
-
-  onMount () {
-    if (useFirstTimeShow) {
-      setTimeout(() => {
-        state.update(s => ({ ...s, expanded: false }))
-      }, firstTimeDelay)
-    }
   },
 
   setWorkspaceColor (color: number) {

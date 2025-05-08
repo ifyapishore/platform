@@ -54,7 +54,7 @@
     </div>
   </div>
   {#if $expandedWorkspaces}
-    <HDXWorkspaceInfo/>
+    <HDXWorkspaceInfo {workbenchUiModel}/>
     <HDXWorkspaceColorPicker
       workspaceColor={$workspaceColor}
       onChange={ (colorNumber) => { workbenchUiModel.setWorkspaceColor(colorNumber) } }

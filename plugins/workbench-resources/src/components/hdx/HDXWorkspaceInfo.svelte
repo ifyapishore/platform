@@ -14,58 +14,37 @@
 -->
 <script lang="ts">
   import { isArchivingMode } from '@hcengineering/core'
-  import login from '@hcengineering/login'
-  import { getMetadata, getResource } from '@hcengineering/platform'
-  import presentation, { decodeTokenPayload, isAdminUser } from '@hcengineering/presentation'
-  import {
-    Icon,
-    IconCheck,
-    Label,
-    Loading,
-    Location,
-    SearchEdit,
-    Status,
-    closePopup,
-    fetchMetadataLocalStorage,
-    getCurrentLocation,
-    isSameSegments,
-    locationStorageKeyId,
-    locationToUrl,
-    navigate,
-    resolvedLocationStore,
-    ticker
-  } from '@hcengineering/ui'
-  import { workbenchId } from '@hcengineering/workbench'
-  import { onDestroy, onMount } from 'svelte'
+  import presentation, { isAdminUser } from '@hcengineering/presentation'
+  import { Label, Loading } from '@hcengineering/ui'
 
-  import { workspacesStore, formatBackupSize, formatLastVisitDays } from '../../utils'
+  import { formatBackupSize, formatLastVisitDays } from '../../utils'
   import HDXWorkspaceInfoItem from './HDXWorkspaceInfoItem.svelte'
-  // import Drag from './icons/Drag.svelte'
+  import type { IWorkbenchUiModel } from './HDXWorkspaceModel'
 
-  onMount(() => {
-    void getResource(login.function.GetWorkspaces).then(async (f) => {
-      $workspacesStore = await f()
-    })
-  })
+  // Props
+  export let workbenchUiModel: IWorkbenchUiModel
 
+  // Rendering shortcuts
   $: isAdmin = isAdminUser()
 
-  $: ws = $workspacesStore.find((ws) => $resolvedLocationStore.path[1] === ws.url)
-  $: itemRegionShow = ws?.region != null && ws.region !== ''
-  $: itemRegionValue = itemRegionShow ? ws?.region : 'N/A'
+  $: ws = workbenchUiModel.currentWorkspace
+  $: itemRegionShow = $ws?.region != null && $ws.region !== ''
+  $: itemRegionValue = itemRegionShow ? $ws?.region : 'N/A'
 
-  $: itemLastUsageShow = isAdmin && ws?.lastVisit != null && ws.lastVisit !== 0
-  $: itemLastUsageValue = itemLastUsageShow ? formatLastVisitDays(ws) : 'N/A'
+  $: itemLastUsageShow = isAdmin && $ws?.lastVisit != null && $ws.lastVisit !== 0
+  $: itemLastUsageValue = itemLastUsageShow ? formatLastVisitDays($ws) : 'N/A'
 
-  $: itemBackupShow = ws?.backupInfo != null
-  $: itemBackupValue = ws?.backupInfo != null ? formatBackupSize(ws) : 'N/A'
+  $: itemBackupShow = $ws?.backupInfo != null
+  $: itemBackupValue = itemBackupShow ? formatBackupSize($ws) : 'N/A'
+
   $: itemUrlShow = true
-  $: itemUrlValue = itemUrlShow ? ws?.url : 'N/A'
+  $: itemUrlValue = itemUrlShow ? $ws?.url : 'N/A'
+  $: archivingMode = isArchivingMode($ws?.mode)
 </script>
 
 {#if ws}
   <div class="HDXWorkspaceInfo">
-    <HDXWorkspaceInfoItem title="Status" on={isArchivingMode(ws.mode)}>
+    <HDXWorkspaceInfoItem title="Status" on={archivingMode}>
       <Label label={presentation.string.Archived} />
     </HDXWorkspaceInfoItem>
 

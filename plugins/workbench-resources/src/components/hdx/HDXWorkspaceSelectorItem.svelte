@@ -16,6 +16,7 @@
   import { IconCheck } from '@hcengineering/ui'
 
   export let name: string
+  export let description: string
   export let onSelect: (e: MouseEvent) => void
   export let selected: boolean
 </script>
@@ -27,12 +28,13 @@
   >
 
   <div class="HDXWorkspaceSelectorItem-Status">
-    h
+    <div class={'HDXWorkspaceSelectorItem-StatusMarker'} />
   </div>
 
   <div class="HDXWorkspaceSelectorItem-Body">
-    <div class="HDXWorkspaceSelectorItem-Body-Content">
-      {name}
+    <div class="HDXWorkspaceSelectorItem-Header">
+      <div class="HDXWorkspaceSelectorItem-Header-Title">{name}</div>
+      <div class="HDXWorkspaceSelectorItem-Header-Subtitle">{description}</div>
     </div>
     <div class="HDXWorkspaceSelectorItem-Body-Check">
       {#if selected}
@@ -53,6 +55,9 @@
 
     cursor: pointer;
     color: var(--theme-hdx-workbench-navigator-text-color);
+    height: var(--app-panel-big-action-height);
+
+    background-color: transparent;
 
     &:hover {
       background-color: var(--hdx-workspace-panel-hover-bg-color);
@@ -64,24 +69,20 @@
     min-width: var(--app-panel-width);
     max-width: var(--app-panel-width);
     width: var(--app-panel-width);
-    /* text-align: right; */
+    height: var(--app-panel-big-action-height);
     /* background-color: red; */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.5rem;
+  }
 
-    &::before {
-      position: absolute;
-      content: '';
-      display: block;
-      width: 0px;
-      height: 50%;
-      top: 25%;
-      right: 0;
-      border-left: solid 0.5px rgba(0,0,0,0.5);
-      border-right: solid 0.5px rgaba(255,255,255,0.5);
-    }
+  .HDXWorkspaceSelectorItem-StatusMarker {
+    display: block;
+    width: 40%;
+    height: 40%;
+    border-radius: 20%;
+    background-color: rgba(0, 0, 0, 0.3);
   }
 
   .HDXWorkspaceSelectorItem-Body {
@@ -91,18 +92,44 @@
     align-items: center;
   }
 
-  .HDXWorkspaceSelectorItem-Body-Content {
+  .HDXWorkspaceSelectorItem-Header {
     display: flex;
     flex-grow: 1;
-    align-items: center;
-    font-size: 0.9rem;
-    margin-left: 0.5rem;
+    flex-direction: column;
+    justify-content: stretch;
+    height: var(--app-panel-big-action-height);
+  }
+
+  .HDXWorkspaceSelectorItem-Header-Title,
+  .HDXWorkspaceSelectorItem-Header-Subtitle {
+    display: flex;
+    flex-grow: 1;
+    color: var(--theme-hdx-workbench-navigator-text-color);
+    justify-content: flex-start;
+    overflow: hidden;
+    text-shadow: 1px 1px 1px var(--theme-hdx-workbench-navigator-text-shadow-color);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .HDXWorkspaceSelectorItem-Header-Title {
+    height: calc(var(--app-panel-big-action-height) * 0.5);
+    font-size: var(--font-size-small);
+    font-weight: bold;
+    align-items: flex-end;
+  }
+
+  .HDXWorkspaceSelectorItem-Header-Subtitle {
+    height: calc(var(--app-panel-big-action-height) * 0.5);
+    font-size: var(--font-size-small);
+    align-items: flex-start;
   }
 
   .HDXWorkspaceSelectorItem-Body-Check {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: var(--app-panel-big-action-height);
     width: 2rem;
   }
 </style>

@@ -198,6 +198,7 @@
     {@const lastUsageDays = Math.round((Date.now() - (ws.lastVisit ?? 0)) / (1000 * 3600 * 24))}
     <HDXWorkspaceSelectorItem
     name={ws.url}
+    description={'Days:' + lastUsageDays}
     selected={$resolvedLocationStore.path[1] === ws.url}
     onSelect={(event) => {
       clickHandler(event, ws.url)
