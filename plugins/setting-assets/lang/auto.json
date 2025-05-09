@@ -1,4 +1,13 @@
 {
     "HELP": "List of english original texts to translate automatically, check the platform-dev-tools repository for more information.",
-    "SettingsSubtitle": "Manage your workspace settings"
+    "strings": [
+       {
+        "id" : "SettingsSubtitle",
+        "text": "Manage your workspace settings",
+        "description": "Subtitle for the settings item in nav menu",
+        "version": "1",
+        "promopt-en": "Fix this text to be more descriptive",
+        "promopt-cs": "Translate to chezch. Void long words, use short words."
+       }
+    ]
 }
